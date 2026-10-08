@@ -1,8 +1,8 @@
 {
-  "version": "1.1.0",
-  "generated": "2026-09-09",
+  "version": "1.2.0",
+  "generated": "2026-10-08",
   "description": "AgentSynapse beceri uzmanlasma haritasi (audit tabanli). Her beceriyi C1-C5 sinifina esler ve temel/dengeli/tam profillerini tanimlar.",
-  "source": "skill-specialization-audit.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (566 beceri)",
+  "source": "skill-specialization-audit.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (572 beceri)",
   "classes": {
     "C5": {
       "name": "Aşırı Özel — Tek Site / Pazar Kilitli Otomasyon",
@@ -32,7 +32,7 @@
       "name": "Genel / Sağlayıcı-Bağımsız",
       "color": "#16a34a",
       "kriter": "Mühendislik süreci, hata ayıklama, kod inceleme, planlama, yazma/uzmanlık, meta-beceri ve iletişim becerileri. Tek bir siteye veya tek bir gerçeğin API'sine bağımlı değil; tüm projelerde yeniden kullanılabilir.",
-      "count": 185
+      "count": 191
     }
   },
   "profiles": {
@@ -44,7 +44,7 @@
         "C1",
         "C2"
       ],
-      "count": 222
+      "count": 228
     },
     "dengeli": {
       "senaryo": "S2",
@@ -139,12 +139,12 @@
           "expo-examples"
         ]
       },
-      "count": 355
+      "count": 361
     },
     "tam": {
       "senaryo": "S3",
       "name": "Tam / Mevcut",
-      "description": "Tum 566 beceri (degisiklik yok).",
+      "description": "Tum 572 beceri (degisiklik yok).",
       "classes": [
         "C1",
         "C2",
@@ -152,7 +152,7 @@
         "C4",
         "C5"
       ],
-      "count": 566
+      "count": 572
     }
   },
   "skills": {
@@ -228,6 +228,7 @@
     "character-design-sheet": "C1",
     "chart-visualization": "C2",
     "chat-ui": "C3",
+    "check-hmsl": "C1",
     "ci-cd-and-automation": "C1",
     "claude-api": "C3",
     "claude-handoff": "C1",
@@ -286,6 +287,7 @@
     "convex-verify": "C4",
     "create-auth": "C4",
     "create-branch": "C4",
+    "create-honeytokens": "C1",
     "customer-persona": "C1",
     "cut-the-curve": "C1",
     "data-analysis": "C2",
@@ -461,6 +463,7 @@
     "instagram-post-comments": "C5",
     "instagram-profile-meta": "C5",
     "instagram-profile-posts": "C5",
+    "install-hooks": "C1",
     "internal-comms": "C4",
     "interview-me": "C1",
     "iterate-pr": "C4",
@@ -550,6 +553,8 @@
     "retro": "C1",
     "review-animations": "C1",
     "scaffold-exercises": "C1",
+    "scan-machine": "C1",
+    "scan-secrets": "C1",
     "score-eval": "C1",
     "seam-craft": "C1",
     "security-and-hardening": "C1",
@@ -628,6 +633,7 @@
     "tools-ui": "C3",
     "triage": "C1",
     "triage-frontend-issues": "C4",
+    "triage-incidents": "C1",
     "trustpilot-company-info": "C5",
     "trustpilot-reviews": "C5",
     "twitter-automation": "C5",

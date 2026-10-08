@@ -45,9 +45,9 @@ S: dict[str, dict[str, str]] = {
         "recommended": "Recommended",
         "trusted": "Trusted",
         "all": "All",
-        "profile_recommended_desc": "Curated subset (~566 skills)",
-        "profile_trusted_desc": "K1-K8 -- all trusted categories (~640 skills)",
-        "profile_all_desc": "K1-K10 -- everything (~995 skills)",
+        "profile_recommended_desc": "Curated subset (~572 skills)",
+        "profile_trusted_desc": "K1-K8 -- all trusted categories (~646 skills)",
+        "profile_all_desc": "K1-K10 -- everything (~1001 skills)",
         "category": "Category",
         "categories": "Categories",
         "profiles": "Profiles",
@@ -170,9 +170,9 @@ S: dict[str, dict[str, str]] = {
         "recommended": "Önerilen",
         "trusted": "Güvenli",
         "all": "Tümü",
-        "profile_recommended_desc": "Küratörlü alt küme (~566 beceri)",
-        "profile_trusted_desc": "K1-K8 -- tum guvenli kategoriler (~640 beceri)",
-        "profile_all_desc": "K1-K10 -- her sey (~995 beceri)",
+        "profile_recommended_desc": "Küratörlü alt küme (~572 beceri)",
+        "profile_trusted_desc": "K1-K8 -- tum guvenli kategoriler (~646 beceri)",
+        "profile_all_desc": "K1-K10 -- her sey (~1001 beceri)",
         "category": "Kategori",
         "categories": "Kategoriler",
         "profiles": "Profiller",
@@ -299,7 +299,7 @@ def _(key: str, lang: str = "en") -> str:
 # ─────────────────────────────── EMBEDDED REPO DATA ───────────────────────────────
 
 REPOS: dict[str, Any] = {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Embedded repository registry for AgentSynapse.",
     "categories": [
         {
@@ -385,6 +385,7 @@ REPOS: dict[str, Any] = {
             "repos": [
                 {"repo": "better-auth/skills"},
                 {"repo": "squirrelscan/skills"},
+                {"repo": "GitGuardian/agent-skills", "subpath": "skills"},
             ],
         },
         {
