@@ -1,6 +1,11 @@
 ---
 name: git-remote-credential-hygiene
 description: Use this skill whenever git remotes, .git/config, or credential storage are involved. Check remote URLs for embedded user:password@ credentials and plaintext tokens, move a repository-config credential into the Windows, macOS, or Linux OS credential store, prove fetch and push authentication on GitHub and GitLab remotes without ever printing a secret, or plan rotation-first remediation after a plaintext credential exposure. Triggers on remote audits, credential moves, and auth verification requests.
+license: MIT
+compatibility: Requires git and network access to the remotes for verification. Credential storage needs an OS manager (Windows Git Credential Manager verified; macOS and Linux untested).
+metadata:
+  author: bayraktarozcan
+  version: "1.0.0"
 ---
 
 # Git Remote Credential Hygiene
@@ -20,11 +25,11 @@ Open the reference that matches the step at hand:
 
 | Open when... | Read |
 |---|---|
-| matching a token shape or masking a finding | `references/patterns.md` |
-| checking helper setup or hitting an OS quirk | `references/platform-notes.md` |
-| needing the exact command and expected output | `references/verification.md` |
-| deciding what to do about a finding | `references/remediation.md` |
-| checking what this skill guarantees and excludes | `SPEC.md` |
+| matching a token shape or masking a finding | [patterns](references/patterns.md) |
+| checking helper setup or hitting an OS quirk | [platform notes](references/platform-notes.md) |
+| needing the exact command and expected output | [verification](references/verification.md) |
+| deciding what to do about a finding | [remediation](references/remediation.md) |
+| checking what this skill guarantees and excludes | [SPEC](SPEC.md) |
 
 ## Workflow
 
