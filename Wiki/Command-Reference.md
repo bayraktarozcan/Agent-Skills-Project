@@ -18,10 +18,10 @@ If no argument is given, the **recommended** profile is used.
 
 | Argument | Effect | Repos | Skills |
 |----------|--------|:-----:|:------:|
-| _(none)_ | Recommended — curated subset, best quality | 35 | ~572 |
-| `recommended` | Same as default | 35 | ~572 |
-| `trusted` | All trusted categories K1–K8 | 40 | ~646 |
-| `all` | Everything including K9–K10 | 49 | ~1001 |
+| _(none)_ | Recommended — curated subset, best quality | 35 | ~571 |
+| `recommended` | Same as default | 35 | ~571 |
+| `trusted` | All trusted categories K1–K8 | 40 | ~645 |
+| `all` | Everything including K9–K10 | 49 | ~1000 |
 
 ## Single Categories
 
@@ -124,10 +124,10 @@ Hiçbir argüman verilmezse **önerilen** profil kullanılır.
 
 | Argüman | Etki | Depo | Beceri |
 |---------|------|:----:|:------:|
-| _(yok)_ | Önerilen — küratörlü alt küme, en iyi kalite | 35 | ~572 |
-| `onerilen` | Varsayılan ile aynı | 35 | ~572 |
-| `guvenli` | Tüm güvenli kategoriler K1–K8 | 40 | ~646 |
-| `tumu` | K9–K10 dahil her şey | 49 | ~1001 |
+| _(yok)_ | Önerilen — küratörlü alt küme, en iyi kalite | 35 | ~571 |
+| `onerilen` | Varsayılan ile aynı | 35 | ~571 |
+| `guvenli` | Tüm güvenli kategoriler K1–K8 | 40 | ~645 |
+| `tumu` | K9–K10 dahil her şey | 49 | ~1000 |
 
 ## Tek Kategoriler
 

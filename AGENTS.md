@@ -22,7 +22,7 @@ only states what is verified by the live project. Nothing is fabricated.
   Note: the native license path https://gitlab.com/bayraktarozcan/AgentSynapse/-/badges/license.svg is NOT registered
   and currently returns 403; the registered license badge is the shields.io URL above.
 - The README's static shields.io badges (skills/repos/categories/license) are static
-  text badges over verified facts (572+ skills, 35 repos, 10 categories, MIT).
+  text badges over verified facts (571+ skills, 35 repos, 10 categories, MIT).
 
 ## Badge policy (apply when touching badges)
 1. Register a badge only after probing its image URL returns HTTP 200 with
@@ -52,4 +52,4 @@ only states what is verified by the live project. Nothing is fabricated.
   `<!-- mirror-sync: ... -->` line removed. The value is written on the last line of
   `AGENTS.md` and in the header of `AGENTS-TR.md`; if they differ, the mirror drifted
   and must be regenerated before any commit.
-<!-- mirror-sync: sync-sha=14b9acf201f5bb0f78f8d59f96c801b6b0286f42 -->
+<!-- mirror-sync: sync-sha=d858fbfd13941f2ec01d058689a3b870f77df09f -->

@@ -2,7 +2,7 @@
   "version": "1.2.0",
   "generated": "2026-10-08",
   "description": "AgentSynapse beceri uzmanlasma haritasi (audit tabanli). Her beceriyi C1-C5 sinifina esler ve temel/dengeli/tam profillerini tanimlar.",
-  "source": "skill-specialization-audit.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (572 beceri)",
+  "source": "skill-specialization-audit.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (571 beceri)",
   "classes": {
     "C5": {
       "name": "Aşırı Özel — Tek Site / Pazar Kilitli Otomasyon",
@@ -32,7 +32,7 @@
       "name": "Genel / Sağlayıcı-Bağımsız",
       "color": "#16a34a",
       "kriter": "Mühendislik süreci, hata ayıklama, kod inceleme, planlama, yazma/uzmanlık, meta-beceri ve iletişim becerileri. Tek bir siteye veya tek bir gerçeğin API'sine bağımlı değil; tüm projelerde yeniden kullanılabilir.",
-      "count": 191
+      "count": 190
     }
   },
   "profiles": {
@@ -44,7 +44,7 @@
         "C1",
         "C2"
       ],
-      "count": 228
+      "count": 227
     },
     "dengeli": {
       "senaryo": "S2",
@@ -139,12 +139,12 @@
           "expo-examples"
         ]
       },
-      "count": 361
+      "count": 360
     },
     "tam": {
       "senaryo": "S3",
       "name": "Tam / Mevcut",
-      "description": "Tum 572 beceri (degisiklik yok).",
+      "description": "Tum 571 beceri (degisiklik yok).",
       "classes": [
         "C1",
         "C2",
@@ -152,7 +152,7 @@
         "C4",
         "C5"
       ],
-      "count": 572
+      "count": 571
     }
   },
   "skills": {
@@ -549,7 +549,6 @@
     "remotion-to-hyperframes": "C4",
     "requesting-code-review": "C1",
     "research": "C1",
-    "resolving-merge-conflicts": "C1",
     "retro": "C1",
     "review-animations": "C1",
     "scaffold-exercises": "C1",

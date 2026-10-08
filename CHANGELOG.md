@@ -15,6 +15,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **GitGuardian/agent-skills in K6** — official MIT-licensed secret-scanning skills (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`) installed via `subpath: skills`. Registry counts move to 35 recommended repos and ~571 skills.
+- **Project-local skill `git-remote-credential-hygiene`** — under `skills/`, owns the remote-URL-to-OS-credential-manager move plus GitHub/GitLab dual-remote authentication proof (read-only by default, approval-gated move, rotation-first). Complements scanner skills; ships a read-only `scan_remote_hygiene.py` script.
+
+### Fixed
+
+- **Stale `resolving-merge-conflicts` entry removed** — upstream `mattpocock/skills` no longer ships it as a SKILL.md, so it can never install. Manifest counts corrected to 571 skills (C1 190; profiles 227/360/571).
+
 ## [1.1.0] - 2026-09-09
 
 ### Added
@@ -104,6 +115,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <a id="tr"></a>
 
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
+
+## [Unreleased]
+
+### Eklenenler
+
+- **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt sayıları 35 önerilen depo ve ~571 beceriye çıktı.
+- **Proje-içi beceri `git-remote-credential-hygiene`** — `skills/` altında; uzak URL'den işletim sistemi kimlik deposuna taşıma ile GitHub/GitLab çift-uzak kimlik doğrulama kanıtını üstlenir (varsayılan salt-okunur, taşıma onaylı, önce döndür). Salt-okunur `scan_remote_hygiene.py` betiği dahil.
+
+### Düzeltmeler
+
+- **Kullanılmayan `resolving-merge-conflicts` girdisi kaldırıldı** — üst depo `mattpocock/skills` artık bunu SKILL.md olarak sunmuyor, kurulması mümkün değil. Manifest sayıları 571 beceri olarak düzeltildi (C1 190; profiller 227/360/571).
 
 ## [1.1.0] - 2026-09-09
 
