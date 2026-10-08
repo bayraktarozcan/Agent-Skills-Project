@@ -1,0 +1,35 @@
+{
+  "skill_name": "git-remote-credential-hygiene",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Check whether my git remotes hide passwords in their URLs and prove fetch works on each.",
+      "expected_output": "Masked remote inventory plus per-remote ls-remote result; no secret value shown.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Move the token out of my .git/config into the OS credential manager and prove push still works.",
+      "expected_output": "Approval request first; then tokenless URLs, clean re-scan, username-only fill confirmation, push dry-run exit 0.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Audit fetch and push authentication on both my GitHub and GitLab remotes without printing secrets.",
+      "expected_output": "Per-remote verification table (helper origin, fill username, ls-remote, dry-run) with masked URLs.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Rewrite git history to purge a file I committed last year.",
+      "expected_output": "Out of scope per SPEC.md non-goals; no history rewrite attempted.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Set up Vault as our team secrets backend with dynamic credentials.",
+      "expected_output": "Out of scope per SPEC.md non-goals; no backend provisioning attempted.",
+      "files": []
+    }
+  ]
+}

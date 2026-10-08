@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Stale `resolving-merge-conflicts` entry removed** — upstream `mattpocock/skills` no longer ships it as a SKILL.md, so it can never install. Manifest counts corrected to 571 skills (C1 190; profiles 227/360/571).
+- **Skill spec compliance rework** — `git-remote-credential-hygiene` now follows the Agent Skills shape (router SKILL.md with open-when table, trigger-rich description, `SPEC.md` contract, `evals/evals.json` cases).
 
 ## [1.1.0] - 2026-09-09
 
@@ -126,6 +127,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 ### Düzeltmeler
 
 - **Kullanılmayan `resolving-merge-conflicts` girdisi kaldırıldı** — üst depo `mattpocock/skills` artık bunu SKILL.md olarak sunmuyor, kurulması mümkün değil. Manifest sayıları 571 beceri olarak düzeltildi (C1 190; profiller 227/360/571).
+- **Beceri spec uyumu** — `git-remote-credential-hygiene` artık Agent Skills biçiminde (yönlendiren SKILL.md, tetikleyici açıklama, `SPEC.md` sözleşmesi, `evals/evals.json` vakaları).
 
 ## [1.1.0] - 2026-09-09
 

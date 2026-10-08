@@ -1,54 +1,60 @@
 ---
 name: git-remote-credential-hygiene
-description: Use when checking whether git remote URLs hide embedded passwords or tokens, when moving a plaintext credential from repository config into the operating-system credential store, when fetch or push authentication must be proven on GitHub and GitLab remotes without ever printing a secret, or when a review asks for a rotation-first remediation plan after a credential was exposed in text.
+description: Use this skill whenever git remotes, .git/config, or credential storage are involved. Check remote URLs for embedded user:password@ credentials and plaintext tokens, move a repository-config credential into the Windows, macOS, or Linux OS credential store, prove fetch and push authentication on GitHub and GitLab remotes without ever printing a secret, or plan rotation-first remediation after a plaintext credential exposure. Triggers on remote audits, credential moves, and auth verification requests.
 ---
 
 # Git Remote Credential Hygiene
 
-Goal: prove that git remote authentication is stored safely -- no
-plaintext secret in repo config -- and that fetch plus push work on every
-remote, without ever printing a secret value.
+Audit git remote authentication without exposing a secret: inventory the
+remotes, scan for plaintext credentials, confirm the OS credential
+helper, move credentials into the manager (approval-gated), then prove
+fetch and push work. Scanner skills (e.g. GitGuardian) find leaked
+secrets in code; this skill owns the remote-URL-to-OS-manager move plus
+the dual-remote authentication proof.
 
-Complements secret-scanner skills (e.g. GitGuardian): those find leaked
-secrets in code; this owns the remote-URL-to-OS-manager move plus
-dual-remote authentication proof.
+Default to the read-only steps and stop on the first failed check: a
+half-verified auth claim is worse than no claim, because the user will
+rely on it.
 
-## When to use
+Open the reference that matches the step at hand:
 
-- Remote URLs may contain embedded `user:password@` credentials.
-- A token or password is suspected in `.git/config` or
-  `~/.git-credentials`.
-- Fetch or push authentication must be proven on GitHub and GitLab
-  remotes.
-- A review asks for a rotation-first plan after a plaintext exposure.
+| Open when... | Read |
+|---|---|
+| matching a token shape or masking a finding | `references/patterns.md` |
+| checking helper setup or hitting an OS quirk | `references/platform-notes.md` |
+| needing the exact command and expected output | `references/verification.md` |
+| deciding what to do about a finding | `references/remediation.md` |
+| checking what this skill guarantees and excludes | `SPEC.md` |
 
-## Workflow (default read-only; stop on first failure)
+## Workflow
 
-1. **Inventory.** List remotes; classify each URL as clean HTTPS (no
-   embedded credential), embedded-credential, or SSH.
-   Verify: every URL accounted for, secret parts masked as `***`.
-2. **Scan.** Run `scripts/scan_remote_hygiene.py <repo>`; see
-   `references/patterns.md`.
-   Verify: findings as file + line with masked values only.
-3. **Helper.** Confirm an OS credential helper is configured; see
-   `references/platform-notes.md`.
-   Verify: helper name plus config origin shown; stop if none.
-4. **Move (APPROVAL GATE).** Only with explicit user approval and only
-   if step 2 found plaintext: rewrite remote URLs to tokenless HTTPS,
-   then store the credential in the OS manager. The user supplies the
-   secret; the agent never invents one.
-   Verify: config re-scan is clean; see `references/remediation.md`.
-5. **Verify auth.** Confirm the manager returns a record (username
-   only), then test fetch and push without changing anything.
-   Verify: expected outputs in `references/verification.md`.
-6. **Report.** Changed URLs (masked), verification results, rotation or
+1. Inventory remotes with `git remote -v`. Mask secret parts as `***`
+   before showing anything, then classify each URL as clean HTTPS,
+   embedded-credential, or SSH. Account for every URL.
+2. Scan with `scripts/scan_remote_hygiene.py <repo>` and check
+   `~/.git-credentials` when present. Report findings as file + line
+   with masked values only.
+3. Confirm an OS credential helper is configured
+   (`git config --get-all --show-origin credential.helper`). Stop when
+   none is configured; unauthenticated guessing helps nobody.
+4. Move credentials only with explicit user approval and only when step
+   2 found plaintext. Rewrite remote URLs to tokenless HTTPS, then store
+   the credential in the OS manager. Ask the user for the secret value;
+   never invent one. Re-scan afterwards and expect a clean result.
+5. Prove authentication without changing anything: confirm the manager
+   returns a record (show the `username=` line only, never the
+   password), then run fetch plus push dry-runs per remote.
+6. Report changed URLs (masked), verification results, and rotation or
    expiry advice. Log actions without secret values.
 
 ## Rules
 
-- Never print, write to disk, or commit a secret value. Masked output.
-- Steps 1-3 and 5 change nothing. Step 4 needs explicit approval.
-- Rotation-first: a leaked or moved secret is rotated or revoked at the
-  source before cleanup; cleanup never replaces rotation.
-- Least privilege and short expiry for every requested scope.
-- Do not claim support for an untested OS or tool; mark unsupported.
+- Never print, write to disk, or commit a secret value, because any
+  copy widens exposure permanently. Emit masked output only.
+- Rotate or revoke a leaked or moved secret at its source before
+  cleanup; cleanup alone leaves the old value valid, so it never
+  replaces rotation.
+- Request the smallest scope and shortest expiry that works, so a
+  future leak costs as little as possible.
+- Mark untested OS or tool combinations unsupported instead of guessing
+  commands; a wrong command against credentials is a safety incident.
