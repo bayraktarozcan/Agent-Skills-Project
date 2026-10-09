@@ -467,13 +467,14 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Compatibility floor: Windows PowerShell 5.1+. No syntax above it in committed scripts.
 - Shell: `pwsh` 7.6.6 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
 - `glab` 1.122.0 installed (GitLab operations).
+- `gh` 2.102.0 installed (GitHub operations; release listing verified).
 - Python via the `py` launcher, 3.15.0 (verified). Deviation on record: bare `python`/`python3` currently do not resolve on this host although repo docs say `python skills.py`; `py` is the working invocation until the owner repairs or re-points it. CI images use their own `python` and are unaffected.
 - PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts to `temp/` and run with file execution.
 
 ## Releases — procedure, hosts, parity checks
 
 - Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `release.yml` compiles `skills.py`, writes `skills.py.sha256`, and publishes a Release whose body is `CHANGELOG.md`.
-- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2` resolve identically on GitHub and GitLab (verified). GitLab has no Releases object for them; parity target is tags + notes, recorded here until a GitLab-side release step exists (see Gaps).
+- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`; older titles carry a `[DEPRECATED]` prefix on both). The `v1.0.2` body is `CHANGELOG.md` with `skills.py` + `skills.py.sha256` assets on GitHub.
 - Release notes: bilingual EN-first at equal scope when a release ships notes beyond the changelog body.
 
 ## Bypasses — gates that do not hold by design, and what runs afterward
@@ -505,9 +506,8 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 1. `._dont_migrate_` markers absent at ignored-dir roots (`Logs/`, `temp/` when created): propose adding markers plus a guard test; needs person approval (new files across the tree).
 2. README/Wiki/issue-template references to ignored run artifacts (`Logs/`, `skills-tree_*.txt`) need recorded handling under the untracked-reference ban: propose a scoped exemption note vs. rewording; needs person decision.
 3. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
-4. GitLab-side release object missing (tags only): propose either a GitLab release step or narrowing the parity claim.
-5. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
-6. `skills/` lowercase rename: person's call (see Naming).
+4. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
+5. `skills/` lowercase rename: person's call (see Naming).
 
 ---
 
@@ -641,4 +641,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=e06e41aed3d3a849b40e86e1c7e62ddb8d52cd3c -->
+<!-- mirror-sync: sync-sha=a94b56cec27aebadbb9892feb1f96caf88b3038d -->
