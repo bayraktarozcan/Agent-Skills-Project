@@ -2,7 +2,7 @@
 # <type>(<scope>): <description>
 #
 # Types:   feat, fix, docs, style, refactor, perf, test, chore
-# Scopes:  repo, category, dedup, cli, log, docs, ci, config
+# Scopes:  repo, category, dedup, cli, log, docs, ci, config, skill
 # Example: feat(repo): add anthropics/skills to K2
 # Example: fix(dedup): handle duplicate names across categories
 # Example: docs(readme): add category reference table
