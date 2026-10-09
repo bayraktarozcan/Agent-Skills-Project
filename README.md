@@ -197,6 +197,10 @@ AgentSynapse/
 +-- SUPPORT.md           # Bilingual support info
 +-- CONTRIBUTING.md      # Bilingual contributing guide
 +-- LICENSE              # MIT License
++-- NOTICE               # Third-party attribution notices
++-- PRIVACY.md           # Privacy policy (bilingual EN/TR)
++-- CODEOWNERS           # Code owners
++-- RELEASE-NOTE-TEMPLATE.md # Release notes skeleton
 +-- <run artifacts>      # Timestamped install logs and trees (auto-generated; paths per `.gitignore`)
 +-- skill-specialization.json # Specialization manifest (571 skills, C1-C5)
 +-- .github/             # Issue templates, funding, dependabot
@@ -437,6 +441,10 @@ AgentSynapse/
 +-- SUPPORT.md           # Çift dilli destek bilgileri
 +-- CONTRIBUTING.md      # Çift dilli katkı rehberi
 +-- LICENSE              # MIT Lisansı
++-- NOTICE               # Üçüncü taraf atıf bildirimleri
++-- PRIVACY.md           # Gizlilik politikası (iki dilli EN/TR)
++-- CODEOWNERS           # Kod sahipleri
++-- RELEASE-NOTE-TEMPLATE.md # Sürüm notu iskeleti
 +-- <çalışma yapıtları>  # Zaman damgalı kurulum günlükleri ve ağaçları (otomatik; yollar `.gitignore` dosyasına göre)
 +-- skill-specialization.json # Uzmanlaşma manifesti (571 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
