@@ -422,7 +422,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `scripts/` | Tooling: `check_encoding.py` (encoding gate), `sync-wiki.ps1` (see Naming exemptions) |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
-| `Logs/` | Ignored run artifacts: timestamped install logs |
+| `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
 | `AGENTS.md` | This file (see Mirror) |
 | `LICENSE` | MIT terms (see License) |
 
@@ -456,7 +456,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
   - `skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec requires lowercase names; the leaf must equal the frontmatter `name`.
   - `temp/` (lowercase): matches the root ignore pattern exactly on every platform; cross-platform exactness beats casing here.
   - `skill-specialization.json`, `skill-specialization-audit.md` (lowercase root data files): data contract — loader and audit tooling read these exact names.
-  - `skills-tree_*.txt`, `Logs/` contents (ignored run artifacts): never referenced by code; documentation mentions are listed under Gaps for exemption recording.
+  - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
@@ -505,10 +505,9 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Gaps — reported deviations with proposed fixes (not silently fixed)
 
-1. README/Wiki/issue-template references to ignored run artifacts (`Logs/`, `skills-tree_*.txt`) need recorded handling under the untracked-reference ban: propose a scoped exemption note vs. rewording; needs person decision.
-2. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
-3. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
-4. `skills/` lowercase rename: person's call (see Naming).
+1. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
+2. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
+3. `skills/` lowercase rename: person's call (see Naming).
 
 ---
 
@@ -642,4 +641,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=e05c324240192433e054e0f149db793f59babbca -->
+<!-- mirror-sync: sync-sha=e454c84a3e615e1dc72cdf26a8fbd70fec7aeb6d -->

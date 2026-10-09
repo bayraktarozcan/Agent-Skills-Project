@@ -18,7 +18,7 @@ Steps to reproduce:
 What you expected to happen.
 
 **Logs**
-Paste the relevant section from `Logs/yyyy-MM-dd_HH-mm-ss.log`:
+Paste the relevant section from the timestamped install log (path per `.gitignore`):
 
 ```
 ...

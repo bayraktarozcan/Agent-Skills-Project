@@ -151,8 +151,8 @@ All generated files are created in your **current working directory** (where you
 
 | File | Description |
 |------|-------------|
-| `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` | Full installation log with timestamps, errors, and warnings |
-| `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` | Directory tree of `~/.agents/` showing installed skills structure |
+| Install log (timestamped; path per `.gitignore`) | Full installation log with timestamps, errors, and warnings |
+| Skills tree (timestamped; path per `.gitignore`) | Directory tree of `~/.agents/` showing installed skills structure |
 
 ### Verification
 
@@ -314,8 +314,8 @@ Tüm oluşturulan dosyalar **geçerli çalışma dizininizde** (`skills.py`'yi �
 
 | Dosya | Açıklama |
 |-------|----------|
-| `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` | Zaman damgalı tam kurulum günlüğü, hatalar ve uyarılar |
-| `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` | `~/.agents/` klasör yapısını gösteren ağaç görünümü |
+| Kurulum günlüğü (zaman damgalı; yol `.gitignore` dosyasına göre) | Zaman damgalı tam kurulum günlüğü, hatalar ve uyarılar |
+| Beceri ağacı (zaman damgalı; yol `.gitignore` dosyasına göre) | `~/.agents/` klasör yapısını gösteren ağaç görünümü |
 
 ### Doğrulama
 

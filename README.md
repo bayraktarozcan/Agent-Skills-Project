@@ -197,8 +197,7 @@ AgentSynapse/
 +-- SUPPORT.md           # Bilingual support info
 +-- CONTRIBUTING.md      # Bilingual contributing guide
 +-- LICENSE              # MIT License
-+-- Logs/                # Timestamped install logs (auto-generated)
-+-- skills-tree_*.txt    # Timestamped directory tree per run (auto-generated)
++-- <run artifacts>      # Timestamped install logs and trees (auto-generated; paths per `.gitignore`)
 +-- skill-specialization.json # Specialization manifest (571 skills, C1-C5)
 +-- .github/             # Issue templates, funding, dependabot
 ```
@@ -438,8 +437,7 @@ AgentSynapse/
 +-- SUPPORT.md           # Çift dilli destek bilgileri
 +-- CONTRIBUTING.md      # Çift dilli katkı rehberi
 +-- LICENSE              # MIT Lisansı
-+-- Logs/                # Zaman damgalı kurulum günlükleri (otomatik)
-+-- skills-tree_*.txt    # Çalıştırma başına zaman damgalı klasör ağacı (otomatik)
++-- <çalışma yapıtları>  # Zaman damgalı kurulum günlükleri ve ağaçları (otomatik; yollar `.gitignore` dosyasına göre)
 +-- skill-specialization.json # Uzmanlaşma manifesti (571 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```

@@ -139,9 +139,7 @@ When two repos contain a `SKILL.md` file with the same skill name, the one from 
 
 ### Where are logs and tree files saved?
 
-In your **current working directory** (where you run `python skills.py`):
-- `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` — detailed installation log
-- `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` — directory tree of `~/.agents/`
+In your **current working directory** (where you run `python skills.py`), two timestamped files appear (exact paths per `.gitignore`): the detailed installation log, and the directory tree of `~/.agents/`.
 
 These are timestamped to the second, so every run produces unique files.
 
@@ -282,8 +280,6 @@ Evet. Yükleyici aşağıdakilerde test edilmiştir:
 
 ### Günlükler ve ağaç dosyaları nereye kaydediliyor?
 
-**Geçerli çalışma dizininizde** (`python skills.py` çalıştırdığınız yerde):
-- `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` — ayrıntılı kurulum günlüğü
-- `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` — `~/.agents/` dizin ağacı
+**Geçerli çalışma dizininizde** (`python skills.py` çalıştırdığınız yerde) iki zaman damgalı dosya belirir (tam yollar `.gitignore` dosyasına göre): ayrıntılı kurulum günlüğü ve `~/.agents/` dizin ağacı.
 
 Bunlar saniyeye kadar zaman damgalıdır, böylece her çalıştırma benzersiz dosyalar üretir.

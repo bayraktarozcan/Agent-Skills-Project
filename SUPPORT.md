@@ -25,7 +25,7 @@ Open a [GitHub Issue](https://github.com/bayraktarozcan/AgentSynapse/issues/new?
 Include:
 - What you ran (full command).
 - What you expected vs what happened.
-- Relevant log output (from `Logs/`).
+- Relevant log output (timestamped install log; path per `.gitignore`).
 - Your OS and Python version (`python --version`).
 
 ### Feature Requests
@@ -83,7 +83,7 @@ Skills persist until you reinstall.
 ŞUNLARI EKLEYİN:
 - Çalıştırdığınız komut (tam hali).
 - Beklediğiniz ve gerçekleşen sonuç.
-- Logs/ klasöründeki ilgili günlük çıktısı.
+- Zaman damgalı kurulum günlüğündeki ilgili çıktı (yol `.gitignore` dosyasına göre).
 - İşletim sisteminiz ve Python sürümünüz (`python --version`).
 
 ### Özellik Talepleri

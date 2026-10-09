@@ -44,7 +44,7 @@ When repos are added, removed or reclassified, regenerate `skill-specialization.
 Open an issue with:
 
 - **Description** — what happened vs what you expected.
-- **Logs** — paste the relevant section from `Logs/`.
+- **Logs** — paste the relevant section from the timestamped install log (path per `.gitignore`).
 - **Environment** — OS and Python version (`python --version`).
 
 ### Request a Feature
@@ -128,7 +128,7 @@ Depolar eklendiğinde, kaldırıldığında veya yeniden sınıflandırıldığ�
 Bir sorun açın ve şunları ekleyin:
 
 - **Açıklama** — ne oldu vs ne bekliyordunuz.
-- **Günlükler** — Logs/ klasöründen ilgili bölümü yapıştırın.
+- **Günlükler** — zaman damgalı kurulum günlüğünden ilgili bölümü yapıştırın (yol `.gitignore` dosyasına göre).
 - **Ortam** — işletim sistemi ve Python sürümü (`python --version`).
 
 ### Özellik Talep Etme
