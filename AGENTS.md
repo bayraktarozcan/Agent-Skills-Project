@@ -430,7 +430,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
 - Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `skill-specialization.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, docs, Wiki, CLI text, and the manifest together.
-- A bump updates the changelog, every constant, and every hand-maintained count; parity is checked by hand before push (no automated version-parity test exists yet — see Gaps).
+- A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — setup, build, test, lint, the single local gate command
 
@@ -505,9 +505,8 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Gaps — reported deviations with proposed fixes (not silently fixed)
 
-1. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
-2. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
-3. `skills/` lowercase rename: person's call (see Naming).
+1. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
+2. `skills/` lowercase rename: person's call (see Naming).
 
 ---
 
@@ -641,4 +640,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=e454c84a3e615e1dc72cdf26a8fbd70fec7aeb6d -->
+<!-- mirror-sync: sync-sha=5d3d49214cdb0c4d995a79d7ff834bc8665a98c6 -->
