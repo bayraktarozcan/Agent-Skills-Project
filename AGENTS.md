@@ -453,6 +453,8 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
   - `docs/` (lowercase): data contract — GitLab `pages` job runs `cp -r docs/* public/`.
   - `scripts/` (lowercase): data contract — CI and code reference `scripts/check_encoding.py` literally.
   - `skills/` (lowercase): installer vocabulary symmetry with the `~/.agents/skills/<name>` install path; renaming is the person's call.
+  - `skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec requires lowercase names; the leaf must equal the frontmatter `name`.
+  - `temp/` (lowercase): matches the root ignore pattern exactly on every platform; cross-platform exactness beats casing here.
   - `skill-specialization.json`, `skill-specialization-audit.md` (lowercase root data files): data contract — loader and audit tooling read these exact names.
   - `skills-tree_*.txt`, `Logs/` contents (ignored run artifacts): never referenced by code; documentation mentions are listed under Gaps for exemption recording.
 
@@ -503,11 +505,10 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Gaps — reported deviations with proposed fixes (not silently fixed)
 
-1. `._dont_migrate_` markers absent at ignored-dir roots (`Logs/`, `temp/` when created): propose adding markers plus a guard test; needs person approval (new files across the tree).
-2. README/Wiki/issue-template references to ignored run artifacts (`Logs/`, `skills-tree_*.txt`) need recorded handling under the untracked-reference ban: propose a scoped exemption note vs. rewording; needs person decision.
-3. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
-4. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
-5. `skills/` lowercase rename: person's call (see Naming).
+1. README/Wiki/issue-template references to ignored run artifacts (`Logs/`, `skills-tree_*.txt`) need recorded handling under the untracked-reference ban: propose a scoped exemption note vs. rewording; needs person decision.
+2. No automated version-parity test (README/docs/Wiki/CLI/manifest counts): propose a checker; needs person approval.
+3. Bare `python` unresolvable on this host: owner to repair or re-point; commands use `py` meanwhile.
+4. `skills/` lowercase rename: person's call (see Naming).
 
 ---
 
@@ -641,4 +642,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=a94b56cec27aebadbb9892feb1f96caf88b3038d -->
+<!-- mirror-sync: sync-sha=e05c324240192433e054e0f149db793f59babbca -->
