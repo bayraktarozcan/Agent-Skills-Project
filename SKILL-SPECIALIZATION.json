@@ -2,7 +2,7 @@
   "version": "1.2.0",
   "generated": "2026-10-08",
   "description": "AgentSynapse beceri uzmanlasma haritasi (audit tabanli). Her beceriyi C1-C5 sinifina esler ve temel/dengeli/tam profillerini tanimlar.",
-  "source": "skill-specialization-audit.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (571 beceri)",
+  "source": "SKILL-SPECIALIZATION-AUDIT.md (gitignore'da); kaynak dizin %USERPROFILE%\\.agents\\skills (571 beceri)",
   "classes": {
     "C5": {
       "name": "Aşırı Özel — Tek Site / Pazar Kilitli Otomasyon",

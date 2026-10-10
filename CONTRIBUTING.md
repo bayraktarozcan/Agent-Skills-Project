@@ -31,7 +31,7 @@ If you believe a repo belongs in a different category:
 
 ### Update the Specialization Manifest
 
-When repos are added, removed or reclassified, regenerate `skill-specialization.json` so its class counts and profiles (`temel`, `dengeli`, `tam`) stay in sync with the installed universe.
+When repos are added, removed or reclassified, regenerate `SKILL-SPECIALIZATION.json` so its class counts and profiles (`temel`, `dengeli`, `tam`) stay in sync with the installed universe.
 
 ### Add or Improve a Skill
 
@@ -81,7 +81,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`.
 ## Pull Request Process
 
 1. Ensure all existing commands still work: `python skills.py recommended`, `trusted`, `all`.
-2. Update `skills.py` and keep `skill-specialization.json` in sync if classifications changed.
+2. Update `skills.py` and keep `SKILL-SPECIALIZATION.json` in sync if classifications changed.
 3. PRs require at least one review before merging.
 4. Keep PRs focused — one change per PR.
 
@@ -115,7 +115,7 @@ Bir deponun farklı bir kategoride olması gerektiğini düşünüyorsanız:
 
 ### Uzmanlaşma Manifestini Güncelleme
 
-Depolar eklendiğinde, kaldırıldığında veya yeniden sınıflandırıldığında, sınıf sayıları ve profillerin (`temel`, `dengeli`, `tam`) kurulan evrenle senkron kalması için `skill-specialization.json` dosyasını yeniden oluşturun.
+Depolar eklendiğinde, kaldırıldığında veya yeniden sınıflandırıldığında, sınıf sayıları ve profillerin (`temel`, `dengeli`, `tam`) kurulan evrenle senkron kalması için `SKILL-SPECIALIZATION.json` dosyasını yeniden oluşturun.
 
 ### Beceri Ekleme veya İyileştirme
 
@@ -158,7 +158,7 @@ Conventional Commits kullanıyoruz:
 ## Pull Request Süreci
 
 1. Tüm mevcut komutların çalıştığını doğrulayın: `python skills.py recommended`, `trusted`, `all`.
-2. Sınıflandırmalar değiştiyse `skills.py`'yi güncelleyin ve `skill-specialization.json` dosyasını senkron tutun.
+2. Sınıflandırmalar değiştiyse `skills.py`'yi güncelleyin ve `SKILL-SPECIALIZATION.json` dosyasını senkron tutun.
 3. PR'ler birleştirilmeden önce en az bir inceleme gerektirir.
 4. PR'ları odaklı tutun — her PR'da tek bir değişiklik.
 

@@ -1651,7 +1651,7 @@ def gui_main(args: argparse.Namespace) -> None:
 
 # ─────────────────────────────── SPECIALIZATION ───────────────────────────────
 
-MANIFEST_NAME = "skill-specialization.json"
+MANIFEST_NAME = "SKILL-SPECIALIZATION.json"
 _CLASS_COLORS: dict[str, str] = {
     "C1": "green",
     "C2": "cyan",

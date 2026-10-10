@@ -6,7 +6,7 @@ the repository root before push. stdlib only.
 
 Checks:
   manifest-internal  skill map length, class counts, and profile counts
-                     agree inside skill-specialization.json
+                     agree inside SKILL-SPECIALIZATION.json
   registry-repos     recommended/trusted/all repo counts from skills.py
   readme/docs/wiki   hand-maintained counts match the manifest
   cli-text           profile description strings match the manifest
@@ -95,7 +95,7 @@ def check_markers() -> list[str]:
 
 
 def main() -> int:
-    manifest = json.loads((ROOT / "skill-specialization.json").read_text(encoding="utf-8"))
+    manifest = json.loads((ROOT / "SKILL-SPECIALIZATION.json").read_text(encoding="utf-8"))
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     tam = manifest["profiles"]["tam"]["count"]
     temel = manifest["profiles"]["temel"]["count"]

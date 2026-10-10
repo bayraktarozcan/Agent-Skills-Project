@@ -82,7 +82,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 ### Specialization
 
-`skill-specialization.json` maps every skill to a specialization class (C1–C5). The `--profile` flag scopes what stays installed:
+`SKILL-SPECIALIZATION.json` maps every skill to a specialization class (C1–C5). The `--profile` flag scopes what stays installed:
 
 | Profile | Classes | Skills |
 |---------|---------|--------|
@@ -202,7 +202,7 @@ AgentSynapse/
 +-- CODEOWNERS           # Code owners
 +-- RELEASE-NOTE-TEMPLATE.md # Release notes skeleton
 +-- <run artifacts>      # Timestamped install logs and trees (auto-generated; paths per `.gitignore`)
-+-- skill-specialization.json # Specialization manifest (571 skills, C1-C5)
++-- SKILL-SPECIALIZATION.json # Specialization manifest (571 skills, C1-C5)
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
@@ -332,7 +332,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 ### Uzmanlaşma
 
-`skill-specialization.json`, her beceriyi bir uzmanlaşma sınıfına (C1–C5) eşler. `--profile` bayrağı neyin kurulu kalacağını kapsamlar:
+`SKILL-SPECIALIZATION.json`, her beceriyi bir uzmanlaşma sınıfına (C1–C5) eşler. `--profile` bayrağı neyin kurulu kalacağını kapsamlar:
 
 | Profil | Sınıflar | Beceri |
 |--------|----------|--------|
@@ -446,7 +446,7 @@ AgentSynapse/
 +-- CODEOWNERS           # Kod sahipleri
 +-- RELEASE-NOTE-TEMPLATE.md # Sürüm notu iskeleti
 +-- <çalışma yapıtları>  # Zaman damgalı kurulum günlükleri ve ağaçları (otomatik; yollar `.gitignore` dosyasına göre)
-+-- skill-specialization.json # Uzmanlaşma manifesti (571 beceri, C1-C5)
++-- SKILL-SPECIALIZATION.json # Uzmanlaşma manifesti (571 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
 

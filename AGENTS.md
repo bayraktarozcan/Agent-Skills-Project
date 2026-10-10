@@ -414,7 +414,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 |------|---------|
 | `skills.py` | The installer: CLI + GUI, bilingual, stdlib-only (see Commands) |
 | `Skills/` | Project-local skill sources (Agent Skills layout); not read by the installer, which clones upstreams |
-| `skill-specialization.json` | Data layer: skill-to-class map plus profile counts (see Toolchain) |
+| `SKILL-SPECIALIZATION.json` | Data layer: skill-to-class map plus profile counts (see Toolchain) |
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `Docs/` | Landing page sources for GitLab Pages |
@@ -429,7 +429,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 ## Versions — scheme, current constants, where each is stated
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
-- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `skill-specialization.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, docs, Wiki, CLI text, and the manifest together.
+- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, `Docs/`, Wiki, CLI text, and the manifest together.
 - A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — setup, build, test, lint, the single local gate command
@@ -452,14 +452,13 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Exemptions (each with reason):
   - `Skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec mandates lowercase names; the leaf must equal the frontmatter `name`, so renaming is impossible.
   - `Skills/<name>/{references,scripts,evals}/` (lowercase): Agent Skills spec layout — the specification itself shows these exact directory names.
-  - `skill-specialization.json`, `skill-specialization-audit.md` (lowercase root data files): data contract — loader and audit tooling read these exact names.
   - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
 - Scratch: `Temp/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
 - Mirror: Turkish human-review file alongside this file (named once, here, and nowhere else in committed output). Gitignored, never staged, committed, or pushed. Refreshed in the same session as any change to this file; verifier value written to both markers.
-- Local audit source `skill-specialization-audit.md`: gitignored working notes for regenerating the manifest; never committed.
+- Local audit source `SKILL-SPECIALIZATION-AUDIT.md`: gitignored working notes for regenerating the manifest; never committed.
 
 ## Toolchain — overrides of the defaults in the appendix, compatibility floor
 
@@ -636,4 +635,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=84e41bf5a688a306ee0ab5f0dc991d750c6059f5 -->
+<!-- mirror-sync: sync-sha=2c8e4c19bc95a313737314e39631aa2d094efe1e -->
