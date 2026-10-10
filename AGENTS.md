@@ -473,6 +473,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Shell: `pwsh` 7.6.6 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
 - `glab` 1.122.0 installed (GitLab operations).
 - `gh` 2.102.0 installed (GitHub operations; release listing verified).
+- `gitleaks` 8.30.1 installed via winget (`detect` full-history scan verified clean on this repo).
 - Python 3.15.0 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.0). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
 - PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Temp/` in `.gitignore`) and run with file execution.
 
@@ -642,4 +643,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=dbca427acbad8ae5b629c73f38611959a80ec29d -->
+<!-- mirror-sync: sync-sha=e45450cfcfe1e5f6f4da792cb3efec16e00580f6 -->
