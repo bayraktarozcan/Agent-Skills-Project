@@ -27,11 +27,11 @@ No false confidence: a clean run prints "OK" per surface and exits 0; any
 finding prints the file/ref/commit, the offending context and exits non-zero.
 
 Usage:
-  python scripts/check_encoding.py                       # files + refs only
-  python scripts/check_encoding.py --commits A..B        # + commit metadata
-  python scripts/check_encoding.py --commits 0000..B     # root push: scan B only
-  python scripts/check_encoding.py --selftest            # verify the detectors
-  python scripts/check_encoding.py --no-files            # refs/commits only
+  python Scripts/check_encoding.py                       # files + refs only
+  python Scripts/check_encoding.py --commits A..B        # + commit metadata
+  python Scripts/check_encoding.py --commits 0000..B     # root push: scan B only
+  python Scripts/check_encoding.py --selftest            # verify the detectors
+  python Scripts/check_encoding.py --no-files            # refs/commits only
 """
 
 import io

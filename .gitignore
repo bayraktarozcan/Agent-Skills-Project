@@ -14,7 +14,7 @@ tree.txt
 skills-tree_*.txt
 skill-specialization-audit.md
 tmp/
-temp/
+Temp/
 
 # Agent docs: EN source is tracked, TR mirror is local-only (human review)
 # EN: AGENTS.md = tracked single source / TR: AGENTS-TR.md = yerel ayna, commit yok

@@ -413,13 +413,13 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | Path | Purpose |
 |------|---------|
 | `skills.py` | The installer: CLI + GUI, bilingual, stdlib-only (see Commands) |
-| `skills/` | Project-local skill sources (Agent Skills layout); not read by the installer, which clones upstreams |
+| `Skills/` | Project-local skill sources (Agent Skills layout); not read by the installer, which clones upstreams |
 | `skill-specialization.json` | Data layer: skill-to-class map plus profile counts (see Toolchain) |
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
-| `docs/` | Landing page sources for GitLab Pages (see Naming exemptions) |
-| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
-| `scripts/` | Tooling: `check_encoding.py` (encoding gate), `Sync-Wiki.ps1` (see Naming exemptions) |
+| `Docs/` | Landing page sources for GitLab Pages |
+| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -437,12 +437,12 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Setup: none beyond the toolchain (stdlib-only; `py skills.py --check` proves readiness).
 - Build: none (single-file program; `py -m py_compile` is the syntax gate, not a build).
 - Test: no suite exists (truth, not a backlog euphemism); `--check --profile temel|tam` reports profile coverage instead.
-- Lint/format: none configured; `scripts/check_encoding.py` is an encoding gate, not a linter.
+- Lint/format: none configured; `Scripts/check_encoding.py` is an encoding gate, not a linter.
 - Commits: English Conventional Commits; template `.gitmessage` (see universal Commit message format for types and scopes).
 - Single local gate command (runs what CI runs, see universal Local gate):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py scripts/check_encoding.py --selftest
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest
 ```
 
 ## Naming — per-directory convention table, named exemptions with reasons
@@ -450,17 +450,14 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Python: `snake_case` modules (`skills.py`, `check_encoding.py`); ASCII-only identifiers.
 - Prose files: English names; Turkish prose keeps Turkish characters (see universal Language & character).
 - Exemptions (each with reason):
-  - `docs/` (lowercase): data contract — GitLab `pages` job runs `cp -r docs/* public/`.
-  - `scripts/` (lowercase): data contract — CI and code reference `scripts/check_encoding.py` literally.
-  - `skills/` (lowercase): installer vocabulary symmetry with the `~/.agents/skills/<name>` install path; renaming is the person's call.
-  - `skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec requires lowercase names; the leaf must equal the frontmatter `name`.
-  - `temp/` (lowercase): matches the root ignore pattern exactly on every platform; cross-platform exactness beats casing here.
+  - `Skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec mandates lowercase names; the leaf must equal the frontmatter `name`, so renaming is impossible.
+  - `Skills/<name>/{references,scripts,evals}/` (lowercase): Agent Skills spec layout — the specification itself shows these exact directory names.
   - `skill-specialization.json`, `skill-specialization-audit.md` (lowercase root data files): data contract — loader and audit tooling read these exact names.
   - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
-- Scratch: `temp/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
+- Scratch: `Temp/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
 - Mirror: Turkish human-review file alongside this file (named once, here, and nowhere else in committed output). Gitignored, never staged, committed, or pushed. Refreshed in the same session as any change to this file; verifier value written to both markers.
 - Local audit source `skill-specialization-audit.md`: gitignored working notes for regenerating the manifest; never committed.
 
@@ -471,7 +468,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - `glab` 1.122.0 installed (GitLab operations).
 - `gh` 2.102.0 installed (GitHub operations; release listing verified).
 - Python 3.15.0 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.0). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
-- PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `temp/` in `.gitignore`) and run with file execution.
+- PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Temp/` in `.gitignore`) and run with file execution.
 
 ## Releases — procedure, hosts, parity checks
 
@@ -487,7 +484,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
 
-- GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
+- GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`Docs/` to GitLab Pages).
 - GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`. Details live in the files; the local gate mirrors them.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (571+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
@@ -501,11 +498,11 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Mirror
 
-- This file is the single source of truth for agents. The Turkish mirror is gitignored and refreshed in-session on every change; the verifier (`scripts/verify_mirror.py`) reports the `sync-sha`, which is written to both markers. A mismatch means drift: refresh, re-run, rewrite both markers.
+- This file is the single source of truth for agents. The Turkish mirror is gitignored and refreshed in-session on every change; the verifier (`Scripts/verify_mirror.py`) reports the `sync-sha`, which is written to both markers. A mismatch means drift: refresh, re-run, rewrite both markers.
 
 ## Gaps — reported deviations with proposed fixes (not silently fixed)
 
-1. `skills/` lowercase rename: person's call (see Naming).
+- None open.
 
 ---
 
@@ -639,4 +636,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=241cd74ace5325193a0cda4c8e3452ad23f9f7b3 -->
+<!-- mirror-sync: sync-sha=84e41bf5a688a306ee0ab5f0dc991d750c6059f5 -->

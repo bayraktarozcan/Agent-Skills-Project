@@ -10,9 +10,9 @@ sequence, top-level rules per section, code fences, table blocks, and
 ordered action-checklist token order).
 
 Usage:
-  python scripts/verify_mirror.py AGENTS.md AGENTS-TR.md
-  python scripts/verify_mirror.py AGENTS.md --allow-missing-mirror
-  python scripts/verify_mirror.py --selftest
+  python Scripts/verify_mirror.py AGENTS.md AGENTS-TR.md
+  python Scripts/verify_mirror.py AGENTS.md --allow-missing-mirror
+  python Scripts/verify_mirror.py --selftest
 
 Exit codes: 0 = in sync, 1 = drift or error.
 """

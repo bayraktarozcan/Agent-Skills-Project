@@ -90,7 +90,7 @@ def check_cli_text(manifest: dict, readme: str) -> list[str]:
 
 def check_markers() -> list[str]:
     return ["marker missing: {0}".format(p)
-            for p in ("Logs/._dont_migrate_", "temp/._dont_migrate_")
+            for p in ("Logs/._dont_migrate_", "Temp/._dont_migrate_")
             if not (ROOT / p).is_file()]
 
 
@@ -106,7 +106,7 @@ def main() -> int:
             {"recommended": 35, "trusted": 40, "all": 49})),
         ("readme", check_text_contains(ROOT / "README.md",
                                        [str(tam), str(temel), str(dengeli), "35", "40", "49"])),
-        ("docs", check_text_contains(ROOT / "docs" / "index.html",
+        ("docs", check_text_contains(ROOT / "Docs" / "index.html",
                                      [str(tam), "35", "40"])),
         ("wiki", check_text_contains(ROOT / "Wiki" / "Home.md", [str(tam), "35"])
          + check_text_contains(ROOT / "Wiki" / "Installation.md", [str(tam), "35"])),

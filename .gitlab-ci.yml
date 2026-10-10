@@ -37,8 +37,8 @@ skills-encoding:
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends git
   script:
-    - python scripts/check_encoding.py --selftest
-    - python scripts/check_encoding.py --commits "$CI_COMMIT_BEFORE_SHA..$CI_COMMIT_SHA"
+    - python Scripts/check_encoding.py --selftest
+    - python Scripts/check_encoding.py --commits "$CI_COMMIT_BEFORE_SHA..$CI_COMMIT_SHA"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
@@ -47,7 +47,7 @@ pages:
   image: alpine:3.21
   script:
     - mkdir -p public
-    - cp -r docs/* public/
+    - cp -r Docs/* public/
   artifacts:
     paths:
       - public

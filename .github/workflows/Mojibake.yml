@@ -1,6 +1,6 @@
 # AgentSynapse — Mojibake Gate
 # Mirrors the GitLab `skills-encoding` job for GitHub: runs the same
-# scripts/check_encoding.py on every push to main and every PR to main,
+# Scripts/check_encoding.py on every push to main and every PR to main,
 # regardless of which paths changed. Blocks merging content whose files,
 # branch/tag refs or commit metadata carry encoding damage (invalid UTF-8 or
 # double-encoded signatures). No badge is emitted (see AGENTS.md badge policy).
@@ -36,9 +36,9 @@ jobs:
         with:
           python-version: "3.10"
       - name: Self-test detectors
-        run: python scripts/check_encoding.py --selftest
+        run: python Scripts/check_encoding.py --selftest
       - name: Lint tracked files and refs
-        run: python scripts/check_encoding.py
+        run: python Scripts/check_encoding.py
       - name: Lint pushed commit metadata
         if: github.event_name == 'push'
-        run: python scripts/check_encoding.py --commits "${{ github.event.before }}..${{ github.event.after }}"
+        run: python Scripts/check_encoding.py --commits "${{ github.event.before }}..${{ github.event.after }}"
