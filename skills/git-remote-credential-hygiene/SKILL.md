@@ -25,10 +25,10 @@ Open the reference that matches the step at hand:
 
 | Open when... | Read |
 |---|---|
-| matching a token shape or masking a finding | [patterns](references/patterns.md) |
-| checking helper setup or hitting an OS quirk | [platform notes](references/platform-notes.md) |
-| needing the exact command and expected output | [verification](references/verification.md) |
-| deciding what to do about a finding | [remediation](references/remediation.md) |
+| matching a token shape or masking a finding | [patterns](references/Patterns.md) |
+| checking helper setup or hitting an OS quirk | [platform notes](references/Platform-Notes.md) |
+| needing the exact command and expected output | [verification](references/Verification.md) |
+| deciding what to do about a finding | [remediation](references/Remediation.md) |
 | checking what this skill guarantees and excludes | [SPEC](SPEC.md) |
 
 ## Workflow
