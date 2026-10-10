@@ -1,4 +1,4 @@
-# Sync the repo's Wiki/ folder (source of truth) to both GitHub and GitLab wikis.
+﻿# Sync the repo's Wiki/ folder (source of truth) to both GitHub and GitLab wikis.
 #
 # Model: edit Wiki/*.md in this repo, run once, both wikis update. The wikis are
 # derived artifacts; manual edits made directly on a wiki are overwritten by the
