@@ -1,3 +1,5 @@
+> **Notice: AGENTS.md does not change without my approval unless I state otherwise! ("AGENTS.md onayımı almadığın ve aksini belirtmediğim müddetçe değişmez!")**
+
 # AgentSynapse AGENTS.md — project layer
 
 Project working contract for AgentSynapse. Sections 1-12 and appendices A-B are the universal standard, adopted verbatim by explicit person order (precedence note: this full copy overrides the pointer-only rule for this file alone; the universal source at `D:\Repos\AGENTS.md` is never edited from here). Section 13 declares this project's facts and never restates a universal rule; it points at it. English is the single source of operational truth; the Turkish mirror `AGENTS-TR.md` is named once, here, and nowhere else in committed output.
@@ -449,9 +451,14 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - Python: `snake_case` modules (`skills.py`, `check_encoding.py`); ASCII-only identifiers.
 - Prose files: English names; Turkish prose keeps Turkish characters (see universal Language & character).
-- Exemptions (each with reason):
+- Exemptions (each with reason; recorded here with person approval, never by the agent alone):
+  - `.github/` including `ISSUE_TEMPLATE/` and `workflows/` (platform casing): platform lookup — GitHub reads these directories.
+  - `.github/dependabot.yml`, `.github/FUNDING.yml`, `.github/PULL_REQUEST_TEMPLATE.md` (platform spellings): data contract — GitHub's documented fixed names; renaming breaks the integration.
+  - `.gitignore`, `.gitattributes`, `.editorconfig`, `.gitlab-ci.yml`, `.gitmessage` (lowercase dotfiles): tool lookup — each tool reads its fixed name.
+  - `Docs/index.html` (lowercase): data contract — the universal standard itself names `index.html` as the lookup form, and the `pages` jobs serve it.
   - `Skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec mandates lowercase names; the leaf must equal the frontmatter `name`, so renaming is impossible.
   - `Skills/<name>/{references,scripts,evals}/` (lowercase): Agent Skills spec layout — the specification itself shows these exact directory names.
+  - `__pycache__/` (any depth, ignored): tool-created interpreter cache, not a project choice; no marker obligation.
   - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
@@ -635,4 +642,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=2c8e4c19bc95a313737314e39631aa2d094efe1e -->
+<!-- mirror-sync: sync-sha=dbca427acbad8ae5b629c73f38611959a80ec29d -->
