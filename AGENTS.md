@@ -419,7 +419,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `SKILL-SPECIALIZATION.json` | Data layer: skill-to-class map plus profile counts (see Toolchain) |
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
-| `Docs/` | Landing page sources for GitLab Pages |
+| `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
 | `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
@@ -452,6 +452,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Python: `snake_case` modules (`skills.py`, `check_encoding.py`); ASCII-only identifiers.
 - Prose files: English names; Turkish prose keeps Turkish characters (see universal Language & character).
 - Exemptions (each with reason; recorded here with person approval, never by the agent alone):
+  - `docs/` (lowercase): platform-fixed — GitHub Pages legacy source is `/docs` on a case-sensitive builder, and the GitLab `pages` job copies it; renaming broke the Pages build (verified by CI failure), so this name stays.
   - `.github/` including `ISSUE_TEMPLATE/` and `workflows/` (platform casing): platform lookup — GitHub reads these directories.
   - `.github/dependabot.yml`, `.github/FUNDING.yml`, `.github/PULL_REQUEST_TEMPLATE.md` (platform spellings): data contract — GitHub's documented fixed names; renaming breaks the integration.
   - `.gitignore`, `.gitattributes`, `.editorconfig`, `.gitlab-ci.yml`, `.gitmessage` (lowercase dotfiles): tool lookup — each tool reads its fixed name.
@@ -491,7 +492,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
 
-- GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`Docs/` to GitLab Pages).
+- GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
 - GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`. Details live in the files; the local gate mirrors them.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (571+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
@@ -643,4 +644,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=508301a4a8598c65876a20b31defcb8d34114a6d -->
+<!-- mirror-sync: sync-sha=84b66a50f42eb8016f743d7a603740e9eac404e0 -->
