@@ -451,19 +451,10 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Prose files: English names; Turkish prose keeps Turkish characters (see universal Language & character).
 - Exemptions (each with reason):
   - `docs/` (lowercase): data contract — GitLab `pages` job runs `cp -r docs/* public/`.
-  - `docs/index.html`, `docs/assets/`, `style.css`, `main.js` (lowercase web assets): data contract and web idiom — the `pages` jobs serve these literal paths, and lowercase asset paths are the web norm; renaming risks 404s on published pages.
   - `scripts/` (lowercase): data contract — CI and code reference `scripts/check_encoding.py` literally.
-  - `scripts/sync-wiki.ps1` (lowercase-hyphenated): data contract — invoked literally (`pwsh ./scripts/sync-wiki.ps1`) in its own header and docs; renaming breaks the invocation contract.
-  - `.github/` including `ISSUE_TEMPLATE/` and `workflows/` (platform casing): platform lookup — GitHub reads these directories.
-  - `.github/dependabot.yml`, `.github/FUNDING.yml`, `.github/PULL_REQUEST_TEMPLATE.md` (platform spellings): data contract — GitHub's documented fixed names.
-  - `.github/ISSUE_TEMPLATE/bug_report.md`, `feature_request.md` (snake_case): data contract — GitHub `?template=` URLs (see SUPPORT.md) and history pin these names; renaming breaks inbound links.
-  - `.github/workflows/*.yml` (lowercase): platform-wide Actions filename habit; renaming churns CI history and links for zero functional gain.
-  - `.gitignore`, `.gitattributes`, `.editorconfig`, `.gitlab-ci.yml`, `.gitmessage` (lowercase dotfiles): tool lookup — each tool reads its fixed name.
   - `skills/` (lowercase): installer vocabulary symmetry with the `~/.agents/skills/<name>` install path; renaming is the person's call.
   - `skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec requires lowercase names; the leaf must equal the frontmatter `name`.
-  - `skills/<name>/{references,scripts,evals}/` plus lowercase leaves (`patterns.md`, `evals.json`, ...): Agent Skills spec layout — the spec itself uses lowercase `scripts/`, `references/`, `assets/`.
   - `temp/` (lowercase): matches the root ignore pattern exactly on every platform; cross-platform exactness beats casing here.
-  - `__pycache__/` (any depth, ignored): tool-created interpreter cache, not a project choice; no marker obligation.
   - `skill-specialization.json`, `skill-specialization-audit.md` (lowercase root data files): data contract — loader and audit tooling read these exact names.
   - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
 
@@ -648,4 +639,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=43a2e1e672fa9e0f1967605206be7b720186da6e -->
+<!-- mirror-sync: sync-sha=f12b8e8f0c2b7568eafb3dc6ddf43547bf476bc6 -->
