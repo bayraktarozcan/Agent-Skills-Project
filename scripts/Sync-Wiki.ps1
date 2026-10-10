@@ -6,9 +6,9 @@
 # has never seen is refused unless -Force is passed (force-with-lease, not blind).
 #
 # Usage:
-#   pwsh ./scripts/sync-wiki.ps1            # both wikis, fast-forward only
-#   pwsh ./scripts/sync-wiki.ps1 -Force     # also overwrite a diverged GitLab wiki
-#   pwsh ./scripts/sync-wiki.ps1 -SkipGitHubWiki  # only publish to GitLab
+#   pwsh ./scripts/Sync-Wiki.ps1            # both wikis, fast-forward only
+#   pwsh ./scripts/Sync-Wiki.ps1 -Force     # also overwrite a diverged GitLab wiki
+#   pwsh ./scripts/Sync-Wiki.ps1 -SkipGitHubWiki  # only publish to GitLab
 
 param(
     [string]$WikiDir = (Join-Path (Split-Path -Parent $PSScriptRoot) 'Wiki'),

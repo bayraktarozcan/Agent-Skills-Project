@@ -418,8 +418,8 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources for GitLab Pages (see Naming exemptions) |
-| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `scripts/sync-wiki.ps1` (derived projections, never edited at the surface) |
-| `scripts/` | Tooling: `check_encoding.py` (encoding gate), `sync-wiki.ps1` (see Naming exemptions) |
+| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
+| `scripts/` | Tooling: `check_encoding.py` (encoding gate), `Sync-Wiki.ps1` (see Naming exemptions) |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -475,20 +475,20 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Releases — procedure, hosts, parity checks
 
-- Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `release.yml` compiles `skills.py`, writes `skills.py.sha256`, and publishes a Release whose body is `CHANGELOG.md`.
+- Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `Release.yml` compiles `skills.py`, writes `skills.py.sha256`, and publishes a Release whose body is `CHANGELOG.md`.
 - Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`; older titles carry a `[DEPRECATED]` prefix on both). The `v1.0.2` body is `CHANGELOG.md` with `skills.py` + `skills.py.sha256` assets on GitHub.
 - Release notes: bilingual EN-first at equal scope when a release ships notes beyond the changelog body.
 
 ## Bypasses — gates that do not hold by design, and what runs afterward
 
 - No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). Branch protection state (Maintainers push, force-push disabled) is carried forward as declared; re-verify via API before citing it externally.
-- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`ci`, `gitleaks`, `hygiene`, `link-check`, `mojibake`, `pages`, `release`).
+- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
-- GitHub `.github/workflows/` (verified listing): `ci`, `gitleaks` (secret scanner in CI), `hygiene`, `link-check`, `mojibake`, `pages`, `release`. Details live in the files; the local gate mirrors them.
+- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`. Details live in the files; the local gate mirrors them.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (571+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
 ## Badge policy
@@ -639,4 +639,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=f12b8e8f0c2b7568eafb3dc6ddf43547bf476bc6 -->
+<!-- mirror-sync: sync-sha=241cd74ace5325193a0cda4c8e3452ad23f9f7b3 -->

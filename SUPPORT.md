@@ -20,7 +20,7 @@
 
 ### Bug Reports
 
-Open a [GitHub Issue](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=bug_report.md).
+Open a [GitHub Issue](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=Bug-Report.md).
 
 Include:
 - What you ran (full command).
@@ -30,7 +30,7 @@ Include:
 
 ### Feature Requests
 
-Open a [Feature Request](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=feature_request.md).
+Open a [Feature Request](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=Feature-Request.md).
 
 ### Discussions
 
@@ -78,7 +78,7 @@ Skills persist until you reinstall.
 
 ### Hata Bildirimleri
 
-[GitHub Sorunu](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=bug_report.md) açın.
+[GitHub Sorunu](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=Bug-Report.md) açın.
 
 ŞUNLARI EKLEYİN:
 - Çalıştırdığınız komut (tam hali).
@@ -88,7 +88,7 @@ Skills persist until you reinstall.
 
 ### Özellik Talepleri
 
-[GitHub Özellik Talebi](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=feature_request.md) açın.
+[GitHub Özellik Talebi](https://github.com/bayraktarozcan/AgentSynapse/issues/new?template=Feature-Request.md) açın.
 
 ### Tartışmalar
 

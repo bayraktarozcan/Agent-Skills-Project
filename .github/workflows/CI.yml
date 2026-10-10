@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - "skills.py"
-      - ".github/workflows/ci.yml"
+      - ".github/workflows/CI.yml"
   pull_request:
     branches: [main]
     paths:
