@@ -1,0 +1,35 @@
+name: Sync-Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Wiki/**"
+      - "Scripts/Sync-Wiki.ps1"
+      - ".github/workflows/Sync-Wiki.yml"
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: wiki-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Publish Wiki/ to both wikis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Sync wikis
+        shell: pwsh
+        env:
+          WIKI_GITHUB_URL: https://x-access-token:${{ secrets.WIKI_SYNC_TOKEN }}@github.com/bayraktarozcan/Agent-Skills-Project.wiki.git
+          WIKI_GITLAB_URL: https://oauth2:${{ secrets.GITLAB_PUSH_TOKEN }}@gitlab.com/bayraktarozcan/AgentSynapse.wiki.git
+        run: ./Scripts/Sync-Wiki.ps1 -GitHubWikiUrl $env:WIKI_GITHUB_URL -GitLabWikiUrl $env:WIKI_GITLAB_URL

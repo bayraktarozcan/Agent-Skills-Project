@@ -12,7 +12,7 @@
 
 param(
     [string]$WikiDir = (Join-Path (Split-Path -Parent $PSScriptRoot) 'Wiki'),
-    [string]$GitHubWikiUrl = 'https://github.com/bayraktarozcan/AgentSynapse.wiki.git',
+    [string]$GitHubWikiUrl = 'https://github.com/bayraktarozcan/Agent-Skills-Project.wiki.git',
     [string]$GitLabWikiUrl = 'https://gitlab.com/bayraktarozcan/AgentSynapse.wiki.git',
     [string]$CommitMessage = 'docs: sync wiki from Wiki/',
     [switch]$Force,

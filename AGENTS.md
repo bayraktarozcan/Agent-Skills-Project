@@ -486,7 +486,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
-| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
+| `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
 | `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `verify_mirror.py` (mirror verifier), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
@@ -565,13 +565,13 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Bypasses — gates that do not hold by design, and what runs afterward
 
 - No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). Branch protection state (Maintainers push, force-push disabled) is carried forward as declared; re-verify via API before citing it externally.
-- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`).
+- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki`).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
-- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`. Details live in the files; the local gate mirrors them.
+- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (571+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
 ## Badge policy
@@ -722,4 +722,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=676b28ccba892002538e3814311f108fee878d09 -->
+<!-- mirror-sync: sync-sha=8730487f7c7bd1324a1a4ef5fc52dda6332e8780 -->
