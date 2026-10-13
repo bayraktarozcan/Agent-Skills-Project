@@ -475,7 +475,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1` (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `verify_mirror.py` (mirror verifier), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -485,7 +485,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 ## Versions — scheme, current constants, where each is stated
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
-- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, `Docs/`, Wiki, CLI text, and the manifest together.
+- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
 - A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — setup, build, test, lint, the single local gate command
@@ -498,7 +498,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Single local gate command (runs what CI runs, see universal Local gate):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py
 ```
 
 ## Naming — per-directory convention table, named exemptions with reasons
@@ -510,7 +510,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
   - `.github/` including `ISSUE_TEMPLATE/` and `workflows/` (platform casing): platform lookup — GitHub reads these directories.
   - `.github/dependabot.yml`, `.github/FUNDING.yml`, `.github/PULL_REQUEST_TEMPLATE.md` (platform spellings): data contract — GitHub's documented fixed names; renaming breaks the integration.
   - `.gitignore`, `.gitattributes`, `.editorconfig`, `.gitlab-ci.yml`, `.gitmessage` (lowercase dotfiles): tool lookup — each tool reads its fixed name.
-  - `Docs/index.html` (lowercase): data contract — the universal standard itself names `index.html` as the lookup form, and the `pages` jobs serve it.
+  - `docs/index.html` (lowercase): data contract — the universal standard itself names `index.html` as the lookup form, and the `pages` jobs serve it.
   - `Skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec mandates lowercase names; the leaf must equal the frontmatter `name`, so renaming is impossible.
   - `Skills/<name>/{references,scripts,evals}/` (lowercase): Agent Skills spec layout — the specification itself shows these exact directory names.
   - `__pycache__/` (any depth, ignored): tool-created interpreter cache, not a project choice; no marker obligation.
@@ -538,7 +538,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - Compatibility floor: Windows PowerShell 5.1+. No syntax above it in committed scripts.
 - Shell: `pwsh` 7.6.6 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
-- `glab` 1.122.0 installed (GitLab operations).
+- `glab` 1.123.0 installed (GitLab operations).
 - `gh` 2.102.0 installed (GitHub operations; release listing verified).
 - `gitleaks` 8.30.1 at `%LOCALAPPDATA%\Programs\gitleaks` (user scope, no UAC; byte-identical to the winget-verified binary; `detect` full-history scan verified clean on this repo).
 - Python 3.15.0 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.0). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
@@ -710,4 +710,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=fbb53c932932e75ef6af550df975c9ba0e1da285 -->
+<!-- mirror-sync: sync-sha=e3a3fbd80079ed5988dd1be30a5934904c1145e9 -->
