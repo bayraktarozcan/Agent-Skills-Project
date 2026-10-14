@@ -90,7 +90,7 @@ def check_cli_text(manifest: dict, readme: str) -> list[str]:
 
 def check_markers() -> list[str]:
     return ["marker missing: {0}".format(p)
-            for p in ("Logs/._dont_migrate_", "Temp/._dont_migrate_")
+            for p in ("Logs/._dont_migrate_", "Scratch/._dont_migrate_")
             if not (ROOT / p).is_file()]
 
 

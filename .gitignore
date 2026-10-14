@@ -14,7 +14,7 @@ tree.txt
 skills-tree_*.txt
 SKILL-SPECIALIZATION-AUDIT.md
 tmp/
-Temp/
+Scratch/
 
 # Agent docs: EN source is tracked / human-language mirror is local-only, never committed
 AGENTS-TR.md

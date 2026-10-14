@@ -549,7 +549,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
-- Scratch: `Temp/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
+- Scratch: `Scratch/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
 - Mirror: Turkish human-review file alongside this file (named once, here, and nowhere else in committed output). Gitignored, never staged, committed, or pushed. Refreshed in the same session as any change to this file; verifier value written to both markers.
 - Local audit source `SKILL-SPECIALIZATION-AUDIT.md`: gitignored working notes for regenerating the manifest; never committed.
 
@@ -561,7 +561,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - `gh` 2.102.0 installed (GitHub operations; release listing verified).
 - `gitleaks` 8.30.1 at `%LOCALAPPDATA%\Programs\gitleaks` (user scope, no UAC; byte-identical to the winget-verified binary; `detect` full-history scan verified clean on this repo).
 - Python 3.15.0 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.0). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
-- PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Temp/` in `.gitignore`) and run with file execution.
+- PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Scratch/` in `.gitignore`) and run with file execution.
 
 ## Releases — procedure, hosts, parity checks
 
@@ -729,4 +729,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=1f538e986c9adf178810a7f436ea633f9d2d125c -->
+<!-- mirror-sync: sync-sha=64efea5bfa6305a28449e50e777f455d31bf6485 -->
