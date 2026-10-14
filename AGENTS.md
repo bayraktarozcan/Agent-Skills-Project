@@ -451,6 +451,7 @@ All committed file and directory names are English.
 - The nispa suffix, the derivation that turns nouns into adjectives, is written with circumflex `î` (ahlâkî, medenî, askerî); avoid the mark where accepted usage does not call for it.
 - Turkish prose prefers established native terms over imported ones, with the foreign term in parentheses on first use where clarity needs it. Code, commands, identifiers, and quoted output are never translated.
 - PowerShell 5.1 scripts are saved UTF-8 with BOM so characters render correctly in console, IDE, and runtime. Inside PowerShell code, identifiers (variables, parameters, functions) are ASCII-only, because the 5.1 parser mishandles Turkish characters in identifiers even in BOM files; user-facing strings, comments, and string data keep full Turkish characters.
+- Line endings follow the project's declared rules (`.gitattributes`, `.editorconfig`); a file never mixes styles. Verify with a byte-level scan before committing, because normalization can hide the mixture from `git status` and `git diff`.
 
 ### Data layer, testing, and services
 
@@ -728,4 +729,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=cf42e4748f853976ad067294f16c9f4cee042cb1 -->
+<!-- mirror-sync: sync-sha=1f538e986c9adf178810a7f436ea633f9d2d125c -->
