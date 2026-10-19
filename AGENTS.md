@@ -209,6 +209,7 @@ State the runtime owns (generated ignore files, installed plugins) is ignored by
 - Shell: PowerShell 7 (`pwsh`) is the shell whenever the system has it, and every shell invocation uses it. When it is missing, the agent never installs it and uses Windows PowerShell 5.1.
 - Host locale: assume the host's interface language may not be English. Name both the localized and the English label when pointing at a UI path, and prefer environment variables or known-folder APIs over hard-coded folder names.
 - Culture-sensitive operations (case folding, sorting, comparison) are written case-sensitive or ordinal wherever the intent is exact. On Turkish-locale hosts, culture-aware matching has been observed to place `I` outside an ASCII range such as `[A-Z]`; use `-cmatch` and ordinal comparisons for such checks, and compare paths against the name Git records, not against a case-insensitive filesystem lookup.
+- Machine time: every clock read — automation, scripts, tests, CI — determines time as `TZ=Europe/Istanbul date ...`; the project is pinned to Türkiye time (fixed UTC+03:00 since 2016, no DST) and accepts no other offset; any timestamp exposed in commit messages or release notes is Türkiye time and labels the zone in parentheses as `(UTC+03:00)`.
 - Declare a compatibility floor per project (for example "Windows PowerShell 5.1+") and use no syntax above it.
 
 ### Transport, protocols & credentials
@@ -729,4 +730,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 - `.git/` is the **internal Git repository structure**, not a project config file.
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
-<!-- mirror-sync: sync-sha=64efea5bfa6305a28449e50e777f455d31bf6485 -->
+<!-- mirror-sync: sync-sha=c973225332d78de290703f2f105af975c597c4dd -->
