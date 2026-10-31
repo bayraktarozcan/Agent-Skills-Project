@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Named invariant checks: version/count parity plus marker presence.
 
 Each check reports PASS or FAIL by name; any failure exits 1. Run from
@@ -103,11 +103,11 @@ def main() -> int:
     suites = [
         ("manifest-internal", check_manifest_internal(manifest)),
         ("registry-repos", check_registry_repos(
-            {"recommended": 35, "trusted": 40, "all": 49})),
+            {"recommended": 35, "trusted": 41, "all": 50})),
         ("readme", check_text_contains(ROOT / "README.md",
-                                       [str(tam), str(temel), str(dengeli), "35", "40", "49"])),
+                                       [str(tam), str(temel), str(dengeli), "35", "41", "50"])),
         ("docs", check_text_contains(ROOT / "docs" / "index.html",
-                                     [str(tam), "35", "40"])),
+                                     [str(tam), "35", "41"])),
         ("wiki", check_text_contains(ROOT / "Wiki" / "Home.md", [str(tam), "35"])
          + check_text_contains(ROOT / "Wiki" / "Installation.md", [str(tam), "35"])),
         ("cli-text", check_cli_text(manifest, readme)),

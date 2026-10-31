@@ -58,7 +58,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 ## Features
 
-- **One-command install** -- clone 34 repos, extract skills, deduplicate, done.
+- **One-command install** -- clone 35 repos, extract skills, deduplicate, done.
 - **10 functional categories** -- Core, AI & LLM, Cloud & Backend, Frontend & UI, Mobile, Security, Testing, Content, Community, Risk.
 - **Bilingual** -- English and Turkish interfaces. Auto-detects or `--lang tr`.
 - **Cross-platform** -- Windows, macOS, Linux. Single Python file, no dependencies.
@@ -77,8 +77,8 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 | Command | Scope | Repos | Skills (approx) |
 |---------|-------|-------|-----------------|
 | `python skills.py` | Recommended | 35 | ~571 |
-| `python skills.py trusted` | Trusted (K1-K8) | 40 | ~645 |
-| `python skills.py all` | All (K1-K10) | 49 | ~1000 |
+| `python skills.py trusted` | Trusted (K1-K8) | 41 | ~645 |
+| `python skills.py all` | All (K1-K10) | 50 | ~1000 |
 
 ### Specialization
 
@@ -217,8 +217,8 @@ cd AgentSynapse
 
 # Run regression
 python skills.py recommended           # 35 repos, ~571 skills
-python skills.py trusted               # 40 repos, ~645 skills
-python skills.py all                   # 49 repos, ~1000 skills
+python skills.py trusted               # 41 repos, ~645 skills
+python skills.py all                   # 50 repos, ~1000 skills
 ```
 
 ### Adding a Repository
@@ -327,8 +327,8 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 | Komut | Kapsam | Depo | Beceri (yaklaşık) |
 |-------|--------|------|--------------------|
 | `python skills.py` | Önerilen | 35 | ~571 |
-| `python skills.py trusted` | Güvenli (K1-K8) | 40 | ~645 |
-| `python skills.py all` | Tümü (K1-K10) | 49 | ~1000 |
+| `python skills.py trusted` | Güvenli (K1-K8) | 41 | ~645 |
+| `python skills.py all` | Tümü (K1-K10) | 50 | ~1000 |
 
 ### Uzmanlaşma
 
@@ -461,8 +461,8 @@ cd AgentSynapse
 
 # Regresyon testi
 python skills.py recommended           # 35 depo, ~571 beceri
-python skills.py trusted               # 40 depo, ~645 beceri
-python skills.py all                   # 49 depo, ~1000 beceri
+python skills.py trusted               # 41 depo, ~645 beceri
+python skills.py all                   # 50 depo, ~1000 beceri
 ```
 
 ### Depo Ekleme

@@ -331,6 +331,7 @@ REPOS: dict[str, Any] = {
                 {"repo": "affaan-m/ECC"},
                 {"repo": "openclaw/openclaw"},
                 {"repo": "agno-agi/agno"},
+                {"repo": "NVIDIA/skills", "subpath": "skills", "recommended": False},
             ],
         },
         {

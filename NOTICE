@@ -6,7 +6,9 @@ repository root for the full license text.
 
 Third-party notices
 -------------------
-No third-party components with notice requirements are bundled with this
-source distribution at this time. If third-party code with license, notice,
-or attribution obligations is added in the future, the corresponding notices
-must be recorded in this file.
+This distribution includes skills sourced from NVIDIA/skills, which are
+licensed under Apache-2.0 AND CC-BY-4.0.
+Copyright (c) 2026 NVIDIA Corporation. All rights reserved.
+
+Apache-2.0 license: https://www.apache.org/licenses/LICENSE-2.0
+CC-BY-4.0 license: https://creativecommons.org/licenses/by/4.0/

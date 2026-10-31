@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **GitGuardian/agent-skills in K6** — official MIT-licensed secret-scanning skills (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`) installed via `subpath: skills`. Registry counts move to 35 recommended repos and ~571 skills.
 - **Project-local skill `git-remote-credential-hygiene`** — under `Skills/`, owns the remote-URL-to-OS-credential-manager move plus GitHub/GitLab dual-remote authentication proof (read-only by default, approval-gated move, rotation-first). Complements scanner skills; ships a read-only `scan_remote_hygiene.py` script.
+- **NVIDIA/skills in K2** — 431 NVIDIA-authored skills for Physical AI, robotics, CUDA-X libraries, RAG/AI Blueprints, platform tools (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, etc.), installed via `subpath: skills`, `recommended: false` (C4/C5 provider-locked; only in `tam` profile). Registry moves to 36 recommended repos.
 
 ### Fixed
 
@@ -124,6 +125,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 - **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt sayıları 35 önerilen depo ve ~571 beceriye çıktı.
 - **Proje-içi beceri `git-remote-credential-hygiene`** — `Skills/` altında; uzak URL'den işletim sistemi kimlik deposuna taşıma ile GitHub/GitLab çift-uzak kimlik doğrulama kanıtını üstlenir (varsayılan salt-okunur, taşıma onaylı, önce döndür). Salt-okunur `scan_remote_hygiene.py` betiği dahil.
+- **K2'de NVIDIA/skills** — Fiziksel AI, robotik, CUDA-X kütüphaneleri, RAG/AI Blueprint'lar, platform araçları (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, vb.) için 431 NVIDIA yazılı beceri, `subpath: skills` ile kuruluyor, `recommended: false` (C4/C5 sağlayıcı-kilitli; yalnızca `tam` profilde). Kayıt 36 önerilen depoya çıktı.
 
 ### Düzeltmeler
 
