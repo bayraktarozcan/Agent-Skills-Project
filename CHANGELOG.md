@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **GitGuardian/agent-skills in K6** — official MIT-licensed secret-scanning skills (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`) installed via `subpath: skills`. Registry counts move to 35 recommended repos and ~571 skills.
 - **Project-local skill `git-remote-credential-hygiene`** — under `Skills/`, owns the remote-URL-to-OS-credential-manager move plus GitHub/GitLab dual-remote authentication proof (read-only by default, approval-gated move, rotation-first). Complements scanner skills; ships a read-only `scan_remote_hygiene.py` script.
-- **NVIDIA/skills in K2** — 431 NVIDIA-authored skills for Physical AI, robotics, CUDA-X libraries, RAG/AI Blueprints, platform tools (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, etc.), installed via `subpath: skills`, `recommended: false` (C4/C5 provider-locked; only in `tam` profile). Registry moves to 36 recommended repos.
+- **NVIDIA/skills in K2** — 430 NVIDIA-authored skills for Physical AI, robotics, CUDA-X libraries, RAG/AI Blueprints, platform tools (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, etc.), installed via `subpath: skills`, `recommended: false`. All classified as **C4** (provider-locked) in `SKILL-SPECIALIZATION.json`; specialization manifest grows to 1001 skills (tam profile), temel/dengeli profiles unchanged (227/360). Registry remains 36 recommended repos.
 
 ### Fixed
 

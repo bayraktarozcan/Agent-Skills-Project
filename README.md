@@ -10,9 +10,9 @@
 <details open>
 <summary><b>English</b></summary>
 
-**571+ curated AI agent skills** from 35 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
+**1001+ curated AI agent skills** from 35 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
 
-[![Skills](https://img.shields.io/badge/skills-571%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Skills](https://img.shields.io/badge/skills-1001%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-35-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
@@ -25,7 +25,7 @@
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
-# Recommended -- 571+ curated skills (default)
+# Recommended -- 1001+ curated skills (default)
 python skills.py
 
 # Or if Python 3 is installed as python3:
@@ -76,7 +76,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 | Command | Scope | Repos | Skills (approx) |
 |---------|-------|-------|-----------------|
-| `python skills.py` | Recommended | 35 | ~571 |
+| `python skills.py` | Recommended | 35 | ~1001 |
 | `python skills.py trusted` | Trusted (K1-K8) | 41 | ~645 |
 | `python skills.py all` | All (K1-K10) | 50 | ~1000 |
 
@@ -88,7 +88,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 |---------|---------|--------|
 | `temel` | C1, C2 | 227 |
 | `dengeli` | C1, C2, C3, first 76 of C4 | 360 |
-| `tam` (default) | All C1–C5 | 571 |
+| `tam` (default) | All C1–C5 | 1001 |
 
 After an install with `--profile temel` or `--profile dengeli`, out-of-profile skills are moved to `~/.agents/_quarantine_<profile>_<date>/` (a `_moved-list.txt` is written). Preview with `--dry-run`, inspect via `--list` / `--check`:
 
@@ -202,7 +202,7 @@ AgentSynapse/
 +-- CODEOWNERS           # Code owners
 +-- RELEASE-NOTE-TEMPLATE.md # Release notes skeleton
 +-- <run artifacts>      # Timestamped install logs and trees (auto-generated; paths per `.gitignore`)
-+-- SKILL-SPECIALIZATION.json # Specialization manifest (571 skills, C1-C5)
++-- SKILL-SPECIALIZATION.json # Specialization manifest (1001 skills, C1-C5)
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
@@ -216,7 +216,7 @@ git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
 # Run regression
-python skills.py recommended           # 35 repos, ~571 skills
+python skills.py recommended           # 35 repos, ~1001 skills
 python skills.py trusted               # 41 repos, ~645 skills
 python skills.py all                   # 50 repos, ~1000 skills
 ```
@@ -260,9 +260,9 @@ Built for the AI agent community.
 
 <a id="tr"></a>
 
-**571'den fazla küratörlü AI ajan becerisi**, 35 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
+**1001'den fazla küratörlü AI ajan becerisi**, 35 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
 
-[![Skills](https://img.shields.io/badge/skills-571%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Skills](https://img.shields.io/badge/skills-1001%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-35-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
@@ -275,7 +275,7 @@ Built for the AI agent community.
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
-# Önerilen -- 571+ küratörlü beceri (varsayılan)
+# Önerilen -- 1001+ küratörlü beceri (varsayılan)
 python skills.py
 
 # Veya Python 3, python3 olarak yüklendiyse:
@@ -326,7 +326,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 | Komut | Kapsam | Depo | Beceri (yaklaşık) |
 |-------|--------|------|--------------------|
-| `python skills.py` | Önerilen | 35 | ~571 |
+| `python skills.py` | Önerilen | 35 | ~1001 |
 | `python skills.py trusted` | Güvenli (K1-K8) | 41 | ~645 |
 | `python skills.py all` | Tümü (K1-K10) | 50 | ~1000 |
 
@@ -338,7 +338,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 |--------|----------|--------|
 | `temel` | C1, C2 | 227 |
 | `dengeli` | C1, C2, C3, C4'ün ilk 76'sı | 360 |
-| `tam` (varsayılan) | Tüm C1–C5 | 571 |
+| `tam` (varsayılan) | Tüm C1–C5 | 1001 |
 
 `--profile temel` veya `--profile dengeli` ile yapılan bir kurulumun ardından profil dışı beceriler `~/.agents/_quarantine_<profil>_<tarih>/` klasörüne taşınır (`_moved-list.txt` yazılır). `--dry-run` ile önizleyin, `--list` / `--check` ile inceleyin:
 
@@ -446,7 +446,7 @@ AgentSynapse/
 +-- CODEOWNERS           # Kod sahipleri
 +-- RELEASE-NOTE-TEMPLATE.md # Sürüm notu iskeleti
 +-- <çalışma yapıtları>  # Zaman damgalı kurulum günlükleri ve ağaçları (otomatik; yollar `.gitignore` dosyasına göre)
-+-- SKILL-SPECIALIZATION.json # Uzmanlaşma manifesti (571 beceri, C1-C5)
++-- SKILL-SPECIALIZATION.json # Uzmanlaşma manifesti (1001 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
 
@@ -460,7 +460,7 @@ git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
 # Regresyon testi
-python skills.py recommended           # 35 depo, ~571 beceri
+python skills.py recommended           # 35 depo, ~1001 beceri
 python skills.py trusted               # 41 depo, ~645 beceri
 python skills.py all                   # 50 depo, ~1000 beceri
 ```

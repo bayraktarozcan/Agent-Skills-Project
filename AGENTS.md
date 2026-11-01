@@ -514,7 +514,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 ## Versions — scheme, current constants, where each is stated
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
-- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (571 skills, C1 190, profiles 227/360/571) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
+- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (1001 skills, C4 620, profiles 227/360/1001) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
 - A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — setup, build, test, lint, the single local gate command
@@ -590,7 +590,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
 - GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
-- No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (571+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
+- No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
 ## Badge policy
 

@@ -29,13 +29,13 @@ cd AgentSynapse
 python skills.py
 ```
 
-This installs the **recommended** profile (35 repos, ~571 skills). Output goes to `~/.agents/skills/`.
+This installs the **recommended** profile (35 repos, ~1001 skills). Output goes to `~/.agents/skills/`.
 
 ### Profiles
 
 | Command | What it installs | Repos | Skills |
 |---------|-----------------|-------|--------|
-| `python skills.py` | Recommended — curated subset | 35 | ~571 |
+| `python skills.py` | Recommended — curated subset | 35 | ~1001 |
 | `python skills.py trusted` | All trusted (K1–K8) | 40 | ~645 |
 | `python skills.py all` | Everything (K1–K10) | 49 | ~1000 |
 | `python skills.py K2` | Single category (AI & LLM) | 9 | varies |
@@ -192,13 +192,13 @@ cd AgentSynapse
 python skills.py
 ```
 
-Bu, **önerilen** profili (35 depo, ~571 beceri) yükler. Çıktı `~/.agents/skills/` klasörüne gider.
+Bu, **önerilen** profili (35 depo, ~1001 beceri) yükler. Çıktı `~/.agents/skills/` klasörüne gider.
 
 ### Profiller
 
 | Komut | Ne yükler | Depo | Beceri |
 |-------|-----------|------|--------|
-| `python skills.py` | Önerilen — küratörlü alt küme | 35 | ~571 |
+| `python skills.py` | Önerilen — küratörlü alt küme | 35 | ~1001 |
 | `python skills.py guvenli` | Tüm güvenli (K1–K8) | 40 | ~645 |
 | `python skills.py tumu` | Her şey (K1–K10) | 49 | ~1000 |
 | `python skills.py K2` | Tek kategori (AI & LLM) | 9 | değişir |
