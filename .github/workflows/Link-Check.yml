@@ -27,5 +27,6 @@ jobs:
           # file:// = author-machine absolute paths, never valid in CI
           args: >-
             --no-progress --verbose --max-retries 2 --exclude '^file://'
+            --exclude '^https://www\.iso\.org/standard/(77520|86308|86612)\.html$'
             './**/*.md'
           fail: true
