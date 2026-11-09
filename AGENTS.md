@@ -427,6 +427,7 @@ Repository management and dependency conventions.
 - **Version bumps.** A bump adds the changelog entry, updates every version constant, then every hand-maintained place that states the version (README, landing page, wiki, catalog headers; the project layer lists them). A test pins version parity across those places.
 - **Release parity.** Releases on every host mirror each other exactly: same tag, title, description, and notes. For a bilingual project, release notes are bilingual (EN paragraph first, local-language paragraph after, at equal scope).
 - **Historical records** (changelog, compatibility tables, per-version release notes) describe the repository as it stood at that version. Rename and cleanup guards exempt them by a scoped marker, per file or per line region, never by a whole-file exemption, and a guard checks that each declared marker is still present.
+- **Release completeness.** Before writing release notes, review every commit between the previous tag and the current one. Confirm each commit is accounted for in the notes (added, changed, fixed, removed, deprecated, security), and that no commit is omitted. The notes must be complete against the tag diff, not just a summary.
 
 ### Naming
 
