@@ -1,0 +1,57 @@
+# AgentSynapse — Dependabot Auto-Merge
+# Auto-approves and merges Dependabot PRs once required status checks pass.
+# Owner: @bayraktarozcan (sole maintainer, see CODEOWNERS).
+#
+# Rules (from AGENTS.md "Auto-approve"):
+#   - Only trusted usernames may be auto-approved.
+#   - After status checks pass.
+#   - Logged.
+#   - Minimal permissions: contents: write, pull-requests: write.
+#
+# This workflow is the gate that the AGENTS.md checklist item
+# ".github/workflows/ auto-approve workflow added?" refers to.
+
+name: Dependabot Auto-Merge
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Auto-approve and merge Dependabot PR
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Log PR context
+        run: |
+          echo "PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}"
+          echo "Author: ${{ github.event.pull_request.user.login }}"
+          echo "Head: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
+          echo "Mergeable: ${{ github.event.pull_request.mergeable }}"
+
+      - name: Wait for status checks
+        uses: poseidon/wait-for-status-checks@899c768d191b56eef585c18f8558da19e1f3e707 # v0.6.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ github.event.pull_request.head.sha }}
+          timeout: 600
+          interval: 10
+
+      - name: Auto-approve
+        if: success()
+        run: gh pr review ${{ github.event.pull_request.number }} --approve --body "Auto-approved by Dependabot Auto-Merge workflow — all required status checks passed."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge (squash)
+        if: success()
+        run: gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch "Merge commit message: chore(deps): ${{ github.event.pull_request.title }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

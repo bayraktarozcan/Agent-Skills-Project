@@ -400,8 +400,8 @@ Repository management and dependency conventions.
   - [ ] `._dont_migrate_` placed in each hidden layer, created from the universal layer downward and never the reverse, all covered by the single root ignore pattern?
   - [ ] `.github/dependabot.yml` configured?
   - [ ] `.github/workflows/codeql.yml` added?
-  - [ ] `.github/workflows/` auto-approve workflow added?
-  - [ ] `.github/workflows/` workflows for recurring git operations written?
+  - [x] `.github/workflows/` auto-approve workflow added?
+  - [x] `.github/workflows/` workflows for recurring git operations written?
   - [ ] `.github/pull_request_template.md`, `RELEASE-NOTE-TEMPLATE.md`, and `CODEOWNERS` added?
   - [ ] `.editorconfig` and `.gitattributes` added, plus `.gitlab-ci.yml` when the origin has a second push URL?
   - [ ] `Docs/` log file that the workflow itself keeps current created?
