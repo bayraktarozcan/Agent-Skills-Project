@@ -42,6 +42,16 @@ skills-encoding:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
+link-check:
+  stage: test
+  image: lycheeverse/lychee:0.24.2-alpine
+  script:
+    - lychee --no-progress --verbose --max-retries 2 --exclude '^file://'
+      --exclude '^https://www\.iso\.org/standard/(77520|86308|86612)\.html$'
+      './**/*.md'
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 pages:
   stage: deploy
   image: alpine:3.21
