@@ -55,3 +55,11 @@ jobs:
         run: gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch "Merge commit message: chore(deps): ${{ github.event.pull_request.title }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  noop:
+    name: Skip (non-Dependabot PR)
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - name: No-op
+        run: echo "Not a Dependabot PR — nothing to do."
