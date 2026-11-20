@@ -563,7 +563,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - Scratch: `Scratch/` (root-ignored; matches the existing `.gitignore` pattern exactly). Cleared when the task ends; any leftover must be recognisable as disposable. Prior sessions used a system temp path; that practice ends with this file.
 - Mirror: Turkish human-review file alongside this file (named once, here, and nowhere else in committed output). Gitignored, never staged, committed, or pushed. Refreshed in the same session as any change to this file; verifier value written to both markers.
-- Local audit source `SKILL-SPECIALIZATION-AUDIT.md`: gitignored working notes for regenerating the manifest; never committed.
+- Local audit source: gitignored working notes for regenerating the manifest; never committed and never named in tracked output.
 
 ## Toolchain — overrides of the defaults in the appendix, compatibility floor
 
