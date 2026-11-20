@@ -30,8 +30,10 @@ jobs:
 
     steps:
       - name: Log PR context
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          echo "PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}"
+          echo "PR #${{ github.event.pull_request.number }}: $PR_TITLE"
           echo "Author: ${{ github.event.pull_request.user.login }}"
           echo "Head: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
           echo "Mergeable: ${{ github.event.pull_request.mergeable }}"
@@ -74,9 +76,10 @@ jobs:
       - name: Enable auto-merge (squash)
         if: success()
         run: |-
-          gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch "Merge commit message: chore(deps): ${{ github.event.pull_request.title }}"
+          gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch "Merge commit message: chore(deps): $PR_TITLE"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
 
   noop:
     name: Skip (non-Dependabot PR)
