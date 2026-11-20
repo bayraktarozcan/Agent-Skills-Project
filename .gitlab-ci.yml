@@ -11,7 +11,10 @@ stages:
 
 skills-syntax:
   stage: test
-  image: python:3.12-slim
+  image: python:${PYTHON_VERSION}
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.11", "latest"]
   before_script:
     - python -m py_compile skills.py
   script:
@@ -22,7 +25,10 @@ skills-syntax:
 
 skills-profile-coverage:
   stage: test
-  image: python:3.12-slim
+  image: python:${PYTHON_VERSION}
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.11", "latest"]
   before_script:
     - python -m py_compile skills.py
   script:
@@ -33,7 +39,10 @@ skills-profile-coverage:
 
 skills-encoding:
   stage: test
-  image: python:3.12-slim
+  image: python:${PYTHON_VERSION}
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.11", "latest"]
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends git
   script:
