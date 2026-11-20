@@ -585,6 +585,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). Branch protection state (Maintainers push, force-push disabled) is carried forward as declared; re-verify via API before citing it externally.
 - After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki`).
+- SHA pinning is deliberately disabled in this repository (`sha_pinning_required: false` in GitHub Actions permissions): third-party actions run from their default branch (`@main`, or `@master` where that is the default), so the latest version is used directly. After this bypass: Dependabot (weekly) keeps action refs current, status checks gate auto-merge, and both hosts' pipelines run on every push to `main` (see CI).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
@@ -742,4 +743,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=47c756169094b9e6e8c425b3fec94c883e76a2cf -->
+<!-- mirror-sync: sync-sha=5c42bff48a03234c93b5294f8ef2a837d3cb9865 -->
