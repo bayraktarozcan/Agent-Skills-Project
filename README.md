@@ -206,6 +206,22 @@ AgentSynapse/
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
+## Project documents
+
+- [AGENTS.md](AGENTS.md) -- universal operating rules and project layer contract
+- [CHANGELOG.md](CHANGELOG.md) -- bilingual changelog
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) -- bilingual code of conduct
+- [CONTRIBUTING.md](CONTRIBUTING.md) -- bilingual contributing guide
+- [SECURITY.md](SECURITY.md) -- bilingual security policy
+- [SUPPORT.md](SUPPORT.md) -- bilingual support information
+- [PRIVACY.md](PRIVACY.md) -- bilingual privacy policy
+- [NOTICE](NOTICE) -- third-party attribution
+- [LICENSE](LICENSE) -- MIT terms
+- [CODEOWNERS](CODEOWNERS) -- code ownership
+- [RELEASE-NOTE-TEMPLATE.md](RELEASE-NOTE-TEMPLATE.md) -- release notes skeleton
+- [SKILL-SPECIALIZATION.json](SKILL-SPECIALIZATION.json) -- specialization manifest
+- [LOW-GLOW-DESIGN-CORE.md](LOW-GLOW-DESIGN-CORE.md) -- human- and planet-centred design guide
+
 ---
 
 ## Development
@@ -449,6 +465,22 @@ AgentSynapse/
 +-- SKILL-SPECIALIZATION.json # Uzmanlaşma manifesti (1001 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
+
+## Proje belgeleri
+
+- [AGENTS.md](AGENTS.md) -- evrensel işletme kuralları ve proje katmanı sözleşmesi
+- [CHANGELOG.md](CHANGELOG.md) -- çift dilli değişiklik günlüğü
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) -- çift dilli davranış kuralları
+- [CONTRIBUTING.md](CONTRIBUTING.md) -- çift dilli katkı rehberi
+- [SECURITY.md](SECURITY.md) -- çift dilli güvenlik politikası
+- [SUPPORT.md](SUPPORT.md) -- çift dilli destek bilgileri
+- [PRIVACY.md](PRIVACY.md) -- çift dilli gizlilik politikası
+- [NOTICE](NOTICE) -- üçüncü taraf atıfları
+- [LICENSE](LICENSE) -- MIT koşulları
+- [CODEOWNERS](CODEOWNERS) -- kod sahipliği
+- [RELEASE-NOTE-TEMPLATE.md](RELEASE-NOTE-TEMPLATE.md) -- sürüm notu iskeleti
+- [SKILL-SPECIALIZATION.json](SKILL-SPECIALIZATION.json) -- uzmanlaşma manifesti
+- [LOW-GLOW-DESIGN-CORE.md](LOW-GLOW-DESIGN-CORE.md) -- insan ve gezegen odaklı tasarım rehberi
 
 ---
 
