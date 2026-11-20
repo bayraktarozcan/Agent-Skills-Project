@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Check links
-        uses: lycheeverse/lychee-action@main
+        uses: lycheeverse/lychee-action@master
         with:
           # file:// = author-machine absolute paths, never valid in CI
           args: >-
