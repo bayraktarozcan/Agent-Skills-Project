@@ -391,7 +391,7 @@ Repository management and dependency conventions.
 - **Workflow hardening.** Every workflow sets the narrowest `permissions:` it needs. Third-party actions use the latest version by tracking their default branch (`@main`, or `@master` where that is the default), so no fixed version needs updating; Dependabot remains configured for dependency ecosystems that use version references.
 - **Dependency currency.** Runtime, build, and dev dependencies use the latest version; lockfiles are committed when the ecosystem provides them and move forward through the automated update process; updates go through Dependabot. A new dependency is justified (need, maintenance state, license) before it is added. Types: **Runtime** (needed to run the app, for example flask, react), **Dev** (development-time only, for example pytest, eslint), **Build** (compile-time only, for example typescript, webpack).
 - **Currency without exception.** Everything is kept current at all times, and there is no exception: dependencies, runtimes, toolchains, build and CI tooling, third-party actions, base images, and the host software the project relies on. A new version is accepted without further question: the build and the tests are the only gate. If it breaks CI, the fix goes forward (adapt the code, replace the component), never back: no rolling the bump back. Security fixes do not wait for the update cadence. Currency is verified by a scheduled check, not discovered by an incident. Nothing old stays in the project, and a component that cannot be brought current is a defect to be fixed, not an exception to be recorded.
-- **Standard workflow triggers.** Test on `push` and `pull_request` (unit tests, lint, type check); Build on `push` to `main`; Release on tag `v*`; CodeQL on push and weekly; Dependabot weekly.
+- **Standard workflow triggers.** Syntax, profile coverage, encoding, and secret scans run on `push` and `pull_request`; workflow lint and link check run weekly and on scoped `pull_request`; Pages deploys on `docs/**` pushes; Release on tag `v*`; CodeQL on push and weekly; Dependabot weekly. There is no unit-test or type-check suite.
 - **Machine-maintained logs.** Recurring git and audit events (dependency updates, PR journals, version checks) are logged by the workflow itself via API, never by hand; human intervention is not required.
 - **New-repository checklist.** The bootstrap order is the rule, not a suggestion: the ignore file comes first so nothing private is swept into the first commit, then the root documents, then the landing page, then the hidden layers, and only then version control.
   - [ ] `.gitignore` written first, with the hidden layers already named in it?
@@ -583,7 +583,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Bypasses — gates that do not hold by design, and what runs afterward
 
-- No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). Branch protection state (Maintainers push, force-push disabled) is carried forward as declared; re-verify via API before citing it externally.
+- No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). GitHub branch protection currently allows maintainer pushes and force pushes (verified via API); no pull-request gate is enforced.
 - After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki`).
 - The full-SHA requirement is deliberately disabled in this repository (`sha_pinning_required: false` in GitHub Actions permissions): third-party actions run from their default branch (`@main`, or `@master` where that is the default), so the latest version is used directly and Dependabot has no fixed version to update. After this bypass: status checks gate auto-merge, and both hosts' pipelines run on every push to `main` (see CI).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
@@ -744,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=378be6c743981866cf8c9dd0f58a6b0739bb31a4 -->
+<!-- mirror-sync: sync-sha=b9857c3e902a314f3029e030919ee3f93211274d -->
