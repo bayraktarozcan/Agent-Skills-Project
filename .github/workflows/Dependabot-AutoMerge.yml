@@ -37,12 +37,33 @@ jobs:
           echo "Mergeable: ${{ github.event.pull_request.mergeable }}"
 
       - name: Wait for status checks
-        uses: poseidon/wait-for-status-checks@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          sha: ${{ github.event.pull_request.head.sha }}
-          timeout: 600
-          interval: 10
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          deadline=$((SECONDS + 600))
+          while true; do
+            data=$(gh api "repos/$REPO/commits/$HEAD_SHA/check-runs?per_page=100" \
+              --jq '[(.check_runs | length),
+                     ([.check_runs[] | select(.status != "completed" and .name != "Auto-approve and merge Dependabot PR")] | length),
+                     ([.check_runs[] | select(.conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out")] | length)] | @tsv')
+            IFS=$'\t' read -r total pending failed <<< "$data"
+            if [ "$failed" -gt 0 ]; then
+              echo "Status checks failed: $failed"
+              exit 1
+            fi
+            if [ "$total" -gt 0 ] && [ "$pending" -eq 0 ]; then
+              echo "All status checks completed successfully"
+              exit 0
+            fi
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "Timed out waiting for status checks ($pending pending)"
+              exit 1
+            fi
+            sleep 10
+          done
 
       - name: Auto-approve
         if: success()
