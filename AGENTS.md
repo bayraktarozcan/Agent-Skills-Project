@@ -388,7 +388,7 @@ Repository management and dependency conventions.
 - **Dependabot.** Configured in `.github/dependabot.yml`; a weekly cadence is preferred to avoid daily PR pile-ups; commit messages follow Conventional Commits (`chore(deps)`).
 - **CodeQL.** A `.github/workflows/codeql.yml` runs on every push and weekly. It is free for public repositories; private repositories need GitHub's paid code-security product. Where CodeQL is unavailable, a secret scanner (for example gitleaks) and the language's own static analysis stand in.
 - **Auto-approve.** Only trusted usernames may be auto-approved, after status checks pass, logged, with minimal permissions (`contents: write`, `pull-requests: write`).
-- **Workflow hardening.** Every workflow sets the narrowest `permissions:` it needs. Third-party actions use the latest version, kept current by Dependabot.
+- **Workflow hardening.** Every workflow sets the narrowest `permissions:` it needs. Third-party actions use the latest version by tracking their default branch (`@main`, or `@master` where that is the default), so no version-pin update is needed; Dependabot remains configured for dependency ecosystems that use version references.
 - **Dependency currency.** Runtime, build, and dev dependencies use the latest version; lockfiles are committed when the ecosystem provides them and move forward through the automated update process; updates go through Dependabot. A new dependency is justified (need, maintenance state, license) before it is added. Types: **Runtime** (needed to run the app, for example flask, react), **Dev** (development-time only, for example pytest, eslint), **Build** (compile-time only, for example typescript, webpack).
 - **Currency without exception.** Everything is kept current at all times, and there is no exception: dependencies, runtimes, toolchains, build and CI tooling, third-party actions, base images, and the host software the project relies on. A new version is accepted without further question: the build and the tests are the only gate. If it breaks CI, the fix goes forward (adapt the code, replace the component), never back: no rolling the bump back. Security fixes do not wait for the update cadence. Currency is verified by a scheduled check, not discovered by an incident. Nothing old stays in the project, and a component that cannot be brought current is a defect to be fixed, not an exception to be recorded.
 - **Standard workflow triggers.** Test on `push` and `pull_request` (unit tests, lint, type check); Build on `push` to `main`; Release on tag `v*`; CodeQL on push and weekly; Dependabot weekly.
@@ -585,13 +585,14 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 - No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). Branch protection state (Maintainers push, force-push disabled) is carried forward as declared; re-verify via API before citing it externally.
 - After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki`).
-- SHA pinning is deliberately disabled in this repository (`sha_pinning_required: false` in GitHub Actions permissions): third-party actions run from their default branch (`@main`, or `@master` where that is the default), so the latest version is used directly. After this bypass: Dependabot (weekly) keeps action refs current, status checks gate auto-merge, and both hosts' pipelines run on every push to `main` (see CI).
+- SHA pinning is deliberately disabled in this repository (`sha_pinning_required: false` in GitHub Actions permissions): third-party actions run from their default branch (`@main`, or `@master` where that is the default), so the latest version is used directly and Dependabot has no version pin to update. After this bypass: status checks gate auto-merge, and both hosts' pipelines run on every push to `main` (see CI).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
 
 ## CI — hosts, jobs, truth (points at universal Local gate and Push policy)
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
 - GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
+- Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
 
 ## Badge policy
@@ -743,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=5c42bff48a03234c93b5294f8ef2a837d3cb9865 -->
+<!-- mirror-sync: sync-sha=bc4c92389dd6644e3a5a885997f33b4d8702d41e -->
