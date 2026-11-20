@@ -54,7 +54,7 @@ skills-encoding:
 link-check:
   stage: test
   image:
-    name: lycheeverse/lychee:0.24.2-alpine
+    name: lycheeverse/lychee:master-alpine
     entrypoint: [""]
   script:
     - lychee --no-progress --verbose --max-retries 2 --exclude '^file://' --exclude '^https://www\.iso\.org/standard/(77520|86308|86612)\.html$' './**/*.md'
@@ -63,7 +63,7 @@ link-check:
 
 pages:
   stage: deploy
-  image: alpine:3.21
+  image: alpine:latest
   script:
     - mkdir -p public
     - cp -r docs/* public/
