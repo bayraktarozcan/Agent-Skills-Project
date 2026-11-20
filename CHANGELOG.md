@@ -130,7 +130,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 - **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt sayıları 35 önerilen depo ve ~571 beceriye çıktı.
 - **Proje-içi beceri `git-remote-credential-hygiene`** — `Skills/` altında; uzak URL'den işletim sistemi kimlik deposuna taşıma ile GitHub/GitLab çift-uzak kimlik doğrulama kanıtını üstlenir (varsayılan salt-okunur, taşıma onaylı, önce döndür). Salt-okunur `scan_remote_hygiene.py` betiği dahil.
-- **K2'de NVIDIA/skills** — Fiziksel AI, robotik, CUDA-X kütüphaneleri, RAG/AI Blueprint'lar, platform araçları (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, vb.) için 431 NVIDIA yazılı beceri, `subpath: skills` ile kuruluyor, `recommended: false` (C4/C5 sağlayıcı-kilitli; yalnızca `tam` profilde). Kayıt 36 önerilen depoya çıktı.
+- **K2'de NVIDIA/skills** — Fiziksel AI, robotik, CUDA-X kütüphaneleri, RAG/AI Blueprint'lar, platform araçları (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, vb.) için 430 NVIDIA yazılı beceri, `subpath: skills` ile kuruluyor, `recommended: false` (C4/C5 sağlayıcı-kilitli; yalnızca `tam` profilde). Kayıt 36 önerilen depoya çıktı.
 
 ### Değişiklikler
 
