@@ -557,7 +557,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Manifest: none — the program is stdlib-only (`skills.py`), so there is no language manifest or lockfile; the host toolchain is declared under "Toolchain" instead.
 - Setup command: none beyond the toolchain (`py skills.py --check` proves readiness; see Commands).
 - Approved project-scope exceptions: none.
-- Retained exceptions: none — every Toolchain runtime and tool is a currently supported line (Python 3.15, released 2026-10-09 with support to 2031-10 per python.org; `pwsh` 7.6.6, `glab` 1.123.0, `gh` 2.102.0, `gitleaks` 8.30.1 current as of 2026-10-14). A version that leaves its window will be recorded here with reason, exposure assessment, exit trigger, and review cadence.
+- Retained exceptions: none. Host toolchain versions are declared once under "Toolchain" and kept current under "Currency without exception"; this section keeps no dated version snapshot. If a component cannot be kept current, it is recorded here with reason, exposure assessment, exit trigger, and review cadence.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
@@ -744,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=4dc1660afe616df2058a9a059d640defe1e9c8bb -->
+<!-- mirror-sync: sync-sha=2f47f0d00f84fb9bcd0ecae9d7a1c9834a849136 -->
