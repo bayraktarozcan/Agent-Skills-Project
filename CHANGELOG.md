@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Project-local skill `git-remote-credential-hygiene`** — under `Skills/`, owns the remote-URL-to-OS-credential-manager move plus GitHub/GitLab dual-remote authentication proof (read-only by default, approval-gated move, rotation-first). Complements scanner skills; ships a read-only `scan_remote_hygiene.py` script.
 - **NVIDIA/skills in K2** — 430 NVIDIA-authored skills for Physical AI, robotics, CUDA-X libraries, RAG/AI Blueprints, platform tools (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, etc.), installed via `subpath: skills`, `recommended: false`. All classified as **C4** (provider-locked) in `SKILL-SPECIALIZATION.json`; specialization manifest grows to 1001 skills (tam profile), temel/dengeli profiles unchanged (227/360). Registry remains 36 recommended repos.
 
+### Changed
+
+- **CI/CD currency policy** — third-party GitHub Actions now track their default branches (`@main`/`@master`) with `sha_pinning_required: false` in repository settings; Python jobs run a 3.11 + latest matrix on both hosts; GitLab images use rolling `python:${PYTHON_VERSION}`, `lychee:master-alpine`, and `alpine:latest` tags. AGENTS.md and its local mirror record the deliberate bypass.
+- **Workflow hardening** — replaced the third-party status-check waiter with `gh api` polling, passed PR context through environment variables to prevent script injection, and made LF authoritative for all text files in `.gitattributes`.
+
 ### Fixed
 
 - **Stale `resolving-merge-conflicts` entry removed** — upstream `mattpocock/skills` no longer ships it as a SKILL.md, so it can never install. Manifest counts corrected to 571 skills (C1 190; profiles 227/360/571).
@@ -126,6 +131,11 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt sayıları 35 önerilen depo ve ~571 beceriye çıktı.
 - **Proje-içi beceri `git-remote-credential-hygiene`** — `Skills/` altında; uzak URL'den işletim sistemi kimlik deposuna taşıma ile GitHub/GitLab çift-uzak kimlik doğrulama kanıtını üstlenir (varsayılan salt-okunur, taşıma onaylı, önce döndür). Salt-okunur `scan_remote_hygiene.py` betiği dahil.
 - **K2'de NVIDIA/skills** — Fiziksel AI, robotik, CUDA-X kütüphaneleri, RAG/AI Blueprint'lar, platform araçları (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, vb.) için 431 NVIDIA yazılı beceri, `subpath: skills` ile kuruluyor, `recommended: false` (C4/C5 sağlayıcı-kilitli; yalnızca `tam` profilde). Kayıt 36 önerilen depoya çıktı.
+
+### Değişiklikler
+
+- **CI/CD güncellik politikası** — üçüncü taraf GitHub Actions artık varsayılan dallarını (`@main`/`@master`) izliyor; depo ayarında `sha_pinning_required: false`; Python işleri her iki hostta 3.11 + güncel matrisinde çalışıyor; GitLab imajları rolling `python:${PYTHON_VERSION}`, `lychee:master-alpine` ve `alpine:latest` etiketlerini kullanıyor. AGENTS.md ve yerel aynası bilinçli atlatmayı kaydediyor.
+- **İş akışı sıkılaştırması** — üçüncü taraf durum-bekleme eylemi `gh api` sorgusuna çevrildi; script injection'i önlemek için PR bağlamı ortam değişkenlerinden geçirildi; `.gitattributes` içinde tüm metin dosyaları için LF esas kılındı.
 
 ### Düzeltmeler
 
