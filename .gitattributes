@@ -1,5 +1,6 @@
-# Auto-detect line endings — check into git as LF, check out as native
-* text=auto
+# Auto-detect text files; LF is authoritative in both the index and the
+# working tree, matching .editorconfig end_of_line = lf.
+* text=auto eol=lf
 
 # Python — LF always
 *.py text eol=lf
