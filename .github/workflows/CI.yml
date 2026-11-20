@@ -14,28 +14,34 @@ on:
 
 jobs:
   syntax:
-    name: Python Syntax Check
+    name: Python Syntax Check (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.x"]
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      - uses: actions/checkout@main
+      - uses: actions/setup-python@main
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
       - name: Check syntax
         run: python -m py_compile skills.py
 
   dry-run:
-    name: Dry-Run Validation
+    name: Dry-Run Validation (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.x"]
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      - uses: actions/checkout@main
+      - uses: actions/setup-python@main
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
       - name: Install git
         run: sudo apt-get update && sudo apt-get install -y git
       - name: Dry-run recommended
@@ -56,18 +62,19 @@ jobs:
         run: python skills.py --list
 
   cross-platform:
-    name: Cross-Platform (${{ matrix.os }})
+    name: Cross-Platform (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.11", "3.x"]
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      - uses: actions/checkout@main
+      - uses: actions/setup-python@main
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
       - name: Syntax check
         run: python -m py_compile skills.py
       - name: Version info

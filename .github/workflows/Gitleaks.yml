@@ -16,9 +16,9 @@ jobs:
       pull-requests: write
       security-events: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
+      - uses: gitleaks/gitleaks-action@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
