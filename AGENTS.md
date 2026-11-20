@@ -386,7 +386,7 @@ Repository management and dependency conventions.
 
 - **Security files.** `SECURITY.md` (vulnerability reporting) lives at the repository root; GitHub's security features expect it there.
 - **Dependabot.** Configured in `.github/dependabot.yml`; a weekly cadence is preferred to avoid daily PR pile-ups; commit messages follow Conventional Commits (`chore(deps)`).
-- **CodeQL.** A `.github/workflows/codeql.yml` runs on every push and weekly. It is free for public repositories; private repositories need GitHub's paid code-security product. Where CodeQL is unavailable, a secret scanner (for example gitleaks) and the language's own static analysis stand in.
+- **CodeQL.** Code scanning is enabled through GitHub's default setup (`state: configured`, weekly schedule, languages `actions` and `python`), so it runs on every push and weekly without a committed workflow file. It is free for public repositories; private repositories need GitHub's paid code-security product. Where CodeQL is unavailable, a secret scanner (for example gitleaks) and the language's own static analysis stand in.
 - **Auto-approve.** Only trusted usernames may be auto-approved, after status checks pass, logged, with minimal permissions (`contents: write`, `pull-requests: write`).
 - **Workflow hardening.** Every workflow sets the narrowest `permissions:` it needs. Third-party actions use the latest version by tracking their default branch (`@main`, or `@master` where that is the default), so no fixed version needs updating; Dependabot remains configured for dependency ecosystems that use version references.
 - **Dependency currency.** Runtime, build, and dev dependencies use the latest version; lockfiles are committed when the ecosystem provides them and move forward through the automated update process; updates go through Dependabot. A new dependency is justified (need, maintenance state, license) before it is added. Types: **Runtime** (needed to run the app, for example flask, react), **Dev** (development-time only, for example pytest, eslint), **Build** (compile-time only, for example typescript, webpack).
@@ -399,7 +399,7 @@ Repository management and dependency conventions.
   - [ ] `index.html` landing page added, where the project has one?
   - [ ] `._dont_migrate_` placed in each hidden layer, created from the universal layer downward and never the reverse, all covered by the single root ignore pattern?
   - [ ] `.github/dependabot.yml` configured?
-  - [ ] `.github/workflows/codeql.yml` added?
+  - [x] `codeql` default setup enabled?
   - [x] `.github/workflows/` auto-approve workflow added?
   - [x] `.github/workflows/` workflows for recurring git operations written?
   - [ ] `.github/pull_request_template.md`, `RELEASE-NOTE-TEMPLATE.md`, and `CODEOWNERS` added?
@@ -744,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=2f47f0d00f84fb9bcd0ecae9d7a1c9834a849136 -->
+<!-- mirror-sync: sync-sha=378be6c743981866cf8c9dd0f58a6b0739bb31a4 -->
