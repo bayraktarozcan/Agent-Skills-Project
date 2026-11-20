@@ -32,10 +32,12 @@ jobs:
       - name: Log PR context
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
           echo "PR #${{ github.event.pull_request.number }}: $PR_TITLE"
-          echo "Author: ${{ github.event.pull_request.user.login }}"
-          echo "Head: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
+          echo "Author: $AUTHOR"
+          echo "Head: $HEAD_REF → ${{ github.event.pull_request.base.ref }}"
           echo "Mergeable: ${{ github.event.pull_request.mergeable }}"
 
       - name: Wait for status checks
