@@ -12,7 +12,7 @@ Contributions are welcome! Here's how you can help improve AgentSynapse.
 
 If you know a repository that contains useful `SKILL.md` files for AI agents, open a pull request against `skills.py` and add it to the appropriate category.
 
-### Step-by-step
+### Step-by-Step
 
 1. **Find the right category** in the `REPOS` dict inside `skills.py` (lines 301–437). Categories are K1–K10.
 2. **Add your repo entry** to the `repos` list of that category:
@@ -116,7 +116,7 @@ Katkılarınız memnuniyetle karşılanır! Agent Beceri Projesi'ni iyileştirme
 
 AI ajanları için yararlı `SKILL.md` dosyaları içeren bir depo biliyorsanız, `skills.py` dosyasına karşı bir çekme talebi (pull request) açın ve uygun kategoriye ekleyin.
 
-### Adım adım
+### Adım Adım
 
 1. **Doğru kategoriyi bulun**: `skills.py` içindeki `REPOS` sözlüğünde (satır 301–437). Kategoriler K1–K10'dur.
 2. **Depo girişinizi ekleyin** o kategorinin `repos` listesine:
@@ -150,7 +150,7 @@ python skills.py --list
 
 5. **Bir çekme talebi gönderin** ve deponun ne eklediğini açıklayın.
 
-## `recommended: true` için Kalite Kriterleri
+## `recommended: true` İçin Kalite Kriterleri
 
 | Kriter | Gereklilik |
 |--------|------------|

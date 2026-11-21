@@ -16,14 +16,14 @@
 
 ## Installation Steps
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 ```
 
-### 2. Run the installer
+### 2. Run the Installer
 
 ```bash
 python skills.py
@@ -179,14 +179,14 @@ Each subdirectory should contain at least one `SKILL.md` file.
 
 ## Kurulum Adımları
 
-### 1. Depoyu klonlayın
+### 1. Depoyu Klonlayın
 
 ```bash
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 ```
 
-### 2. Yükleyiciyi çalıştırın
+### 2. Yükleyiciyi Çalıştırın
 
 ```bash
 python skills.py

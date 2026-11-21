@@ -215,7 +215,7 @@ Aşağıdaki bağlantılar sürekli geçerli tasarım ilkeleri için başlangı�
 - **Android Developers — Dark theme:** https://developer.android.com/develop/ui/views/theming/darktheme
   Koyu tema ve ekran teknolojisine bağlı enerji etkisi hakkında platform rehberi; mobil sonuçları başka ekran sınıflarına doğrudan genelleme.
 
-### Değerler ve İkâme Gelecekler
+### Değerler ve İkâMe Gelecekler
 
 - **Value Sensitive Design Lab — Envisioning Cards:** https://vsdesign.org/toolkits/envisioningcards/
 - **UK Government Office for Science — The Futures Toolkit:** https://www.gov.uk/government/publications/futures-toolkit-for-policy-makers-and-analysts/the-futures-toolkit-html

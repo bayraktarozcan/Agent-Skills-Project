@@ -10,7 +10,7 @@
 <details open>
 <summary><b>English</b></summary>
 
-# Release notes - <version> (<date>)
+# Release Notes - <Version> (<Date>)
 
 Copy this template when drafting a release note. Keep it short and user-focused;
 the full history lives in [CHANGELOG.md](CHANGELOG.md). Each section is optional
@@ -39,7 +39,7 @@ upgrading. If nothing applies, delete this section.>
 
 <a id="tr"></a>
 
-# Sürüm notları - <sürüm> (<tarih>)
+# Sürüm Notları - <Sürüm> (<Tarih>)
 
 Bu şablonu bir sürüm notu hazırlarken kopyalayın. Kısa ve kullanıcı odaklı
 tutun; tam geçmiş [CHANGELOG.md](CHANGELOG.md) içindedir. Her bölüm isteğe

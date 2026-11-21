@@ -23,7 +23,7 @@ Skills are organized into 10 functional categories (K1–K10). Each category rep
 | K9 | Community | 5 | ⚠️ Opt-in | Third-party contributions, lower star counts |
 | K10 | Risk | 4 | ⚠️ Opt-in | Experimental or unmaintained repositories |
 
-### K1 — Core (5 repos)
+### K1 — Core (5 Repos)
 General development, languages, tooling, code quality, and architecture best practices.
 
 | Repo | Description |
@@ -34,7 +34,7 @@ General development, languages, tooling, code quality, and architecture best pra
 | [obra/superpowers](https://github.com/obra/superpowers) | Agent superpowers and extended capabilities |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | Karpathy's development guidelines |
 
-### K2 — AI & LLM (10 repos)
+### K2 — AI & LLM (10 Repos)
 AI agents, LLM frameworks, prompt engineering, RAG, vector search, and browser automation.
 
 | Repo | Description | Recommended |
@@ -50,7 +50,7 @@ AI agents, LLM frameworks, prompt engineering, RAG, vector search, and browser a
 | [agno-agi/agno](https://github.com/agno-agi/agno) | Agno AGI framework | |
 | [NVIDIA/skills](https://github.com/NVIDIA/skills) (subpath: `skills`) | Physical AI, robotics, CUDA-X, NeMo — provider-locked (C4) | |
 
-### K3 — Cloud & Backend (11 repos)
+### K3 — Cloud & Backend (11 Repos)
 Cloud platforms, databases (SQL & NoSQL), backend services, infrastructure, and observability.
 
 | Repo | Description |
@@ -67,7 +67,7 @@ Cloud platforms, databases (SQL & NoSQL), backend services, infrastructure, and 
 | [firecrawl/cli](https://github.com/firecrawl/cli) (subpath: `skills`) | Firecrawl web scraping |
 | [scrapegraphai/just-scrape](https://github.com/scrapegraphai/just-scrape) (subpath: `skills`) | ScrapeGraph AI scraping |
 
-### K4 — Frontend & UI (8 repos)
+### K4 — Frontend & UI (8 Repos)
 User interfaces, design systems, component libraries, visual tools, and video.
 
 | Repo | Description |
@@ -81,14 +81,14 @@ User interfaces, design systems, component libraries, visual tools, and video.
 | [arvindrk/extract-design-system](https://github.com/arvindrk/extract-design-system) (subpath: `skills`) | Design system extraction |
 | [sleekdotdesign/agent-skills](https://github.com/sleekdotdesign/agent-skills) | Sleek mobile design skills |
 
-### K5 — Mobile (1 repo)
+### K5 — Mobile (1 Repo)
 iOS, Android, React Native, and Expo mobile development.
 
 | Repo | Description |
 |------|-------------|
 | [expo/skills](https://github.com/expo/skills) | Expo framework — router, UI, deployment, modules |
 
-### K6 — Security (3 repos)
+### K6 — Security (3 Repos)
 Security reviews, vulnerability scanning, authentication, and hardening.
 
 | Repo | Description |
@@ -97,14 +97,14 @@ Security reviews, vulnerability scanning, authentication, and hardening.
 | [squirrelscan/skills](https://github.com/squirrelscan/skills) | SquirrelScan — website security auditing |
 | [GitGuardian/agent-skills](https://github.com/GitGuardian/agent-skills) (subpath: `skills`) | Secret scanning, honeytokens, incident triage, hook installation |
 
-### K7 — Testing (1 repo)
+### K7 — Testing (1 Repo)
 E2E, unit, integration, visual regression, and performance testing.
 
 | Repo | Description |
 |------|-------------|
 | [currents-dev/playwright-best-practices-skill](https://github.com/currents-dev/playwright-best-practices-skill) | Playwright best practices — POM, flakiness, CI/CD, debugging |
 
-### K8 — Content (2 repos)
+### K8 — Content (2 Repos)
 Writing, documentation, content creation, and publishing platforms.
 
 | Repo | Description |
@@ -112,7 +112,7 @@ Writing, documentation, content creation, and publishing platforms.
 | [WordPress/agent-skills](https://github.com/WordPress/agent-skills) | WordPress development — blocks, themes, plugins, REST API, WP-CLI |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel content and frontend skills |
 
-### K9 — Community (5 repos — opt-in)
+### K9 — Community (5 Repos — Opt-in)
 Third-party contributions, lower GitHub star counts, lesser-known authors. Excluded from the recommended profile but available via `all` or explicit selection.
 
 | Repo | Description |
@@ -123,7 +123,7 @@ Third-party contributions, lower GitHub star counts, lesser-known authors. Exclu
 | [runcomfy-com/skills](https://github.com/runcomfy-com/skills) | RunComfy AI skills |
 | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | RuFlo experimental skills |
 
-### K10 — Risk (4 repos — opt-in)
+### K10 — Risk (4 Repos — Opt-in)
 Experimental, high-risk, or unmaintained repositories. Excluded from all profiles except `all`. Exercise caution.
 
 | Repo | Description |
@@ -154,7 +154,7 @@ Beceriler 10 işlevsel kategoride (K1–K10) düzenlenmiştir. Her kategori, yaz
 | K9 | Topluluk | 5 | ⚠️ İsteğe bağlı | Üçüncü taraf katkıları, düşük yıldız sayıları |
 | K10 | Risk | 4 | ⚠️ İsteğe bağlı | Deneysel veya bakımı yapılmayan depolar |
 
-### K1 — Temel (5 depo)
+### K1 — Temel (5 Depo)
 Genel geliştirme, diller, araçlar, kod kalitesi ve mimari en iyi uygulamalar.
 
 | Depo | Açıklama |
@@ -165,7 +165,7 @@ Genel geliştirme, diller, araçlar, kod kalitesi ve mimari en iyi uygulamalar.
 | [obra/superpowers](https://github.com/obra/superpowers) | Ajan süper güçleri ve genişletilmiş yetenekler |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | Karpathy'nin geliştirme yönergeleri |
 
-### K2 — AI & LLM (10 depo)
+### K2 — AI & LLM (10 Depo)
 AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve tarayıcı otomasyonu.
 
 | Depo | Açıklama | Önerilen |
@@ -181,7 +181,7 @@ AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve ta
 | [agno-agi/agno](https://github.com/agno-agi/agno) | Agno AGI çerçevesi | |
 | [NVIDIA/skills](https://github.com/NVIDIA/skills) (alt klasör: `skills`) | Fiziksel AI, robotik, CUDA-X, NeMo — sağlayıcı-kilitli (C4) | |
 
-### K3 — Bulut & Arka Uç (11 depo)
+### K3 — Bulut & Arka Uç (11 Depo)
 Bulut platformları, veritabanları (SQL & NoSQL), arka uç servisleri, altyapı ve gözlemlenebilirlik.
 
 | Depo | Açıklama |
@@ -198,7 +198,7 @@ Bulut platformları, veritabanları (SQL & NoSQL), arka uç servisleri, altyapı
 | [firecrawl/cli](https://github.com/firecrawl/cli) (alt klasör: `skills`) | Firecrawl web kazıma |
 | [scrapegraphai/just-scrape](https://github.com/scrapegraphai/just-scrape) (alt klasör: `skills`) | ScrapeGraph AI kazıma |
 
-### K4 — Ön Yüz & Arayüz (8 depo)
+### K4 — Ön Yüz & Arayüz (8 Depo)
 Kullanıcı arayüzleri, tasarım sistemleri, bileşen kütüphaneleri, görsel araçlar ve video.
 
 | Depo | Açıklama |
@@ -212,14 +212,14 @@ Kullanıcı arayüzleri, tasarım sistemleri, bileşen kütüphaneleri, görsel 
 | [arvindrk/extract-design-system](https://github.com/arvindrk/extract-design-system) (alt klasör: `skills`) | Tasarım sistemi çıkarma |
 | [sleekdotdesign/agent-skills](https://github.com/sleekdotdesign/agent-skills) | Sleek mobil tasarım becerileri |
 
-### K5 — Mobil (1 depo)
+### K5 — Mobil (1 Depo)
 iOS, Android, React Native ve Expo mobil geliştirme.
 
 | Depo | Açıklama |
 |------|----------|
 | [expo/skills](https://github.com/expo/skills) | Expo çerçevesi — yönlendirici, UI, dağıtım, modüller |
 
-### K6 — Güvenlik (3 depo)
+### K6 — Güvenlik (3 Depo)
 Güvenlik incelemeleri, zafiyet taraması, kimlik doğrulama ve sertleştirme.
 
 | Depo | Açıklama |
@@ -228,14 +228,14 @@ Güvenlik incelemeleri, zafiyet taraması, kimlik doğrulama ve sertleştirme.
 | [squirrelscan/skills](https://github.com/squirrelscan/skills) | SquirrelScan — web sitesi güvenlik denetimi |
 | [GitGuardian/agent-skills](https://github.com/GitGuardian/agent-skills) (alt klasör: `skills`) | Sır tarama, honeytoken, olay üçleme, kanca kurulumu |
 
-### K7 — Test (1 depo)
+### K7 — Test (1 Depo)
 Uçtan uca, birim, entegrasyon, görsel regresyon ve performans testi.
 
 | Depo | Açıklama |
 |------|----------|
 | [currents-dev/playwright-best-practices-skill](https://github.com/currents-dev/playwright-best-practices-skill) | Playwright en iyi uygulamaları — POM, kararsızlık, CI/CD, hata ayıklama |
 
-### K8 — İçerik (2 depo)
+### K8 — İçerik (2 Depo)
 Yazma, dokümantasyon, içerik oluşturma ve yayın platformları.
 
 | Depo | Açıklama |
@@ -243,7 +243,7 @@ Yazma, dokümantasyon, içerik oluşturma ve yayın platformları.
 | [WordPress/agent-skills](https://github.com/WordPress/agent-skills) | WordPress geliştirme — bloklar, temalar, eklentiler, REST API, WP-CLI |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel içerik ve ön yüz becerileri |
 
-### K9 — Topluluk (5 depo — isteğe bağlı)
+### K9 — Topluluk (5 Depo — İsteğe Bağlı)
 Üçüncü taraf katkıları, düşük GitHub yıldız sayıları, az bilinen yazarlar. Önerilen profilin dışında, yalnızca `tumu` ile veya açık seçimle kullanılabilir.
 
 | Depo | Açıklama |
@@ -254,7 +254,7 @@ Yazma, dokümantasyon, içerik oluşturma ve yayın platformları.
 | [runcomfy-com/skills](https://github.com/runcomfy-com/skills) | RunComfy AI becerileri |
 | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | RuFlo deneysel beceriler |
 
-### K10 — Risk (4 depo — isteğe bağlı)
+### K10 — Risk (4 Depo — İsteğe Bağlı)
 Deneysel, yüksek riskli veya bakımı yapılmayan depolar. Yalnızca `tumu` profili dışındaki tüm profillerden hariç tutulur. Dikkatli kullanın.
 
 | Depo | Açıklama |

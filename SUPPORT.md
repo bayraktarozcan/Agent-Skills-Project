@@ -43,23 +43,23 @@ Run `python skills.py --security` or see [SECURITY.md](SECURITY.md) for responsi
 
 ## Common Issues
 
-### "git is not recognized"
+### "Git is Not Recognized"
 
 Install Git from https://git-scm.com/ and restart your terminal.
 
-### "Access denied" when writing to `~/.agents/skills/`
+### "Access Denied" When Writing to `~/.agents/skills/`
 
 Run as administrator/root, or manually create the directory:
 ```
 mkdir -p ~/.agents/skills
 ```
 
-### Skills not showing up in my agent
+### Skills Not Showing Up in My Agent
 
 - Claude Code: skills in `~/.agents/skills/` are auto-discovered at agent launch.
 - OpenCode: same path. If skills aren't showing, restart the agent session.
 
-### Install is slow
+### Install is Slow
 
 `python skills.py` clones 35 repos with `--depth 1 --single-branch`. First run is network-heavy (~200MB).
 Skills persist until you reinstall.
@@ -100,23 +100,23 @@ Sorumlu ifşa için `python skills.py --security` çalıştırın.
 
 ## Sık Karşılaşılan Sorunlar
 
-### "git tanınmıyor"
+### "Git Tanınmıyor"
 
 Git'i https://git-scm.com/ adresinden yükleyin ve terminalinizi yeniden başlatın.
 
-### "~/.agents/skills/ konumuna yazılırken erişim reddedildi"
+### "~/.Agents/Skills/ Konumuna Yazılırken Erişim Reddedildi"
 
 Yönetici/root olarak çalıştırın veya dizini manuel oluşturun:
 ```
 mkdir -p ~/.agents/skills
 ```
 
-### Beceriler ajanımda görünmüyor
+### Beceriler Ajanımda Görünmüyor
 
 - Claude Code: ~/.agents/skills/ içindeki beceriler ajan başlatılırken otomatik keşfedilir.
 - OpenCode: aynı yol. Beceriler görünmüyorsa, ajan oturumunu yeniden başlatın.
 
-### Kurulum yavaş
+### Kurulum Yavaş
 
 `python skills.py` 35 depoyu `--depth 1 --single-branch` ile klonlar. İlk çalıştırma ağırlıklı olarak ağ trafiği içerir (~200MB).
 Beceriler yeniden yükleyene kadar kalıcıdır.

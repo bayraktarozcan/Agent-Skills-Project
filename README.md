@@ -206,7 +206,7 @@ AgentSynapse/
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
-## Project documents
+## Project Documents
 
 - [AGENTS.md](AGENTS.md) -- universal operating rules and project layer contract
 - [CHANGELOG.md](CHANGELOG.md) -- bilingual changelog
@@ -466,7 +466,7 @@ AgentSynapse/
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
 
-## Proje belgeleri
+## Proje Belgeleri
 
 - [AGENTS.md](AGENTS.md) -- evrensel işletme kuralları ve proje katmanı sözleşmesi
 - [CHANGELOG.md](CHANGELOG.md) -- çift dilli değişiklik günlüğü
