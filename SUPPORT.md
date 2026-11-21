@@ -61,7 +61,7 @@ mkdir -p ~/.agents/skills
 
 ### Install is slow
 
-`python skills.py` clones 34 repos with `--depth 1 --single-branch`. First run is network-heavy (~200MB).
+`python skills.py` clones 35 repos with `--depth 1 --single-branch`. First run is network-heavy (~200MB).
 Skills persist until you reinstall.
 
 </details>
@@ -118,5 +118,5 @@ mkdir -p ~/.agents/skills
 
 ### Kurulum yavaş
 
-`python skills.py` 34 depoyu `--depth 1 --single-branch` ile klonlar. İlk çalıştırma ağırlıklı olarak ağ trafiği içerir (~200MB).
+`python skills.py` 35 depoyu `--depth 1 --single-branch` ile klonlar. İlk çalıştırma ağırlıklı olarak ağ trafiği içerir (~200MB).
 Beceriler yeniden yükleyene kadar kalıcıdır.
