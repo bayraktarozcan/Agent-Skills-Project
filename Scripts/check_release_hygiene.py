@@ -12,9 +12,11 @@ failure exits 1):
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,9 +44,17 @@ def releases() -> tuple[dict, dict]:
     gh = json.loads(subprocess.check_output([
         "gh", "api", "--paginate", f"repos/{GH_REPO}/releases"
     ]).decode())
-    gl = json.loads(subprocess.check_output([
-        "glab", "api", "--paginate", f"projects/{GL_PROJECT}/releases?per_page=100"
-    ]).decode())
+    # GitLab: CI runners do not ship glab, so use REST when a token is injected;
+    # locally fall back to glab's keyring-backed CLI.
+    if os.environ.get("GITLAB_TOKEN"):
+        url = f"https://gitlab.com/api/v4/projects/{GL_PROJECT}/releases?per_page=100"
+        req = urllib.request.Request(url, headers={"PRIVATE-TOKEN": os.environ["GITLAB_TOKEN"]})
+        with urllib.request.urlopen(req, timeout=30) as response:
+            gl = json.load(response)
+    else:
+        gl = json.loads(subprocess.check_output([
+            "glab", "api", f"projects/{GL_PROJECT}/releases?per_page=100"
+        ]).decode())
     return ({r["tag_name"]: r for r in gh}, {r["tag_name"]: r for r in gl})
 
 
