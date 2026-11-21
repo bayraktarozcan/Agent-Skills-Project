@@ -74,7 +74,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`.
 ### Code Style
 
 - Follow existing conventions in `skills.py`.
-- Keep the code Python 3.8+ compatible.
+- Keep the code stdlib-only and compatible with the current Python 3 release.
 - Add imports in alphabetical order.
 - Comment non-obvious logic.
 
@@ -152,7 +152,7 @@ Conventional Commits kullanıyoruz:
 ### Kod Stili
 
 - `skills.py` içindeki mevcut kurallara uyun.
-- Python 3.8+ uyumlu kalın.
+- Kodu yalnızca standart kütüphaneyle ve güncel Python 3 sürümüyle uyumlu tutun.
 - Karmaşık olmayan mantığı yorum satırıyla açıklayın.
 
 ## Pull Request Süreci

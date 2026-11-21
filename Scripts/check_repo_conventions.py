@@ -5,9 +5,11 @@ Checks (PASS/FAIL by name, any failure exits 1):
   final-newline     every tracked text file ends with LF
   hidden-layer-names  no tracked file names or contents name a gitignored local
                     layer file (the .gitignore pattern is the only exception)
+  no-legacy-version  no prose advertises an end-of-life Python floor (3.8+)
 """
 from __future__ import annotations
 
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -52,6 +54,19 @@ def check(root: Path = ROOT) -> list[str]:
         failures.append("hidden-layer-names: " + ", ".join(leaks))
     else:
         print("PASS hidden-layer-names: no local layer name in tracked output")
+
+    legacy = []
+    for name in files:
+        if not name.endswith((".md", ".html")):
+            continue
+        text = (root / name).read_bytes().decode("utf-8", errors="replace")
+        for i, line in enumerate(text.splitlines(), 1):
+            if re.search(r"Python 3\.8\+|3\.8 or later|3\.8 veya üstü", line, re.I):
+                legacy.append(f"{name}:{i}")
+    if legacy:
+        failures.append("no-legacy-version: " + ", ".join(legacy))
+    else:
+        print("PASS no-legacy-version: no end-of-life Python floor advertised")
     return failures
 
 

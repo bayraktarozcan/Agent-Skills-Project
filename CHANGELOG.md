@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Release title descriptions** are derived from the canonical `CHANGELOG.md` `Summary` section instead of a curated dictionary, so a new tag cannot drift from the changelog.
 - **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation. All workflow expressions now reach scripts through `env:` instead of inline `run:` text (shell-injection surface).
 - **v1.2.0 notes completed** — the omitted Security / Güvenlik bullet was added on both hosts so every changelog bullet is represented in its release notes.
+- **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 
 ## [1.2.1] - 2026-11-21
 
@@ -203,6 +204,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Yayın başlığı açıklamaları** sabit sözlük yerine kanonik `CHANGELOG.md` `Summary` bölümünden türetiliyor; yeni etiket changelog'dan sapamaz.
 - **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor. Tüm iş akışı ifadeleri satır içi `run:` metni yerine `env:` üzerinden betiklere iletiliyor (kabuk enjeksiyon yüzeyi).
 - **v1.2.0 notları tamamlandı** — atlanan Security / Güvenlik maddesi her iki hostta eklendi; böylece her changelog maddesi yayın notlarında temsil ediliyor.
+- **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 
 ## [1.2.1] - 2026-11-21
 
