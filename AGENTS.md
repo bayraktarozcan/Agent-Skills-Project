@@ -394,16 +394,16 @@ Repository management and dependency conventions.
 - **Standard workflow triggers.** Syntax, profile coverage, encoding, and secret scans run on `push` and `pull_request`; workflow lint and link check run weekly and on scoped `pull_request`; Pages deploys on `docs/**` pushes; Release on tag `v*`; CodeQL on push and weekly; Dependabot weekly. There is no unit-test or type-check suite.
 - **Machine-maintained logs.** Recurring git and audit events (dependency updates, PR journals, version checks) are logged by the workflow itself via API, never by hand; human intervention is not required.
 - **New-repository checklist.** The bootstrap order is the rule, not a suggestion: the ignore file comes first so nothing private is swept into the first commit, then the root documents, then the landing page, then the hidden layers, and only then version control.
-  - [ ] `.gitignore` written first, with the hidden layers already named in it?
-  - [ ] `README.md` and the root documents added (`SECURITY.md`, `CHANGELOG.md`, `LICENSE`, `NOTICE`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`)?
-  - [ ] `index.html` landing page added, where the project has one?
-  - [ ] `._dont_migrate_` placed in each hidden layer, created from the universal layer downward and never the reverse, all covered by the single root ignore pattern?
-  - [ ] `.github/dependabot.yml` configured?
+  - [x] `.gitignore` written first, with the hidden layers already named in it?
+  - [x] `README.md` and the root documents added (`SECURITY.md`, `CHANGELOG.md`, `LICENSE`, `NOTICE`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`)?
+  - [x] `index.html` landing page added, where the project has one?
+  - [x] `._dont_migrate_` placed in each hidden layer, created from the universal layer downward and never the reverse, all covered by the single root ignore pattern?
+  - [x] `.github/dependabot.yml` configured?
   - [x] `codeql` default setup enabled?
   - [x] `.github/workflows/` auto-approve workflow added?
   - [x] `.github/workflows/` workflows for recurring git operations written?
-  - [ ] `.github/pull_request_template.md`, `RELEASE-NOTE-TEMPLATE.md`, and `CODEOWNERS` added?
-  - [ ] `.editorconfig` and `.gitattributes` added, plus `.gitlab-ci.yml` when the origin has a second push URL?
+  - [x] `.github/pull_request_template.md`, `RELEASE-NOTE-TEMPLATE.md`, and `CODEOWNERS` added?
+  - [x] `.editorconfig` and `.gitattributes` added, plus `.gitlab-ci.yml` when the origin has a second push URL?
   - [ ] `Docs/` log file that the workflow itself keeps current created?
   - [ ] `git init` run last, with a first commit that names what the skeleton created?
 
@@ -744,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=b9857c3e902a314f3029e030919ee3f93211274d -->
+<!-- mirror-sync: sync-sha=577b7e1485bbd92c455df036f19af55e288bc82a -->
