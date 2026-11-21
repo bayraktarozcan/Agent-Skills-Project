@@ -35,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Release-note audit strengthened** — the generator now emits the same `## vX — ... (date)` version headings as published bodies, and `check_release_hygiene.py` verifies non-empty EN/TR summaries, matched content-section counts and exactly two version headings in generated notes.
 - **Stale-version guard generalized** — `check_repo_conventions.py` now reads the CI floor from `python_floor.py` and flags any advertised `Python 3.X+` below it, not just the former 3.8 case.
 - **Release audit resilient to rate limits** — the anonymous GitLab read retries transient errors three times and falls back to the local `glab` CLI when available; CI remains token-free.
+- **File-naming guard** — `check_repo_conventions.py` now enforces the §Naming convention (root UPPER, PascalCase top dirs, snake_case Python, lowercase-hyphenated skill leaves) with the recorded platform exemptions.
+- **Dependabot auto-merge serialized** — a `concurrency` group prevents concurrent Dependabot PR runs from racing.
+- **Wiki link form pinned** — `check_repo_conventions.py` rejects `.md` file links inside Wiki pages; links must use GitHub Wiki page form.
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 - **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
 
@@ -217,6 +220,9 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Yayın notu denetimi güçlendirildi** — üretici artık yayınlanmış gövdelerle aynı `## vX — ... (tarih)` sürüm başlıklarını üretiyor; `check_release_hygiene.py` üretilen notlarda boş olmayan EN/TR özetlerini, eşit içerik bölümü sayısını ve tam iki sürüm başlığını doğruluyor.
 - **Bayat sürüm kapısı genelleştirildi** — `check_repo_conventions.py`, CI alt sınırını `python_floor.py`'den okuyor ve yalnızca eski 3.8 durumu yerine alt sınırın altındaki her `Python 3.X+` iddiasını işaretliyor.
 - **Yayın denetimi hız sınırlarına dayanıklı** — anonim GitLab okuması geçici hataları üç kez yeniden dener ve yerel `glab` varsa ona düşer; CI'da token kullanılmaz.
+- **Dosya adlandırma kapısı** — `check_repo_conventions.py`, §Naming kuralını (kök UPPER, PascalCase üst dizinler, snake_case Python, küçük harfli tireli beceri yaprakları) kayıtlı platform muafiyetleriyle zorunlu kılıyor.
+- **Dependabot otomatik birleştirme serileştirildi** — eşzamanlı Dependabot PR çalıştırmalarının yarışmasını önleyen bir `concurrency` grubu eklendi.
+- **Wiki bağlantı biçimi sabitlendi** — `check_repo_conventions.py`, Wiki sayfalarındaki `.md` dosya bağlantılarını reddediyor; bağlantılar GitHub Wiki sayfa biçiminde olmalı.
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 - **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
 

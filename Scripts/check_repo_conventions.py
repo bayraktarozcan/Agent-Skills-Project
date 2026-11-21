@@ -8,6 +8,8 @@ Checks (PASS/FAIL by name, any failure exits 1):
   no-legacy-version  no prose advertises a Python floor below the CI floor
   heading-case     documentation headings follow the title-case rule in AGENTS.md
   workflow-inventory  every tracked workflow name appears in both guides
+  file-naming     tracked paths follow AGENTS.md §Naming with recorded exemptions
+  wiki-page-links  Wiki internal links use page form, not .md filenames
 """
 from __future__ import annotations
 
@@ -154,6 +156,54 @@ def check(root: Path = ROOT) -> list[str]:
         failures.append("workflow-inventory: " + ", ".join(missing_docs or ["no workflows found"]))
     else:
         print(f"PASS workflow-inventory: {len(workflows)} workflows documented in both guides")
+
+    # §Naming: root UPPER, top dirs PascalCase, Python snake_case, skill leaves
+    # lowercase-hyphenated, no whitespace. Platform-fixed paths are exempt.
+    root_upper = {"README.md", "CHANGELOG.md", "AGENTS.md", "LICENSE", "NOTICE",
+                  "CODEOWNERS", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md",
+                  "SECURITY.md", "SUPPORT.md", "PRIVACY.md", ".gitignore",
+                  ".gitattributes", ".editorconfig", ".gitlab-ci.yml", ".gitmessage",
+                  "RELEASE-NOTE-TEMPLATE.md", "LOW-GLOW-DESIGN-CORE.md",
+                  "SKILL-SPECIALIZATION.json", "skills.py"}
+    exempt_dirs = {".github", "docs", "Logs", "Skills", "__pycache__", "Scratch"}
+    naming_bad: list[str] = []
+    for name in files:
+        if name.startswith(".github/") or name.startswith("__pycache__/"):
+            continue
+        parts = name.split("/")
+        leaf = parts[-1]
+        if leaf.startswith("._"):
+            continue
+        top = parts[0]
+        if len(parts) == 1:
+            if top not in root_upper and not top.startswith("skills-tree_"):
+                naming_bad.append(f"{name}: root name is not UPPER")
+            continue
+        if top in exempt_dirs:
+            if top == "Skills" and len(parts) >= 2:
+                skill = parts[1]
+                if skill and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", skill):
+                    naming_bad.append(f"{name}: skill leaf is not lowercase-hyphenated")
+            continue
+        if not re.fullmatch(r"[A-Z][A-Za-z0-9]*", top):
+            naming_bad.append(f"{name}: top directory is not PascalCase")
+        if leaf.endswith(".py") and not re.fullmatch(r"[a-z][a-z0-9_]*\.py", leaf):
+            naming_bad.append(f"{name}: Python module is not snake_case")
+    if naming_bad:
+        failures.append("file-naming: " + ", ".join(naming_bad[:10]))
+    else:
+        print("PASS file-naming: tracked paths follow the declared convention")
+
+    wiki_bad: list[str] = []
+    for path in sorted((root / "Wiki").glob("*.md")):
+        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            for target in re.findall(r"\]\(([^)]+)\)", line):
+                if target.endswith(".md") and not target.startswith(("http://", "https://")):
+                    wiki_bad.append(f"{path.name}:{i}: {target}")
+    if wiki_bad:
+        failures.append("wiki-page-links: " + ", ".join(wiki_bad[:10]))
+    else:
+        print("PASS wiki-page-links: Wiki internal links use page form")
     return failures
 
 
@@ -181,7 +231,10 @@ def selftest() -> int:
     if not any(x < 11 for x in hits):
         print("SELFTEST FAIL: planted stale minor line not detected")
         return 1
-    print("SELFTEST OK: planted newline, lowercase heading and stale minor fail by name")
+    if re.fullmatch(r"[a-z][a-z0-9_]*\.py", "BadModule.py"):
+        print("SELFTEST FAIL: planted naming violation not detected")
+        return 1
+    print("SELFTEST OK: planted newline, heading, stale minor and naming failures by name")
     return 0
 
 
