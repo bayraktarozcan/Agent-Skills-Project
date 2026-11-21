@@ -16,13 +16,24 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 $PY -m py_compile skills.py
+$PY skills.py --version >/dev/null
+$PY skills.py --list >/dev/null
+$PY skills.py --help >/dev/null
+$PY skills.py --dry-run >/dev/null
+$PY skills.py --dry-run trusted >/dev/null
+$PY skills.py --dry-run all >/dev/null
+$PY skills.py --dry-run K2 >/dev/null
+$PY skills.py --dry-run K2 K4 K6 >/dev/null
 $PY skills.py --check --profile temel >/dev/null
 $PY skills.py --check --profile tam >/dev/null
 $PY Scripts/check_encoding.py --selftest >/dev/null
+$PY Scripts/check_encoding.py >/dev/null
 $PY Scripts/check_version_parity.py >/dev/null
 $PY Scripts/verify_mirror.py AGENTS.md AGENTS-TR.md >/dev/null
 $PY Scripts/check_action_refs.py >/dev/null
 $PY Scripts/check_repo_conventions.py >/dev/null
+$PY Scripts/check_line_endings.py >/dev/null
+$PY Scripts/check_gate_parity.py >/dev/null
 $PY Scripts/python_floor.py check --offline >/dev/null
 
 echo "pre-push gate: all checks passed"

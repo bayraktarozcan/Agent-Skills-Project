@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Bypass description corrected** — AGENTS.md (EN/TR) no longer claims classic branch protection allows force pushes; the live `main-guard` ruleset is active with required checks and `non_fast_forward`, and the owner is an `always` bypass actor, so direct pushes to `main` succeed even though GitHub still prints a `Bypassed rule violations` notice (live check 2026-11-22 UTC+03:00).
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 - **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
+- **Line-ending guard** — `Scripts/check_line_endings.py` fails on mixed endings, on a working tree that disagrees with its declared `eol`, and on a `.gitattributes`/`.editorconfig` declaration disagreement; `--selftest` plants all three. `.editorconfig` now declares CRLF for `.ps1`/`.bat`/`.cmd` so both declarations agree. Wired into the local gate, pre-push and Hygiene.
+- **Local gate / CI parity guard** — `Scripts/check_gate_parity.py` reads the gate block and every workflow and fails when the two check lists diverge in either direction, with declared CI-only and local-only exceptions. The local gate now also runs the `--dry-run` matrix, `--help` and the full encoding check that CI runs.
 
 ## [1.2.1] - 2026-11-21
 
@@ -227,6 +229,8 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Atlatma açıklaması düzeltildi** — AGENTS.md (EN/TR) artık klasik dal korumasının force-push'a izin verdiğini iddia etmiyor; canlı `main-guard` kural takımı zorunlu denetimler ve `non_fast_forward` ile etkin, sahip ise `always` atlatma aktörü; doğrudan push, GitHub `Bypassed rule violations` uyarısı yazdırsa da başarılı olur (canlı kontrol 2026-11-22 UTC+03:00).
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 - **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
+- **Satır sonu kapısı** — `Scripts/check_line_endings.py`; karışık sonlarda, çalışma ağacı ile bildirilen `eol` uyuşmadığında ve `.gitattributes`/`.editorconfig` bildirimleri çeliştiğinde başarısız oluyor; `--selftest` üç ihlali de yerleştiriyor. `.editorconfig` artık `.ps1`/`.bat`/`.cmd` için CRLF bildiriyor; böylece iki bildirim uyuşuyor. Yerel kapıya, pre-push'a ve Hygiene'e bağlandı.
+- **Yerel kapı / CI eşlik kapısı** — `Scripts/check_gate_parity.py` kapı bloğunu ve tüm iş akışlarını okuyor; iki denetim listesi herhangi bir yönde ayrıldığında başarısız oluyor (bildirilen CI-only ve yerel-only istisnalar var). Yerel kapı artık CI'ın çalıştırdığı `--dry-run` matrisini, `--help`'i ve tam kodlama denetimini de çalıştırıyor.
 
 ## [1.2.1] - 2026-11-21
 

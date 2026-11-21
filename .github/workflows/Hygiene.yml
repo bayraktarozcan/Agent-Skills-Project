@@ -32,6 +32,10 @@ jobs:
         run: python Scripts/check_action_refs.py
       - name: Check repository file conventions
         run: python Scripts/check_repo_conventions.py
+      - name: Check line endings
+        run: python Scripts/check_line_endings.py
+      - name: Check local gate / CI parity
+        run: python Scripts/check_gate_parity.py
       - name: Audit published release hygiene
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

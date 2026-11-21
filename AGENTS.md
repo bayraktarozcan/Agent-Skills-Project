@@ -465,7 +465,7 @@ This section is the single owner of the line-endings rule; the bullet under "Lan
 - Edits preserve the file's convention. Detect the ending in use before editing, write new lines in the same ending, and give new files the declared one. A tool that writes LF into a CRLF file produces mixed endings, so the ending is checked after every edit.
 - Git does not make this drift visible: it normalizes on `add`, so `git diff` and `git diff --check` stay quiet about line endings, and a clean status proves nothing about them (see "A machine check proves only what it measures"). Check with `git ls-files --eol` before every commit: the `w/` column must not read `mixed`, and must match the `eol` in the `attr/` column wherever one is declared.
 - Repair is scoped and encoding-safe: only files the session touched, only to the declared ending, preserving the byte-order mark and the encoding. A file that is not valid UTF-8, or is binary, is skipped and reported, never converted, because decoding with replacement characters destroys data irreversibly. Expected endings are read from the attributes, never from a hand-kept extension list.
-- The repair is a script in the project, run as a file (an inline, quoted one-liner behaves differently per shell). A check in the local gate fails on mixed endings or on any file whose `w/` disagrees with its declared ending, and a named test plants a mixed-ending file to prove the check can fail.
+- The repair is a script in the project, run as a file (an inline, quoted one-liner behaves differently per shell). `Scripts/check_line_endings.py` is that named check: it fails on mixed endings, on any file whose `w/` disagrees with its declared ending, and on a `.gitattributes`/`.editorconfig` declaration disagreement; `--selftest` plants each violation to prove the check can fail.
 
 ### Data Layer, Testing, and Services
 
@@ -507,7 +507,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref, pin and expression-boundary guard), `check_repo_conventions.py` (final-newline, hidden-layer-name and heading-case guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `install_hooks.py` + `pre-push` (opt-in local gate), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref, pin and expression-boundary guard), `check_repo_conventions.py` (final-newline, hidden-layer-name and heading-case guard), `check_line_endings.py` (EOL declaration and worktree guard), `check_gate_parity.py` (local-gate/CI parity guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `install_hooks.py` + `pre-push` (opt-in local gate), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -528,10 +528,10 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Lint/format: none configured; `Scripts/check_encoding.py` is an encoding gate, not a linter.
 - Commits: English Conventional Commits; template `.gitmessage` (see universal Commit message format for types and scopes).
 - Optional local enforcement: `python Scripts/install_hooks.py` copies the tracked `Scripts/pre-push` gate into Git's active hooks directory, backing up any existing hook first; `python Scripts/install_hooks.py --uninstall` removes it. It is opt-in because it writes outside the tracked tree.
-- Single local gate command (runs what CI runs, see universal Local gate):
+- Single local gate command (runs what CI runs, see universal Local gate; `Scripts/check_gate_parity.py` verifies parity from this block and the workflow files, with declared CI-only and local-only exceptions):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/check_repo_conventions.py --selftest && py Scripts/check_repo_conventions.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --help && py skills.py --dry-run && py skills.py --dry-run trusted && py skills.py --dry-run all && py skills.py --dry-run K2 && py skills.py --dry-run K2 K4 K6 && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_encoding.py && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/check_repo_conventions.py --selftest && py Scripts/check_repo_conventions.py && py Scripts/check_line_endings.py --selftest && py Scripts/check_line_endings.py && py Scripts/check_gate_parity.py --selftest && py Scripts/check_gate_parity.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
 ```
 
 ## Naming — Per-Directory Convention Table, Named Exemptions with Reasons
@@ -748,4 +748,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=ce8b420685cacd624a99a937cb3b3b23d16b53a4 -->
+<!-- mirror-sync: sync-sha=b87ecb14b82a7e63380c67354ae8b0efc06250e0 -->
