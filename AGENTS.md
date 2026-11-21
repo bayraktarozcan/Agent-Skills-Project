@@ -595,7 +595,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
 - GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
 - Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release.
-- No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-10-09): `Latest Release` badge and the shields.io license badge.
+- No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-11-21): skills, repos, categories, license, and OS badges; the dynamic release badge URL is valid but is not registered in the project.
 
 ## Badge Policy
 
@@ -746,4 +746,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=be8da85ae8b00bf4b49269375cb3ab9d65e9e849 -->
+<!-- mirror-sync: sync-sha=337d18cb4f9efe28f978b91d2c80b89e8b24f5a9 -->

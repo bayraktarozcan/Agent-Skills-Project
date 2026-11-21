@@ -27,7 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **CI/CD currency policy** — third-party GitHub Actions now track their default branches (`@main`/`@master`) with `sha_pinning_required: false` in repository settings; Python jobs run a 3.11 + latest matrix on both hosts; GitLab images use rolling `python:${PYTHON_VERSION}`, `lychee:master-alpine`, and `alpine:latest` tags. AGENTS.md and its local mirror record the deliberate bypass.
 - **Workflow hardening** — replaced the third-party status-check waiter with `gh api` polling, passed PR context through environment variables to prevent script injection, and made LF authoritative for all text files in `.gitattributes`.
-- **Dependency-model audit** — grep verification confirmed there is no `pyproject.toml`, `requirements*.in`/`requirements.txt`, compiled lockfile, `pip install` consumer, regeneration workflow, sync script, `cache-dependency-path`, or bandit ignore in the repository; nothing needed unpinning or deletion. The program remains stdlib-only, and any future dependency list must be unpinned and latest-by-default.
+- **Dependency-model audit** — grep verification confirmed there is no `pyproject.toml`, `requirements*.in`/`requirements.txt`, compiled lockfile, `pip install` consumer, regeneration workflow, sync script, `cache-dependency-path`, or bandit ignore in the repository; nothing needed unpinning or deletion. The stale `pip` entry was removed from Dependabot because no Python manifest exists. The program remains stdlib-only, and any future dependency list must be unpinned and latest-by-default.
+- **Stale metadata corrected** — AGENTS.md no longer claims an unregistered "Latest Release" badge; all five registered SVG badges were re-probed (HTTP 200, `image/svg+xml`, 2026-11-21). The specialization manifest no longer hardcodes a superseded source count.
 
 ### Fixed
 
@@ -137,7 +138,8 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 - **CI/CD güncellik politikası** — üçüncü taraf GitHub Actions artık varsayılan dallarını (`@main`/`@master`) izliyor; depo ayarında `sha_pinning_required: false`; Python işleri her iki hostta 3.11 + güncel matrisinde çalışıyor; GitLab imajları rolling `python:${PYTHON_VERSION}`, `lychee:master-alpine` ve `alpine:latest` etiketlerini kullanıyor. AGENTS.md ve yerel aynası bilinçli atlatmayı kaydediyor.
 - **İş akışı sıkılaştırması** — üçüncü taraf durum-bekleme eylemi `gh api` sorgusuna çevrildi; script injection'i önlemek için PR bağlamı ortam değişkenlerinden geçirildi; `.gitattributes` içinde tüm metin dosyaları için LF esas kılındı.
-- **Bağımlılık modeli denetimi** — grep ile doğrulandı: depoda `pyproject.toml`, `requirements*.in`/`requirements.txt`, derlenmiş kilit dosyası, `pip install` tüketicisi, yeniden üretim iş akışı, senkron betiği, `cache-dependency-path` veya bandit ignore yok; sabitlemesi kaldırılacak veya silinecek bir şey yok. Program stdlib-only kalıyor; ileride eklenecek bağımlılık listesi sabitlemesiz ve varsayılan olarak güncel olacak.
+- **Bağımlılık modeli denetimi** — grep ile doğrulandı: depoda `pyproject.toml`, `requirements*.in`/`requirements.txt`, derlenmiş kilit dosyası, `pip install` tüketicisi, yeniden üretim iş akışı, senkron betiği, `cache-dependency-path` veya bandit ignore yok; sabitlemesi kaldırılacak veya silinecek bir şey yok. Python bildirimi olmadığı için Dependabot'taki bayat `pip` girdisi kaldırıldı. Program stdlib-only kalıyor; ileride eklenecek bağımlılık listesi sabitlemesiz ve varsayılan olarak güncel olacak.
+- **Bayat üst veri düzeltildi** — AGENTS.md artık kayıtlı olmayan "Latest Release" rozetini iddia etmiyor; kayıtlı beş SVG rozetinin tamamı yeniden sorgulandı (HTTP 200, `image/svg+xml`, 2026-11-21). Uzmanlaşma manifesti artık güncel olmayan bir kaynak sayısını sabitlemiyor.
 
 ### Düzeltmeler
 
