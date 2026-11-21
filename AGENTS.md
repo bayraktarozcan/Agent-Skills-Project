@@ -588,14 +588,14 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Bypasses — Gates That Do Not Hold by Design, and What Runs Afterward
 
 - No MR/PR gate is in use: single owner, direct push to `main` on both remotes (`origin` fans out to GitHub plus GitLab; `gitlab` remote mirrors the same GitLab URL). GitHub branch protection currently allows maintainer pushes and force pushes (verified via API); no pull-request gate is enforced.
-- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki`).
+- After every push to `main`, the default-branch pipelines on both hosts run instead of a gate: GitLab (syntax, profile coverage, encoding, pages) and GitHub workflows (`CI`, `Dependabot-AutoMerge`, `Gitleaks`, `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Python-Floor`, `Release`, `Sync-Wiki`).
 - The full-SHA requirement is deliberately disabled in this repository (`sha_pinning_required: false` in GitHub Actions permissions): third-party actions run from their default branch (`@main`, or `@master` where that is the default), so the latest version is used directly and Dependabot has no fixed version to update. After this bypass: status checks gate auto-merge, and both hosts' pipelines run on every push to `main` (see CI).
 - `origin` fetch URL follows the GitHub rename (`Agent-Skills-Project.git`); the old path redirects.
 
 ## CI — Hosts, Jobs, Truth (Points at Universal Local Gate and Push Policy)
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
-- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Python-Floor`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them. `Hygiene` additionally audits published releases on both hosts (`Scripts/check_release_hygiene.py`, network-bound, weekly) because that check cannot run offline.
+- GitHub `.github/workflows/` (verified listing): `CI`, `Dependabot-AutoMerge`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Python-Floor`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them. `Hygiene` additionally audits published releases on both hosts (`Scripts/check_release_hygiene.py`, network-bound, weekly) because that check cannot run offline.
 - Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release. The floor is maintained automatically: `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar weekly, and `Scripts/python_floor.py` resolves the oldest supported minor, refuses downgrades, verifies parity across both hosts' matrices and this guide (plus the local mirror), and applies bumps via an auto-merge PR. No minimum Python 3 version is advertised to users; the current release is the only recommended runtime.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-11-21): skills, repos, categories, license, and OS badges; the dynamic release badge URL is valid but is not registered in the project.
 
@@ -748,4 +748,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=14a6e96fde88ff6ba3c7ec3cbef82739ff4f45bf -->
+<!-- mirror-sync: sync-sha=6e577db3f6b5e67131abc62cdc6ef56184e5e409 -->

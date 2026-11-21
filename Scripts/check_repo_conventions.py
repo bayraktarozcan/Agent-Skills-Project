@@ -7,6 +7,7 @@ Checks (PASS/FAIL by name, any failure exits 1):
                     layer file (the .gitignore pattern is the only exception)
   no-legacy-version  no prose advertises an end-of-life Python floor (3.8+)
   heading-case     documentation headings follow the title-case rule in AGENTS.md
+  workflow-inventory  every tracked workflow name appears in both guides
 """
 from __future__ import annotations
 
@@ -130,6 +131,18 @@ def check(root: Path = ROOT) -> list[str]:
         failures.append("heading-case: " + ", ".join(bad_headings[:10]))
     else:
         print("PASS heading-case: documentation headings follow title case")
+
+    workflows = sorted(p.stem for p in (root / ".github" / "workflows").glob("*.yml"))
+    missing_docs: list[str] = []
+    for guide in ("AGENTS.md", "AGENTS-TR.md"):
+        text = (root / guide).read_text(encoding="utf-8")
+        for name in workflows:
+            if name not in text:
+                missing_docs.append(f"{guide}: {name}")
+    if not workflows or missing_docs:
+        failures.append("workflow-inventory: " + ", ".join(missing_docs or ["no workflows found"]))
+    else:
+        print(f"PASS workflow-inventory: {len(workflows)} workflows documented in both guides")
     return failures
 
 
