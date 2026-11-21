@@ -568,11 +568,11 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Toolchain — overrides of the defaults in the appendix, compatibility floor
 
 - Compatibility floor: Windows PowerShell 5.1+. No syntax above it in committed scripts.
-- Shell: `pwsh` 7.6.6 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
-- `glab` 1.123.0 installed (GitLab operations).
-- `gh` 2.102.0 installed (GitHub operations; release listing verified).
+- Shell: `pwsh` 7.7.0 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
+- `glab` 1.131.0 installed (GitLab operations).
+- `gh` 2.105.0 installed (GitHub operations; release listing verified).
 - `gitleaks` 8.30.1 at `%LOCALAPPDATA%\Programs\gitleaks` (user scope, no UAC; byte-identical to the winget-verified binary; `detect` full-history scan verified clean on this repo).
-- Python 3.15.0 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.0). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
+- Python 3.15.2 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.2). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
 - PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Scratch/` in `.gitignore`) and run with file execution.
 
 ## Releases — procedure, hosts, parity checks
@@ -744,4 +744,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=577b7e1485bbd92c455df036f19af55e288bc82a -->
+<!-- mirror-sync: sync-sha=ec5b08628895c583cd7d911836ee8b17273a71ae -->
