@@ -20,8 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **EOL-aware CI Python floor automation** — `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar (`https://peps.python.org/api/release-cycle.json`) weekly and opens an auto-merge PR when the oldest supported minor advances beyond the declared CI floor. `Scripts/python_floor.py` resolves the floor, refuses downgrades, retries transient network failures, and verifies parity across both hosts' matrices and the agent guide (including the local mirror); `selftest` proves the guards can fail. No minimum Python 3 runtime is advertised to users; the current release is the only recommended runtime.
+- **Named CI and release guards** — `Scripts/check_action_refs.py` verifies every action ref against a local default-branch map and forbids SHA/version/digest pins; `Scripts/check_release_hygiene.py` audits published titles and bilingual bodies on both hosts; `Scripts/verify_mirror.py --selftest` now also detects a deleted unanchored checklist step. Both guards run in `Hygiene` and the local gate (the release audit is network-bound and CI-only).
+
+### Fixed
+
+- **SECURITY.md corrected** — the supported-version table now names `1.2.1` as active (was `1.0.2`), and EN/TR sections record the accepted risk of mutable CI references with date, zone and compensating controls.
+- **Release title descriptions** are derived from the canonical `CHANGELOG.md` `Summary` section instead of a curated dictionary, so a new tag cannot drift from the changelog.
+- **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation.
 
 ## [1.2.1] - 2026-11-21
+
+### Summary
+
+Release workflow and documentation fixes
 
 ### Changed
 
@@ -29,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Older releases deprecated** — `v1.0.0`–`v1.2.0` now carry `[DEPRECATED]` on both GitHub and GitLab; `v1.2.1` is the only supported release.
 
 ## [1.2.0] - 2026-11-21
+
+### Summary
+
+Specialization, CI currency and security release
 
 ### Added
 
@@ -68,6 +83,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2026-09-09
 
+### Summary
+
+Specialization profiles release
+
 ### Added
 
 - **Specialization profiles** — `--profile temel|dengeli|tam` scopes what stays installed in `~/.agents/skills/`: `temel` (222 skills, classes C1+C2), `dengeli` (355, classes C1+C2+C3 plus the first 76 of C4), `tam` (566, everything; the default).
@@ -78,6 +97,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Version bump to 1.1.0** — `--version` now reports `AgentSynapse v1.1.0`.
 
 ## [1.0.2] - 2026-09-09
+
+### Summary
+
+Compatibility and documentation update
 
 ### Changed
 
@@ -95,6 +118,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2026-08-15
 
+### Summary
+
+Reliability improvements
+
 ### Changed
 
 - **Single-branch clones**: repos are now cloned with `--depth 1 --single-branch --no-tags` (one branch, no tags).
@@ -109,6 +136,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Frontmatter rewrite guard**: the `name:` rewrite only runs when a frontmatter `name:` line actually exists, so body lines were never corrupted.
 
 ## [1.0.0] - 2026-06-25
+
+### Summary
+
+Functional categories and installer
 
 ### Added
 
@@ -161,6 +192,13 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 ### Eklenenler
 
 - **CI Python alt sınırı için EOL otomasyonu** — `.github/workflows/Python-Floor.yml`, Python çekirdek ekibinin yayın takvimini (`https://peps.python.org/api/release-cycle.json`) haftalık okur ve desteklenen en eski küçük sürüm bildirilen CI alt sınırını geçtiğinde otomatik birleştirme PR'ı açar. `Scripts/python_floor.py` alt sınırı çözer, düşürmeyi reddeder, geçici ağ hatalarını yeniden dener ve iki hostun matrisleri ile ajan kılavuzu (yerel ayna dahil) arasındaki eşliği doğrular; `selftest` kontrollerin işe yaradığını kanıtlar. Kullanıcıya asgari bir Python 3 sürümü önerilmez; yalnızca güncel sürüm önerilen çalışma zamanıdır.
+- **Adlandırılmış CI ve yayın kontrolleri** — `Scripts/check_action_refs.py` her aksiyon referansını yerel varsayılan dal haritasıyla doğrular ve SHA/sürüm/özet pinlerini yasaklar; `Scripts/check_release_hygiene.py` her iki hosttaki yayın başlıklarını ve iki dilli gövdeleri denetler; `Scripts/verify_mirror.py --selftest` artık işaretsiz bir kontrol maddesinin silinmesini de yakalar. İkisi `Hygiene` ve yerel kapıda çalışır (yayın denetimi ağa bağlı, yalnızca CI'da).
+
+### Düzeltmeler
+
+- **SECURITY.md düzeltildi** — desteklenen sürüm tablosu `1.2.1`'i aktif gösteriyor (önce `1.0.2`); EN ve TR bölümleri değişken CI referanslarının kabul edilen riskini tarih, saat dilimi ve telafi kontrolleriyle kaydediyor.
+- **Yayın başlığı açıklamaları** sabit sözlük yerine kanonik `CHANGELOG.md` `Summary` bölümünden türetiliyor; yeni etiket changelog'dan sapamaz.
+- **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor.
 
 ## [1.2.1] - 2026-11-21
 
