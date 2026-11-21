@@ -135,7 +135,11 @@ def check(root: Path = ROOT) -> list[str]:
     workflows = sorted(p.stem for p in (root / ".github" / "workflows").glob("*.yml"))
     missing_docs: list[str] = []
     for guide in ("AGENTS.md", "AGENTS-TR.md"):
-        text = (root / guide).read_text(encoding="utf-8")
+        path = root / guide
+        if not path.is_file():
+            # The local mirror is gitignored and absent in a clean checkout.
+            continue
+        text = path.read_text(encoding="utf-8")
         for name in workflows:
             if name not in text:
                 missing_docs.append(f"{guide}: {name}")
