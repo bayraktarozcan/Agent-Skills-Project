@@ -14,6 +14,8 @@ Checks (each reports PASS/FAIL by name; any failure exits 1):
   known-repo       every action is in the verified map
   default-branch   every ref equals its upstream default branch
   exception-doc    each @master use has a nearby "master, not main" comment
+  no-inline-expr   no ${{ ... }} expression appears inside a run: block (pass
+                   it through env: instead; inline text can inject shell)
 """
 
 from __future__ import annotations
@@ -100,6 +102,29 @@ def check(root: Path = ROOT) -> list[str]:
         failures.append("exception-doc: " + ", ".join(undocumented))
     else:
         print("PASS exception-doc: every @master use is documented next to its line")
+
+    leaks: list[str] = []
+    for path in ci_files(root):
+        if path.name == ".gitlab-ci.yml":
+            continue
+        in_run = False
+        run_indent = 0
+        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            stripped = line.lstrip()
+            indent = len(line) - len(stripped)
+            if in_run and stripped and indent <= run_indent:
+                in_run = False
+            if re.match(r"^run:", stripped):
+                in_run = True
+                run_indent = indent
+                if "${{" in stripped.split(":", 1)[1]:
+                    leaks.append(f"{path.name}:{i}")
+            elif in_run and "${{" in line:
+                leaks.append(f"{path.name}:{i}")
+    if leaks:
+        failures.append("no-inline-expr: " + ", ".join(leaks))
+    else:
+        print("PASS no-inline-expr: every expression reaches scripts through env:")
     return failures
 
 
@@ -127,7 +152,14 @@ def selftest() -> int:
         if not any(f.startswith("no-sha:") for f in failures):
             print("SELFTEST FAIL: planted SHA pin not caught")
             return 1
-    print("SELFTEST OK: clean tree passes, planted SHA pin fails by name")
+        (wf / "CI.yml").write_text(
+            src.replace("run: python -m py_compile skills.py",
+                        'run: echo "${{ github.event.inputs.version }}"'), encoding="utf-8")
+        failures = check(root)
+        if not any(f.startswith("no-inline-expr:") for f in failures):
+            print("SELFTEST FAIL: planted inline expression not caught")
+            return 1
+    print("SELFTEST OK: clean tree passes, planted SHA pin and inline expression fail by name")
     return 0
 
 
