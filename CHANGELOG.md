@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation. All workflow expressions now reach scripts through `env:` instead of inline `run:` text (shell-injection surface).
 - **v1.2.0 notes completed** — the omitted Security / Güvenlik bullet was added on both hosts so every changelog bullet is represented in its release notes.
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
+- **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
 
 ## [1.2.1] - 2026-11-21
 
@@ -205,6 +206,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor. Tüm iş akışı ifadeleri satır içi `run:` metni yerine `env:` üzerinden betiklere iletiliyor (kabuk enjeksiyon yüzeyi).
 - **v1.2.0 notları tamamlandı** — atlanan Security / Güvenlik maddesi her iki hostta eklendi; böylece her changelog maddesi yayın notlarında temsil ediliyor.
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
+- **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
 
 ## [1.2.1] - 2026-11-21
 

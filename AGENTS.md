@@ -507,7 +507,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref, pin and expression-boundary guard), `check_repo_conventions.py` (final-newline and hidden-layer-name guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `install_hooks.py` + `pre-push` (opt-in local gate), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref, pin and expression-boundary guard), `check_repo_conventions.py` (final-newline, hidden-layer-name and heading-case guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `install_hooks.py` + `pre-push` (opt-in local gate), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -748,4 +748,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=1eb07badd669ed33ec49e75218b9981312bc9d98 -->
+<!-- mirror-sync: sync-sha=14a6e96fde88ff6ba3c7ec3cbef82739ff4f45bf -->
