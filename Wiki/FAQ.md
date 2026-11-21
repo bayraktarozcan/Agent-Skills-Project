@@ -10,7 +10,7 @@
 
 ### How long does installation take?
 
-The first run clones 34–48 repositories (depends on profile). This typically takes **2–5 minutes** on a broadband connection. Each repo is cloned sequentially; the bottleneck is network speed and the number of repos in the chosen profile.
+The first run clones 35–50 repositories (depends on profile). This typically takes **2–5 minutes** on a broadband connection. Each repo is cloned sequentially; the bottleneck is network speed and the number of repos in the chosen profile.
 
 ### Where are skills installed?
 
@@ -126,7 +126,7 @@ Yes. The installer is tested on:
 
 ### What does the installer actually do?
 
-1. Reads the embedded `REPOS` registry (48 repos across 10 categories)
+1. Reads the embedded `REPOS` registry (50 repos across 10 categories)
 2. Filters repos based on the requested profile or category
 3. For each repo: clones it to a temp directory, finds `SKILL.md` files, copies them to `~/.agents/skills/<name>/`, cleans up temp files
 4. Fixes invalid skill names (spaces and underscores become hyphens; other invalid characters are removed)
@@ -151,7 +151,7 @@ These are timestamped to the second, so every run produces unique files.
 
 ### Kurulum ne kadar sürer?
 
-İlk çalıştırma 34–48 depoyu klonlar (profile bağlı). Geniş bant bağlantıda tipik olarak **2–5 dakika** sürer. Her depo sırayla klonlanır; darboğaz ağ hızı ve seçilen profildeki depo sayısıdır.
+İlk çalıştırma 35–50 depoyu klonlar (profile bağlı). Geniş bant bağlantıda tipik olarak **2–5 dakika** sürer. Her depo sırayla klonlanır; darboğaz ağ hızı ve seçilen profildeki depo sayısıdır.
 
 ### Beceriler nereye yüklenir?
 
@@ -267,7 +267,7 @@ Evet. Yükleyici aşağıdakilerde test edilmiştir:
 
 ### Yükleyici aslında ne yapıyor?
 
-1. Gömülü `REPOS` kaydını okur (10 kategoride 48 depo)
+1. Gömülü `REPOS` kaydını okur (10 kategoride 50 depo)
 2. İstenen profile veya kategoriye göre depoları filtreler
 3. Her depo için: geçici bir dizine klonlar, `SKILL.md` dosyalarını bulur, `~/.agents/skills/<adi>/` konumuna kopyalar, geçici dosyaları temizler
 4. Geçersiz beceri adlarını düzeltir (boşluklar ve alt çizgiler tirelere dönüşür; diğer geçersiz karakterler kaldırılır)

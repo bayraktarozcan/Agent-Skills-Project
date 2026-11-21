@@ -13,11 +13,11 @@ Skills are organized into 10 functional categories (K1–K10). Each category rep
 | Code | Category | Repos | Trust | Description |
 |------|----------|-------|-------|-------------|
 | K1 | Core | 5 | ✅ | Languages, tooling, code quality, architecture |
-| K2 | AI & LLM | 9 | ✅ | AI agents, LLM frameworks, prompt engineering, RAG |
+| K2 | AI & LLM | 10 | ✅ | AI agents, LLM frameworks, prompt engineering, RAG |
 | K3 | Cloud & Backend | 11 | ✅ | Cloud platforms, databases, backend services |
 | K4 | Frontend & UI | 8 | ✅ | UI frameworks, design systems, visual tools |
 | K5 | Mobile | 1 | ✅ | iOS, Android, React Native, Expo |
-| K6 | Security | 2 | ✅ | Security reviews, vulnerability scanning, auth |
+| K6 | Security | 3 | ✅ | Security reviews, vulnerability scanning, auth |
 | K7 | Testing | 1 | ✅ | E2E, unit, integration, visual regression |
 | K8 | Content | 2 | ✅ | Writing, documentation, WordPress |
 | K9 | Community | 5 | ⚠️ Opt-in | Third-party contributions, lower star counts |
@@ -34,7 +34,7 @@ General development, languages, tooling, code quality, and architecture best pra
 | [obra/superpowers](https://github.com/obra/superpowers) | Agent superpowers and extended capabilities |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | Karpathy's development guidelines |
 
-### K2 — AI & LLM (9 repos)
+### K2 — AI & LLM (10 repos)
 AI agents, LLM frameworks, prompt engineering, RAG, vector search, and browser automation.
 
 | Repo | Description | Recommended |
@@ -48,6 +48,7 @@ AI agents, LLM frameworks, prompt engineering, RAG, vector search, and browser a
 | [affaan-m/ECC](https://github.com/affaan-m/ECC) | Error correction code skills | |
 | [openclaw/openclaw](https://github.com/openclaw/openclaw) | OpenClaw agent tooling | |
 | [agno-agi/agno](https://github.com/agno-agi/agno) | Agno AGI framework | |
+| [NVIDIA/skills](https://github.com/NVIDIA/skills) (subpath: `skills`) | Physical AI, robotics, CUDA-X, NeMo — provider-locked (C4) | |
 
 ### K3 — Cloud & Backend (11 repos)
 Cloud platforms, databases (SQL & NoSQL), backend services, infrastructure, and observability.
@@ -87,13 +88,14 @@ iOS, Android, React Native, and Expo mobile development.
 |------|-------------|
 | [expo/skills](https://github.com/expo/skills) | Expo framework — router, UI, deployment, modules |
 
-### K6 — Security (2 repos)
+### K6 — Security (3 repos)
 Security reviews, vulnerability scanning, authentication, and hardening.
 
 | Repo | Description |
 |------|-------------|
 | [better-auth/skills](https://github.com/better-auth/skills) | Better Auth — authentication, organizations, 2FA, rate limiting |
 | [squirrelscan/skills](https://github.com/squirrelscan/skills) | SquirrelScan — website security auditing |
+| [GitGuardian/agent-skills](https://github.com/GitGuardian/agent-skills) (subpath: `skills`) | Secret scanning, honeytokens, incident triage, hook installation |
 
 ### K7 — Testing (1 repo)
 E2E, unit, integration, visual regression, and performance testing.
@@ -142,11 +144,11 @@ Beceriler 10 işlevsel kategoride (K1–K10) düzenlenmiştir. Her kategori, yaz
 | Kod | Kategori | Depo | Güven | Açıklama |
 |-----|----------|------|:-----:|----------|
 | K1 | Temel | 5 | ✅ | Diller, araçlar, kod kalitesi, mimari |
-| K2 | AI & LLM | 9 | ✅ | AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG |
+| K2 | AI & LLM | 10 | ✅ | AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG |
 | K3 | Bulut & Arka Uç | 11 | ✅ | Bulut platformları, veritabanları, arka uç servisleri |
 | K4 | Ön Yüz & Arayüz | 8 | ✅ | UI çerçeveleri, tasarım sistemleri, görsel araçlar |
 | K5 | Mobil | 1 | ✅ | iOS, Android, React Native, Expo |
-| K6 | Güvenlik | 2 | ✅ | Güvenlik incelemeleri, zafiyet taraması, kimlik doğrulama |
+| K6 | Güvenlik | 3 | ✅ | Güvenlik incelemeleri, zafiyet taraması, kimlik doğrulama |
 | K7 | Test | 1 | ✅ | Uçtan uca, birim, entegrasyon, görsel regresyon |
 | K8 | İçerik | 2 | ✅ | Yazma, dokümantasyon, WordPress |
 | K9 | Topluluk | 5 | ⚠️ İsteğe bağlı | Üçüncü taraf katkıları, düşük yıldız sayıları |
@@ -163,7 +165,7 @@ Genel geliştirme, diller, araçlar, kod kalitesi ve mimari en iyi uygulamalar.
 | [obra/superpowers](https://github.com/obra/superpowers) | Ajan süper güçleri ve genişletilmiş yetenekler |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | Karpathy'nin geliştirme yönergeleri |
 
-### K2 — AI & LLM (9 depo)
+### K2 — AI & LLM (10 depo)
 AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve tarayıcı otomasyonu.
 
 | Depo | Açıklama | Önerilen |
@@ -177,6 +179,7 @@ AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve ta
 | [affaan-m/ECC](https://github.com/affaan-m/ECC) | Hata düzeltme kodu becerileri | |
 | [openclaw/openclaw](https://github.com/openclaw/openclaw) | OpenClaw ajan araçları | |
 | [agno-agi/agno](https://github.com/agno-agi/agno) | Agno AGI çerçevesi | |
+| [NVIDIA/skills](https://github.com/NVIDIA/skills) (alt klasör: `skills`) | Fiziksel AI, robotik, CUDA-X, NeMo — sağlayıcı-kilitli (C4) | |
 
 ### K3 — Bulut & Arka Uç (11 depo)
 Bulut platformları, veritabanları (SQL & NoSQL), arka uç servisleri, altyapı ve gözlemlenebilirlik.
@@ -216,13 +219,14 @@ iOS, Android, React Native ve Expo mobil geliştirme.
 |------|----------|
 | [expo/skills](https://github.com/expo/skills) | Expo çerçevesi — yönlendirici, UI, dağıtım, modüller |
 
-### K6 — Güvenlik (2 depo)
+### K6 — Güvenlik (3 depo)
 Güvenlik incelemeleri, zafiyet taraması, kimlik doğrulama ve sertleştirme.
 
 | Depo | Açıklama |
 |------|----------|
 | [better-auth/skills](https://github.com/better-auth/skills) | Better Auth — kimlik doğrulama, organizasyonlar, 2FA, hız sınırlama |
 | [squirrelscan/skills](https://github.com/squirrelscan/skills) | SquirrelScan — web sitesi güvenlik denetimi |
+| [GitGuardian/agent-skills](https://github.com/GitGuardian/agent-skills) (alt klasör: `skills`) | Sır tarama, honeytoken, olay üçleme, kanca kurulumu |
 
 ### K7 — Test (1 depo)
 Uçtan uca, birim, entegrasyon, görsel regresyon ve performans testi.

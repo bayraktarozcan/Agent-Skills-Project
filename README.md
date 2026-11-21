@@ -324,7 +324,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 ## Özellikler
 
-- **Tek komutla kurulum** -- 34 depoyu klonla, becerileri çıkar, tekrarları temizle, bitti.
+- **Tek komutla kurulum** -- 35 depoyu klonla, becerileri çıkar, tekrarları temizle, bitti.
 - **10 işlevsel kategori** -- Çekirdek, AI & LLM, Bulut & Backend, Ön yüz & UI, Mobil, Güvenlik, Test, İçerik, Topluluk, Risk.
 - **İki dilli** -- İngilizce ve Türkçe. Otomatik algılama veya `--lang tr`.
 - **Çapraz platform** -- Windows, macOS, Linux. Tek Python dosyası, bağımlılık yok.

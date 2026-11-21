@@ -42,7 +42,7 @@ That's it. The recommended profile installs ~1001 skills from 35 curated repos.
 | Page | Description |
 |------|-------------|
 | [Installation](Installation) | Full install guide, prerequisites, profiles, Turkish aliases |
-| [Categories](Categories) | All 10 categories with complete repo lists (48 repos) |
+| [Categories](Categories) | All 10 categories with complete repo lists (50 repos) |
 | [Command-Reference](Command-Reference) | CLI flags, profiles, Turkish aliases, options |
 | [Contributing](Contributing) | How to add repos, quality criteria, reclassification |
 | [FAQ](FAQ) | Troubleshooting, common questions, uninstall |
@@ -87,7 +87,7 @@ Bu kadar. Önerilen profil, 35 küratörlü depodan ~1001 beceri yükler.
 | Sayfa | Açıklama |
 |-------|----------|
 | [Kurulum](Installation) | Tam kurulum rehberi, gereksinimler, profiller, Türkçe alias'lar |
-| [Kategoriler](Categories) | 10 kategori ve 48 deponun tam listesi |
+| [Kategoriler](Categories) | 10 kategori ve 50 deponun tam listesi |
 | [Komut-Referansi](Command-Reference) | CLI flag'leri, profiller, Türkçe alias'lar, seçenekler |
 | [Katkida-Bulunma](Contributing) | Depo ekleme, kalite kriterleri, yeniden sınıflandırma |
 | [SSS](FAQ) | Sorun giderme, sık sorulan sorular, kaldırma |
