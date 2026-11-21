@@ -557,7 +557,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - Manifest: none — the program is stdlib-only (`skills.py`), so there is no language manifest or lockfile; the host toolchain is declared under "Toolchain" instead.
 - Setup command: none beyond the toolchain (`py skills.py --check` proves readiness; see Commands).
 - Approved project-scope exceptions: none.
-- Retained exceptions: none. Host toolchain versions are declared once under "Toolchain" and kept current under "Currency without exception"; this section keeps no dated version snapshot. If a component cannot be kept current, it is recorded here with reason, exposure assessment, exit trigger, and review cadence.
+- Retained exceptions: none. The host toolchain is declared once under "Toolchain" by path and verification command, kept current under "Currency without exception"; no section keeps a version snapshot. If a component cannot be kept current, it is recorded here with reason, exposure assessment, exit trigger, and review cadence.
 
 ## Hidden layers — scratch directory name (named here once), cadence for clearing it
 
@@ -568,11 +568,12 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Toolchain — overrides of the defaults in the appendix, compatibility floor
 
 - Compatibility floor: Windows PowerShell 5.1+. No syntax above it in committed scripts.
-- Shell: `pwsh` 7.7.0 is installed and preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
-- `glab` 1.131.0 installed (GitLab operations).
-- `gh` 2.105.0 installed (GitHub operations; release listing verified).
-- `gitleaks` 8.30.1 at `%LOCALAPPDATA%\Programs\gitleaks` (user scope, no UAC; byte-identical to the winget-verified binary; `detect` full-history scan verified clean on this repo).
-- Python 3.15.2 (`%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; verified `python --version` into 3.15.2). That directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
+- Shell: `pwsh` is preferred where the runtime offers it; the automation entrypoint in this environment runs Windows PowerShell 5.1, so every committed script stays 5.1-clean.
+- `glab` is available for GitLab operations; read its version from `glab --version` when needed.
+- `gh` is available for GitHub operations (release listing verified); read its version from `gh --version` when needed.
+- `gitleaks` lives at `%LOCALAPPDATA%\Programs\gitleaks` (user scope, no UAC); `detect` full-history scan verified clean on this repo; read its version from `gitleaks version`.
+- Python lives at `%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe`; that directory stands first in the user `PATH`, ahead of a stale Store stub in `WindowsApps`; `python3` resolves to the same install. Shells started before the 2026-10-09 PATH repair still see the dead stub until restarted. CI images use their own `python` and are unaffected.
+- No exact installed version of any host tool is recorded here: currency comes from the update process, so re-read versions with the commands above at the moment they matter. This section records paths, verification commands, and the compatibility floor only.
 - PowerShell quoting discipline: no inline fragment mixing quote terminators; write scripts under the scratch directory (pattern `Scratch/` in `.gitignore`) and run with file execution.
 
 ## Releases — procedure, hosts, parity checks
@@ -744,4 +745,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=ec5b08628895c583cd7d911836ee8b17273a71ae -->
+<!-- mirror-sync: sync-sha=9e1776ca4e0369aa266a78418558604b33b38086 -->
