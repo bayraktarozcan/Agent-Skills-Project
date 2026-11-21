@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Check links
+        # Upstream default branch is master, not main (verified 2026-11-21).
         uses: lycheeverse/lychee-action@master
         with:
           # file:// = author-machine absolute paths, never valid in CI

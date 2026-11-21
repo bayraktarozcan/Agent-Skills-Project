@@ -58,8 +58,15 @@ jobs:
       - name: Build release notes from template
         run: python Scripts/build_release_notes.py "${{ steps.version.outputs.version }}" RELEASE-NOTES.md
 
+      - name: Verify release artifacts
+        if: matrix.python-version == '3.x'
+        run: |
+          test -s skills.py
+          test -s skills.py.sha256
+
       - name: Create Release
         if: matrix.python-version == '3.x'
+        # Upstream default branch is master, not main (verified 2026-11-21).
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ steps.version.outputs.tag }}

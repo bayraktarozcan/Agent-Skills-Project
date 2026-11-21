@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@main
         with:
           fetch-depth: 0
+      # Upstream default branch is master, not main (verified 2026-11-21).
       - uses: gitleaks/gitleaks-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
