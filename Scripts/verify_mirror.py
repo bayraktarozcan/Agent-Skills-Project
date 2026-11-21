@@ -89,8 +89,10 @@ def structure(path: Path) -> dict:
         stripped = ln.strip()
         if re.match(r"^(- \[[ x]\]|(\d+)\.) ", stripped):
             tokens = re.findall(r"`([^`]+)`", stripped)
-            if tokens:
-                checks.append(tokens[0])
+            # An item without a backticked token has no anchor to compare, but
+            # its presence and position still count: a lost step is a lost
+            # instruction even when its prose is legitimately translated.
+            checks.append(tokens[0] if tokens else "<no-anchor>")
     return {
         "sections": len(h2),
         "depths": depths,
@@ -128,24 +130,30 @@ def compare(source: Path, mirror: Path) -> list[str]:
 def selftest() -> int:
     import tempfile
 
-    en = "# T\n\n## A\n\n- one `git status` rule\n\n```\nx\n```\n\n| H |\n|---|\n| v |\n\n- [ ] `git status` first\n"
-    ok_mirror = en.replace("one", "bir").replace("first", "ilk")
+    en = "# T\n\n## A\n\n- one `git status` rule\n\n```\nx\n```\n\n| H |\n|---|\n| v |\n\n- [ ] `git status` first\n1. anchored step\n"
+    ok_mirror = en.replace("one", "bir").replace("first", "ilk").replace("anchored step", "bağlantılı adım")
     drift_mirror = ok_mirror.replace("- [ ] `git status` ilk", "- [ ] `git diff` ilk")
+    missing_unanchored = ok_mirror.replace("1. bağlantılı adım\n", "")
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
         src = tmp_path / "EN.md"
         good = tmp_path / "TR.md"
         bad = tmp_path / "BAD.md"
+        missing = tmp_path / "MISSING.md"
         src.write_text(en + "<!-- mirror-sync: sync-sha=0 -->\n", encoding="utf-8")
         good.write_text(ok_mirror + "<!-- mirror-sync: sync-sha=0 -->\n", encoding="utf-8")
         bad.write_text(drift_mirror + "<!-- mirror-sync: sync-sha=0 -->\n", encoding="utf-8")
+        missing.write_text(missing_unanchored + "<!-- mirror-sync: sync-sha=0 -->\n", encoding="utf-8")
         if compare(src, good):
             print("SELFTEST FAIL: clean pair reported as drift")
             return 1
         if not compare(src, bad):
             print("SELFTEST FAIL: planted checklist drift not caught")
             return 1
-    print("SELFTEST OK: clean pair passes, planted drift fails by name")
+        if not compare(src, missing):
+            print("SELFTEST FAIL: deleted unanchored checklist step not caught")
+            return 1
+    print("SELFTEST OK: clean pair passes, anchor drift and deleted unanchored step fail by name")
     return 0
 
 
