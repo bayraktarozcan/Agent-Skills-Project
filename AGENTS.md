@@ -580,7 +580,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Releases — Procedure, Hosts, Parity Checks
 
 - Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `Release.yml` compiles `skills.py`, writes `skills.py.sha256`, builds short bilingual notes from `RELEASE-NOTE-TEMPLATE.md` via `Scripts/build_release_notes.py`, and publishes a Release with those notes. The full history stays in `CHANGELOG.md`.
-- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`; older titles carry a `[DEPRECATED]` prefix on both). `v1.1.0` is tagged at commit `356f8c9` and its body is template-generated; `skills.py` + `skills.py.sha256` assets exist on GitHub.
+- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0`, `v1.2.0` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`). Only `v1.2.0` is current; `v1.0.0`–`v1.1.0` carry `[DEPRECATED]` on both. `v1.1.0` is tagged at `356f8c9`, `v1.2.0` at `93eeb9f`; bodies are template-generated and `skills.py` + `skills.py.sha256` assets exist on GitHub.
 - Release notes: bilingual EN-first at equal scope when a release ships notes beyond the changelog body.
 
 ## Bypasses — Gates That Do Not Hold by Design, and What Runs Afterward
@@ -746,4 +746,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=b66a5cf8eebff10ad6a411d51307f6a2f8a43802 -->
+<!-- mirror-sync: sync-sha=d429d74e2ed4999146f412e45ee51097a8c112d3 -->
