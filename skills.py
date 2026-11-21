@@ -491,7 +491,7 @@ SCRIPT_DIR = Path(__file__).parent.resolve()
 SKILLS_DIR = Path.home() / ".agents" / "skills"
 AGENTS_DIR = Path.home() / ".agents"
 LOGS_DIR = Path.cwd() / "Logs"
-TREE_DIR = Path.cwd()
+TREE_DIR = LOGS_DIR
 
 # ─────────────────────────────── LOGGING ───────────────────────────────
 
@@ -1096,6 +1096,7 @@ def install(
 def save_tree(lang: str) -> str | None:
     if not AGENTS_DIR.is_dir():
         return None
+    TREE_DIR.mkdir(parents=True, exist_ok=True)
     tree_file = TREE_DIR / f"skills-tree_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S}.txt"
     tree_lines: list[str] = []
 
