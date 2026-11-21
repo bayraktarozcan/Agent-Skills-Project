@@ -516,7 +516,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 ## Versions — Scheme, Current Constants, Where Each is Stated
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
-- Constants and where stated: CLI `--version` reports `AgentSynapse v1.1.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2` exist identically on both hosts (verified via `ls-remote --tags`); registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (1001 skills, C4 620, profiles 227/360/1001) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
+- Constants and where stated: CLI `--version` reports `AgentSynapse v1.2.0` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0` exist identically on both hosts (verified via `ls-remote --tags`), with `v1.2.0` tagged at this release commit; registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (1001 skills, C4 620, profiles 227/360/1001) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
 - A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — Setup, Build, Test, Lint, the Single Local Gate Command
@@ -746,4 +746,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=01dcbe69ec7870abc773d06687fe754cf51f54cc -->
+<!-- mirror-sync: sync-sha=b66a5cf8eebff10ad6a411d51307f6a2f8a43802 -->

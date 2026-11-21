@@ -17,11 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-21
+
 ### Added
 
-- **GitGuardian/agent-skills in K6** — official MIT-licensed secret-scanning skills (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`) installed via `subpath: skills`. Registry counts move to 35 recommended repos and ~571 skills.
+- **GitGuardian/agent-skills in K6** — official MIT-licensed secret-scanning skills (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`) installed via `subpath: skills`. Registry moves to 35 recommended repos; the catalog reaches 1001 skills with NVIDIA/skills later in this release.
 - **Project-local skill `git-remote-credential-hygiene`** — under `Skills/`, owns the remote-URL-to-OS-credential-manager move plus GitHub/GitLab dual-remote authentication proof (read-only by default, approval-gated move, rotation-first). Complements scanner skills; ships a read-only `scan_remote_hygiene.py` script.
 - **NVIDIA/skills in K2** — 430 NVIDIA-authored skills for Physical AI, robotics, CUDA-X libraries, RAG/AI Blueprints, platform tools (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, etc.), installed via `subpath: skills`, `recommended: false`. All classified as **C4** (provider-locked) in `SKILL-SPECIALIZATION.json`; specialization manifest grows to 1001 skills (tam profile), temel/dengeli profiles unchanged (227/360). Registry remains 36 recommended repos.
+- **Specialization data layer** — bundled `SKILL-SPECIALIZATION.json` maps all 1001 skills to C1–C5 (190/37/57/620/97) with `temel` 227, `dengeli` 360, `tam` 1001 profiles; `--list`, `--check`, and post-install reconciliation were added and covered by a version-parity checker and local gate.
+- **Wiki publishing** — `Wiki/` is the single source, published to GitHub and GitLab wikis by `Scripts/Sync-Wiki.ps1` and `.github/workflows/Sync-Wiki.yml` on changes and weekly.
+- **Security and quality gates** — Gitleaks full-history secret scan, encoding/mojibake gate, link checker, GitLab CI parity jobs, Dependabot auto-merge (with status-check polling via `gh api`), and a reproducible local gate.
+- **Bilingual documentation and standards** — universal agent guide adopted as `AGENTS.md` with a gitignored TR review mirror, LOW-GLOW design core, privacy/support/security docs, CODEOWNERS, release-note template, and checked machine-time and line-ending rules.
 
 ### Changed
 
@@ -30,12 +36,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dependency-model audit** — grep verification confirmed there is no `pyproject.toml`, `requirements*.in`/`requirements.txt`, compiled lockfile, `pip install` consumer, regeneration workflow, sync script, `cache-dependency-path`, or bandit ignore in the repository; nothing needed unpinning or deletion. The stale `pip` entry was removed from Dependabot because no Python manifest exists. The program remains stdlib-only, and any future dependency list must be unpinned and latest-by-default.
 - **Stale metadata corrected** — AGENTS.md no longer claims an unregistered "Latest Release" badge; all five registered SVG badges were re-probed (HTTP 200, `image/svg+xml`, 2026-11-21). The specialization manifest no longer hardcodes a superseded source count, dropped the inaccurate `ratio: 0.4` field (76 of 620 C4 skills, not 40%), and refreshed its `generated` date.
 - **Release notes use the template** — `Release.yml` no longer publishes the whole `CHANGELOG.md` as the release body; `Scripts/build_release_notes.py` fills `RELEASE-NOTE-TEMPLATE.md` with the requested version section and drops empty sections. The already-published `v1.1.0` bodies on both hosts were corrected to the short bilingual notes.
+- **Naming and hygiene sweep** — paths moved to PascalCase/UPPER with recorded exemptions (`docs/` stays platform-fixed); LF is authoritative for all text files, final newlines are present, PowerShell scripts keep BOM/CRLF, and tree snapshots now land in `Logs/`.
+- **Documentation accuracy** — repo counts aligned to the embedded registry (35 recommended / 41 trusted / 50 total), host-tool version snapshots removed in favour of on-demand verification commands, heading capitalization standardized, bootstrap checklist and CodeQL/branch-protection facts aligned with the platform, and root documents linked from README.
 
 ### Fixed
 
 - **Stale `resolving-merge-conflicts` entry removed** — upstream `mattpocock/skills` no longer ships it as a SKILL.md, so it can never install. Manifest counts corrected to 571 skills (C1 190; profiles 227/360/571).
 - **Skill spec compliance rework** — `git-remote-credential-hygiene` now follows the Agent Skills shape (router SKILL.md with open-when table, trigger-rich description, `SPEC.md` contract, `evals/evals.json` cases).
 - **Naming compliance sweep** — non-conforming paths renamed to PascalCase/UPPER (`Scripts/`, `Skills/`, `Temp/`, `SKILL-SPECIALIZATION.json`, workflows, templates, `Sync-Wiki.ps1`, skill leaves, web assets); `docs/` was reverted after the GitHub Pages legacy `/docs` source broke the build, and stays as a recorded platform-fixed exemption. CI, code, docs, and contract references updated together.
+- **CI and script fixes** — PR context passed through environment variables to prevent script injection, third-party status-check waiter replaced with `gh api` polling, actionlint findings resolved, GitLab encoding job given `git`, Mojibake checkout made full-depth, `Sync-Wiki.ps1` saved with UTF-8 BOM, link-check exclusions corrected, Dependabot auto-merge noop job added, clone counts and bilingual skill counts corrected, and final newlines normalized.
+- **Manifest metadata corrections** — stale source count and inaccurate `ratio: 0.4` removed, `generated` date refreshed; unregistered "Latest Release" badge claim removed after re-probing all five live SVG badges.
+
+### Removed
+
+- Pinned action SHAs, digest-pinned Docker images, the unsupported `poseidon` action, and the stale `pip` Dependabot ecosystem entry — the pipeline now resolves rolling branches/tags and the latest interpreter at run time.
+
+### Security
+
+- Secret scanning runs on every push and PR; only the latest release is supported and older releases are marked `[DEPRECATED]` on both hosts.
 
 ## [1.1.0] - 2026-09-09
 
@@ -129,11 +147,17 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-21
+
 ### Eklenenler
 
-- **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt sayıları 35 önerilen depo ve ~571 beceriye çıktı.
+- **K6'da GitGuardian/agent-skills** — resmi MIT lisanslı secret tarama becerileri (`scan-secrets`, `scan-machine`, `check-hmsl`, `triage-incidents`, `create-honeytokens`, `install-hooks`), `subpath: skills` ile kuruluyor. Kayıt 35 önerilen depoya çıktı; NVIDIA/skills ile katalog bu sürümde 1001 beceriye ulaşıyor.
 - **Proje-içi beceri `git-remote-credential-hygiene`** — `Skills/` altında; uzak URL'den işletim sistemi kimlik deposuna taşıma ile GitHub/GitLab çift-uzak kimlik doğrulama kanıtını üstlenir (varsayılan salt-okunur, taşıma onaylı, önce döndür). Salt-okunur `scan_remote_hygiene.py` betiği dahil.
 - **K2'de NVIDIA/skills** — Fiziksel AI, robotik, CUDA-X kütüphaneleri, RAG/AI Blueprint'lar, platform araçları (Nemotron, NeMo, BioNeMo, cuOpt, DOCA, Jetson, vb.) için 430 NVIDIA yazılı beceri, `subpath: skills` ile kuruluyor, `recommended: false`. Tümü `SKILL-SPECIALIZATION.json` içinde **C4** olarak sınıflandırıldı; uzmanlaşma manifesti 1001 beceriye çıktı (tam profil), temel/dengeli profiller değişmedi (227/360). Kayıt 36 önerilen depoya çıktı.
+- **Uzmanlaşma veri katmanı** — `SKILL-SPECIALIZATION.json` tüm 1001 beceriyi C1–C5 sınıflarına eşler (190/37/57/620/97); `temel` 227, `dengeli` 360, `tam` 1001 profilleri; `--list`, `--check` ve kurulum sonrası uzlaştırma eklendi, sürüm-eşlik denetimi ve yerel kapı ile kapsandı.
+- **Wiki yayını** — `Wiki/` tek doğruluk kaynağı; `Scripts/Sync-Wiki.ps1` ve `.github/workflows/Sync-Wiki.yml` ile değişikliklerde ve haftalık olarak GitHub ve GitLab wiki'lerine yayınlanır.
+- **Güvenlik ve kalite kapıları** — Gitleaks tam-geçmiş sır taraması, kodlama/mojibake kapısı, bağlantı denetimi, GitLab CI eşlik işleri, Durum denetimlerini `gh api` ile bekleyen Dependabot otomatik birleştirme ve yeniden üretilebilir yerel kapı.
+- **İki dilli dokümantasyon ve standartlar** — evrensel ajan kılavuzu `AGENTS.md` olarak benimsendi, gitignored TR inceleme aynası, LOW-GLOW tasarım çekirdeği, gizlilik/destek/güvenlik belgeleri, CODEOWNERS, sürüm notu şablonu ve teyit edilmiş makine saati/satır sonu kuralları eklendi.
 
 ### Değişiklikler
 
@@ -142,12 +166,24 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Bağımlılık modeli denetimi** — grep ile doğrulandı: depoda `pyproject.toml`, `requirements*.in`/`requirements.txt`, derlenmiş kilit dosyası, `pip install` tüketicisi, yeniden üretim iş akışı, senkron betiği, `cache-dependency-path` veya bandit ignore yok; sabitlemesi kaldırılacak veya silinecek bir şey yok. Python bildirimi olmadığı için Dependabot'taki bayat `pip` girdisi kaldırıldı. Program stdlib-only kalıyor; ileride eklenecek bağımlılık listesi sabitlemesiz ve varsayılan olarak güncel olacak.
 - **Bayat üst veri düzeltildi** — AGENTS.md artık kayıtlı olmayan "Latest Release" rozetini iddia etmiyor; kayıtlı beş SVG rozetinin tamamı yeniden sorgulandı (HTTP 200, `image/svg+xml`, 2026-11-21). Uzmanlaşma manifesti artık güncel olmayan kaynak sayısını sabitlemiyor, yanlış `ratio: 0.4` alanını kaldırdı (620 C4 becerisinin 76'sı, %40 değil) ve `generated` tarihini yeniledi.
 - **Sürüm notları şablonu kullanıyor** — `Release.yml` artık tüm `CHANGELOG.md`'yi yayın gövdesi olarak yayımlamıyor; `Scripts/build_release_notes.py`, `RELEASE-NOTE-TEMPLATE.md`'yi istenen sürüm bölümüyle dolduruyor ve boş bölümleri atıyor. Her iki hosttaki `v1.1.0` gövdeleri kısa iki dilli notlarla düzeltildi.
+- **Adlandırma ve hijyen süpürmesi** — yollar kayıtlı muafiyetlerle PascalCase/UPPER biçime taşındı (`docs/` platform-sabit kalıyor); tüm metin dosyaları için LF esas, son satırlar mevcut, PowerShell betikleri BOM/CRLF saklıyor, ağaç anlık görüntüleri artık `Logs/` altına yazılıyor.
+- **Belge doğruluğu** — depo sayıları gömülü kayıtla hizalandı (35 önerilen / 41 güvenli / 50 tümü), ana makine araç sürümü dökümleri yerine anlık doğrulama komutları kullanılıyor, başlık büyük harfi standartlaştırıldı, bootstrap kontrol listesi ile CodeQL/dal koruması olguları platformla hizalandı ve tüm kök belgeler README'den linklendi.
 
 ### Düzeltmeler
 
 - **Kullanılmayan `resolving-merge-conflicts` girdisi kaldırıldı** — üst depo `mattpocock/skills` artık bunu SKILL.md olarak sunmuyor, kurulması mümkün değil. Manifest sayıları 571 beceri olarak düzeltildi (C1 190; profiller 227/360/571).
 - **Beceri spec uyumu** — `git-remote-credential-hygiene` artık Agent Skills biçiminde (yönlendiren SKILL.md, tetikleyici açıklama, `SPEC.md` sözleşmesi, `evals/evals.json` vakaları).
 - **Adlandırma uyum süpürmesi** — kural dışı yollar PascalCase/UPPER biçime taşındı (`Scripts/`, `Skills/`, `Temp/`, `SKILL-SPECIALIZATION.json`, iş akışları, şablonlar, `Sync-Wiki.ps1`, beceri yaprakları, web varlıkları); GitHub Pages eski `/docs` kaynağı derlemeyi bozunca `docs/` geri alındı ve platform-sabit muafiyet olarak kaydedildi. CI, kod, belge ve sözleşme referansları birlikte güncellendi.
+- **CI ve betik düzeltmeleri** — script injection'i önlemek için PR bağlamı ortam değişkenlerinden geçirildi, üçüncü taraf durum-bekleme eylemi `gh api` sorgusuna çevrildi, actionlint bulguları giderildi, GitLab kodlama işine `git` eklendi, Mojibake checkout tam geçmişe çekildi, `Sync-Wiki.ps1` UTF-8 BOM ile kaydedildi, bağlantı denetimi dışlamaları düzeltildi, Dependabot otomatik birleştirmeye noop işi eklendi, klon ve iki dilli beceri sayıları düzeltildi, son satırlar normalize edildi.
+- **Manifest üst veri düzeltmeleri** — bayat kaynak sayısı ve yanlış `ratio: 0.4` kaldırıldı, `generated` tarihi yenilendi; kayıtlı olmayan "Latest Release" rozeti iddiası, beş canlı SVG rozetinin yeniden sorgulanmasının ardından kaldırıldı.
+
+### Kaldırılanlar
+
+- Sabitlenmiş action SHA'ları, özet-doğrulamalı Docker imajları, desteklenmeyen `poseidon` eylemi ve bayat `pip` Dependabot girdisi — hat artık çalışma anında güncel dal/etiket ve yorumlayıcıyı çözüyor.
+
+### Güvenlik
+
+- Sır taraması her push ve PR'da çalışıyor; yalnızca en yeni sürüm desteklenir, eski sürümler her iki hostta `[DEPRECATED]` olarak işaretlidir.
 
 ## [1.1.0] - 2026-09-09
 
