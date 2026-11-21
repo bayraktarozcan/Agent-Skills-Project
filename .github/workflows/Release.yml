@@ -31,7 +31,6 @@ jobs:
         env:
           TAG: ${{ github.event.inputs.version || github.ref_name }}
         run: |
-          TAG="$TAG"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
