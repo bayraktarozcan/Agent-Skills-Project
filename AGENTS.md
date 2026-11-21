@@ -555,7 +555,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Dependencies — Host Dependency Manifest, Versions and Sources, the Single Setup Command, Approved Project-Scope Exceptions with Reasons
 
-- Manifest: none — the program is stdlib-only (`skills.py`), so there is no language manifest or lockfile; the host toolchain is declared under "Toolchain" instead.
+- Manifest: none — the program is stdlib-only (`skills.py`), so there is no `pyproject.toml`, `requirements*.in`/`requirements.txt`, compiled lockfile, or regeneration automation; the host toolchain is declared under "Toolchain" instead. If a dependency list is ever introduced, it is an unpinned, latest-by-default list with no version numbers or digests.
 - Setup command: none beyond the toolchain (`py skills.py --check` proves readiness; see Commands).
 - Approved project-scope exceptions: none.
 - Retained exceptions: none. The host toolchain is declared once under "Toolchain" by path and verification command, kept current under "Currency without exception"; no section keeps a version snapshot. If a component cannot be kept current, it is recorded here with reason, exposure assessment, exit trigger, and review cadence.
@@ -746,4 +746,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=eed99b840cd791ea692a70c71147ae1dc6633db1 -->
+<!-- mirror-sync: sync-sha=be8da85ae8b00bf4b49269375cb3ab9d65e9e849 -->
