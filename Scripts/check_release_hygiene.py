@@ -8,6 +8,7 @@ failure exits 1):
   body-structure EN then TR, each with version heading and required sections
   no-garbage     no bare #N, embedded changelog TOC, or other version's heading
   cross-host     title and body byte-identical after LF normalization
+  changelog-coverage  every CHANGELOG bullet's lead words appear in the notes
 """
 from __future__ import annotations
 
@@ -133,6 +134,31 @@ def check() -> list[str]:
         failures.append("cross-host: " + ", ".join(mismatch))
     else:
         print("PASS cross-host: title and body byte-identical after LF normalization")
+
+    cl = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    en_half = cl.split('<a id="en"></a>', 1)[1].split('<a id="tr"></a>', 1)[0]
+    cl_lines = en_half.splitlines()
+    uncovered: list[str] = []
+    for tag, r in gh.items():
+        version = tag[1:]
+        start = next((i for i, l in enumerate(cl_lines) if l.startswith(f"## [{version}]")), None)
+        if start is None:
+            uncovered.append(f"{tag}: no changelog section")
+            continue
+        end = next((i for i in range(start + 1, len(cl_lines)) if cl_lines[i].startswith("## [")), len(cl_lines))
+        body_words = set(re.sub(r"[^A-Za-zÇĞİÖŞÜçğıöşü0-9 ]", " ", r["body"]).lower().split())
+        for line in cl_lines[start + 1:end]:
+            if not line.startswith("- "):
+                continue
+            lead = re.match(r"^- \*\*(.+?)\*\*", line)
+            prose = lead.group(1) if lead else re.sub(r"[*`]", "", line[2:]).split(".")[0]
+            words = re.sub(r"[^A-Za-zÇĞİÖŞÜçğıöşü0-9 ]", " ", prose).lower().split()[:4]
+            if words and not all(w in body_words for w in words):
+                uncovered.append(f"{tag}: {' '.join(words)}")
+    if uncovered:
+        failures.append("changelog-coverage: " + ", ".join(uncovered[:10]))
+    else:
+        print("PASS changelog-coverage: every changelog bullet is represented in its notes")
     return failures
 
 
