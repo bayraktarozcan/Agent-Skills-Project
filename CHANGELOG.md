@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Release workflow publishes once** — the matrix-driven `Release.yml` now gates the publish step to the `3.x` leg, preventing duplicate/draft releases from concurrent matrix jobs.
+
 ## [1.2.0] - 2026-11-21
 
 ### Added
@@ -146,6 +150,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [Unreleased]
+
+### Değişiklikler
+
+- **Yayın iş akışı bir kez yayımlıyor** — matris kullanan `Release.yml`, eşzamanlı matris işlerinden yinelenen/taslak yayın çıkmasını önlemek için yayın adımını yalnızca `3.x` bacağıyla sınırlıyor.
 
 ## [1.2.0] - 2026-11-21
 

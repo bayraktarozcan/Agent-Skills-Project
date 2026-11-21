@@ -49,6 +49,7 @@ jobs:
         run: python Scripts/build_release_notes.py "${{ steps.version.outputs.version }}" RELEASE-NOTES.md
 
       - name: Create Release
+        if: matrix.python-version == '3.x'
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ steps.version.outputs.tag }}
