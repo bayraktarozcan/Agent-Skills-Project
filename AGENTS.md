@@ -507,7 +507,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `verify_mirror.py` (mirror verifier), `build_release_notes.py` (template-backed release-note builder), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `build_release_notes.py` (template-backed release-note builder), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -530,7 +530,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Single local gate command (runs what CI runs, see universal Local gate):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
 ```
 
 ## Naming — Per-Directory Convention Table, Named Exemptions with Reasons
@@ -594,8 +594,8 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## CI — Hosts, Jobs, Truth (Points at Universal Local Gate and Push Policy)
 
 - GitLab `.gitlab-ci.yml`, default branch only (`workflow: rules` on `$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH`): `skills-syntax` (`py_compile` + `--version`/`--list`), `skills-profile-coverage` (`--check --profile temel|tam`), `skills-encoding` (selftest + commit range), `pages` (`docs/` to GitLab Pages).
-- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
-- Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release.
+- GitHub `.github/workflows/` (verified listing): `CI`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Python-Floor`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them.
+- Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release. The floor is maintained automatically: `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar weekly, and `Scripts/python_floor.py` resolves the oldest supported minor, refuses downgrades, verifies parity across both hosts' matrices and this guide (plus the local mirror), and applies bumps via an auto-merge PR. The installer's 3.8+ runtime compatibility is a separate statement about parsed syntax, not a support promise, and is intentionally not automated.
 - No test suite exists, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-11-21): skills, repos, categories, license, and OS badges; the dynamic release badge URL is valid but is not registered in the project.
 
 ## Badge Policy
@@ -747,4 +747,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=1457d0fbd76c31851d9410cb12c43c5512efc682 -->
+<!-- mirror-sync: sync-sha=d47a00884f4a4d1aded7528d65546ffc88ad43bf -->

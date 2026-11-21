@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **EOL-aware CI Python floor automation** — `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar (`https://peps.python.org/api/release-cycle.json`) weekly and opens an auto-merge PR when the oldest supported minor advances beyond the declared CI floor. `Scripts/python_floor.py` resolves the floor, refuses downgrades, retries transient network failures, and verifies parity across both hosts' matrices and the agent guide (including the local mirror); `selftest` proves the guards can fail. The installer's 3.8+ runtime compatibility is deliberately out of scope.
+
 ## [1.2.1] - 2026-11-21
 
 ### Changed
@@ -153,6 +157,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [Unreleased]
+
+### Eklenenler
+
+- **CI Python alt sınırı için EOL otomasyonu** — `.github/workflows/Python-Floor.yml`, Python çekirdek ekibinin yayın takvimini (`https://peps.python.org/api/release-cycle.json`) haftalık okur ve desteklenen en eski küçük sürüm bildirilen CI alt sınırını geçtiğinde otomatik birleştirme PR'ı açar. `Scripts/python_floor.py` alt sınırı çözer, düşürmeyi reddeder, geçici ağ hatalarını yeniden dener ve iki hostun matrisleri ile ajan kılavuzu (yerel ayna dahil) arasındaki eşliği doğrular; `selftest` kontrollerin işe yaradığını kanıtlar. Yükleyicinin 3.8+ çalışma zamanı uyumluluğu kapsam dışıdır.
 
 ## [1.2.1] - 2026-11-21
 
