@@ -16,8 +16,12 @@ Only the latest release is actively supported. All older releases are [DEPRECATE
 
 | Version | Supported |
 |---------|-----------|
-| 1.0.2  | Active |
-| 1.0.x (older) | [DEPRECATED] |
+| 1.2.1  | Active |
+| 1.2.0 and older | [DEPRECATED] |
+
+## Accepted Risk: Mutable CI References
+
+On 2026-11-21 (UTC+03:00) the project deliberately moved CI to the always-latest model: third-party actions track their upstream default branch and Docker images use rolling tags. This accepts the risk that an upstream branch or tag can change between runs, including a compromised upstream. Compensating controls: the repository `sha_pinning_required` setting is disabled by decision, permissions are narrowly scoped per workflow, status checks gate auto-merge, both hosts run their pipelines on every push, and secrets are only available through the OS key store or CI secret store. A future upstream default-branch rename is a reviewed code change recorded in `Scripts/check_action_refs.py`.
 
 ## Reporting a Vulnerability
 
@@ -43,8 +47,12 @@ Yalnızca en son sürüm aktif olarak desteklenir. Diğer tüm eski sürümler [
 
 | Sürüm | Destek |
 |-------|--------|
-| 1.0.2  | Aktif |
-| 1.0.x (öncekiler) | [DEPRECATED] |
+| 1.2.1  | Aktif |
+| 1.2.0 ve öncesi | [DEPRECATED] |
+
+## Kabul Edilen Risk: Değişken CI Referansları
+
+21.11.2026 tarihinde (UTC+03:00) proje bilinçli olarak CI'ı her daim en güncel modeline geçirdi: üçüncü taraf eylemler upstream varsayılan dalını, Docker imajları ise güncel etiketleri izler. Bu, bir upstream dalının veya etiketinin çalıştırmalar arasında değişme — bir upstream'in ele geçirilmesi — riskini kabul eder. Telafi kontrolleri: depodaki `sha_pinning_required` ayarı bilinçli olarak kapalı, iş akışları en dar izinlerle çalışıyor, durum denetimleri otomatik birleştirmeyi kapıyor, her iki host her push'ta ardışık düzenini çalıştırıyor ve sırlar yalnızca işletim sistemi anahtar deposu veya CI sır deposu üzerinden erişilebilir. Gelecekte bir upstream varsayılan dalının yeniden adlandırılması, `Scripts/check_action_refs.py` içinde kaydedilen gözden geçirilmiş bir kod değişikliğidir.
 
 ## Güvenlik Açığı Bildirimi
 
