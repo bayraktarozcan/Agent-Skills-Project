@@ -544,7 +544,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
   - `Skills/<name>/` (lowercase hyphenated leaf): the Agent Skills spec mandates lowercase names; the leaf must equal the frontmatter `name`, so renaming is impossible.
   - `Skills/<name>/{references,scripts,evals}/` (lowercase): Agent Skills spec layout — the specification itself shows these exact directory names.
   - `__pycache__/` (any depth, ignored): tool-created interpreter cache, not a project choice; no marker obligation.
-  - `skills-tree_*.txt`, `Logs/` contents (`.gitignore` patterns; ignored run artifacts): never referenced by code; docs cite the pattern, never the path.
+  - `Logs/` contents and the root `skills-tree_*.txt` pattern (`.gitignore`; ignored run artifacts): install logs and directory-tree snapshots are written under `Logs/`; the root pattern only covers legacy files. Docs cite the pattern, never a concrete artifact path.
 
 ## Transport — per-remote transport and credential source, any declared override with its reason
 
@@ -745,4 +745,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=9e1776ca4e0369aa266a78418558604b33b38086 -->
+<!-- mirror-sync: sync-sha=9d83b1bb6d3a95457a769c2f27e86957903cf353 -->
