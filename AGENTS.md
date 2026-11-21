@@ -517,7 +517,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 ## Versions — Scheme, Current Constants, Where Each is Stated
 
 - Scheme: SemVer 2.0.0; tags carry a `v` prefix (see universal Versioning).
-- Constants and where stated: CLI `--version` reports `AgentSynapse v1.2.1` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0`, `v1.2.0` exist identically on both hosts (verified via `ls-remote --tags`), with `v1.2.1` tagged at this release commit; registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (1001 skills, C4 620, profiles 227/360/1001) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
+- Constants and where stated: CLI `--version` reports `AgentSynapse v1.2.1` (source: `skills.py`); tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0`, `v1.2.0`, `v1.2.1` exist identically on both hosts (verified via `ls-remote --tags`), with `v1.2.1` at commit `332f9ec`; registry `REPOS` version `1.0.3` and manifest version `1.2.0` live in `skills.py` and `SKILL-SPECIALIZATION.json`; counts (1001 skills, C4 620, profiles 227/360/1001) are stated in README, `docs/`, Wiki, CLI text, and the manifest together.
 - A bump updates the changelog, every constant, and every hand-maintained count; `py scripts/check_version_parity.py` must pass before push (named checks: manifest-internal, registry-repos, readme, docs, wiki, cli-text, markers).
 
 ## Commands — Setup, Build, Test, Lint, the Single Local Gate Command
@@ -582,7 +582,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 ## Releases — Procedure, Hosts, Parity Checks
 
 - Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `Release.yml` compiles `skills.py`, writes `skills.py.sha256`, builds short bilingual notes from `RELEASE-NOTE-TEMPLATE.md` via `Scripts/build_release_notes.py`, and publishes a Release with those notes. The full history stays in `CHANGELOG.md`.
-- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0`, `v1.2.0` resolve identically on both hosts (verified via `ls-remote --tags`), with `v1.2.1` tagged at this release commit; Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`). Only `v1.2.1` is current; `v1.0.0`–`v1.2.0` carry `[DEPRECATED]` on both. `v1.1.0` is tagged at `356f8c9`, `v1.2.0` at `93eeb9f`; bodies are template-generated and `skills.py` + `skills.py.sha256` assets exist on GitHub.
+- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0`, `v1.2.0`, `v1.2.1` resolve identically on both hosts (verified via `ls-remote --tags`); Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`). Only `v1.2.1` is current; `v1.0.0`–`v1.2.0` carry `[DEPRECATED]` on both. Tags: `v1.1.0` at `356f8c9`, `v1.2.0` at `93eeb9f`, `v1.2.1` at `332f9ec`; bodies are template-generated and `skills.py` + `skills.py.sha256` assets exist on GitHub.
 - Release notes: bilingual EN-first at equal scope when a release ships notes beyond the changelog body.
 
 ## Bypasses — Gates That Do Not Hold by Design, and What Runs Afterward
@@ -748,4 +748,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=6e577db3f6b5e67131abc62cdc6ef56184e5e409 -->
+<!-- mirror-sync: sync-sha=81f01caf8e1f48dd9ef84fef8a7a519a62a91438 -->
