@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Release title descriptions** are derived from the canonical `CHANGELOG.md` `Summary` section instead of a curated dictionary, so a new tag cannot drift from the changelog.
 - **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation. All workflow expressions now reach scripts through `env:` instead of inline `run:` text (shell-injection surface).
 - **v1.2.0 notes completed** — the omitted Security / Güvenlik bullet was added on both hosts so every changelog bullet is represented in its release notes.
+- **Release-note generator corrected** — `build_release_notes.py` now reads the canonical Summary (plain prose included), emits `###` sections and Files/Documentation in both halves, and no longer falls back to a generic "Release X." line; TR Summary sections were added for all six versions. `check_release_hygiene.py` guards the generator output. Both the generator and `release_title.py` now expose `--help` like the other named checks.
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 - **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
 
@@ -205,10 +206,15 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Yayın başlığı açıklamaları** sabit sözlük yerine kanonik `CHANGELOG.md` `Summary` bölümünden türetiliyor; yeni etiket changelog'dan sapamaz.
 - **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor. Tüm iş akışı ifadeleri satır içi `run:` metni yerine `env:` üzerinden betiklere iletiliyor (kabuk enjeksiyon yüzeyi).
 - **v1.2.0 notları tamamlandı** — atlanan Security / Güvenlik maddesi her iki hostta eklendi; böylece her changelog maddesi yayın notlarında temsil ediliyor.
+- **Sürüm notu üreticisi düzeltildi** — `build_release_notes.py` artık kanonik Özet'i (düz metin dahil) okuyor, `###` bölümleri ve iki yarıda Dosyalar/Belgelendirme üretiyor ve genel "Release X." yedeğini kullanmıyor; altı sürümün TR Özet bölümü eklendi. `check_release_hygiene.py` üretici çıktısını denetliyor. Üretici ve `release_title.py` artık diğer adlandırılmış kontroller gibi `--help` sunuyor.
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 - **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
 
 ## [1.2.1] - 2026-11-21
+
+### Özet
+
+Yayın iş akışı ve belgelendirme düzeltmeleri
 
 ### Değişiklikler
 
@@ -216,6 +222,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Eski yayınlar kullanımdan kaldırıldı** — `v1.0.0`–`v1.2.0` artık GitHub ve GitLab'da `[DEPRECATED]` taşıyor; yalnızca `v1.2.1` destekleniyor.
 
 ## [1.2.0] - 2026-11-21
+
+### Özet
+
+Uzmanlaşma, CI güncelliği ve güvenlik sürümü
 
 ### Eklenenler
 
@@ -255,6 +265,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [1.1.0] - 2026-09-09
 
+### Özet
+
+Uzmanlaşma profilleri sürümü
+
 ### Eklenenler
 
 - **Uzmanlaşma profilleri** — `--profile temel|dengeli|tam`, `~/.agents/skills/` klasöründe neyin kurulu kalacağını kapsamlar: `temel` (222 beceri, C1+C2 sınıfları), `dengeli` (355, C1+C2+C3 sınıfları artı C4'ün ilk 76'sı), `tam` (566, hepsi; varsayılan).
@@ -265,6 +279,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Sürüm 1.1.0'a yükseltildi** — `--version` artık `Agent Beceri Projesi v1.1.0` gösterir.
 
 ## [1.0.2] - 2026-09-09
+
+### Özet
+
+Uyumluluk ve belgelendirme güncellemesi
 
 ### Değişiklikler
 
@@ -282,6 +300,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [1.0.1] - 2026-08-15
 
+### Özet
+
+Güvenilirlik iyileştirmeleri
+
 ### Değişiklikler
 
 - **Tek dal klonlama**: depolar artık `--depth 1 --single-branch --no-tags` ile klonlanıyor (tek dal, tag yok).
@@ -296,6 +318,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Frontmatter yeniden yazım koruması**: `name:` yeniden yazımı yalnızca frontmatter'da gerçek bir `name:` satırı varsa çalışır, böylece gövde satırları asla bozulmaz.
 
 ## [1.0.0] - 2026-06-25
+
+### Özet
+
+İşlevsel kategoriler ve yükleyici
 
 ### Eklenenler
 

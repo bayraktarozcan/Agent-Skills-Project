@@ -19,7 +19,7 @@ names are preserved. stdlib only.
 from __future__ import annotations
 
 import re
-import sys
+import argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -100,12 +100,13 @@ def title(version: str, current: bool) -> tuple[str, str]:
 
 
 def main() -> None:
-    args = sys.argv[1:]
-    if not args or len(args) > 2:
-        raise SystemExit("usage: release_title.py <version> [--current]")
-    version = args[0].lstrip("v")
-    current = "--current" in args
-    full, desc = title(version, current)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("version", help="bare version number, e.g. 1.2.1")
+    parser.add_argument("--current", action="store_true",
+                        help="omit the [DEPRECATED] prefix for the live tag")
+    args = parser.parse_args()
+    version = args.version.lstrip("v")
+    full, desc = title(version, args.current)
     print(full)
     print(desc)
 

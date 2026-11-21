@@ -15,11 +15,14 @@ The emitted body is EN first, then TR, with sections:
 Garbage is excluded: bare #N references, embedded CHANGELOG TOC, other-version
 lines, and emoji headings. Titles (including the leading [DEPRECATED] prefix on
 every non-current release) are produced by Scripts/release_title.py. stdlib only.
+
+Named invariant: a generated body carries the canonical Summary, the non-empty
+Added/Changed/Removed/Fixed sections, and Files/Documentation in both halves.
 """
 
 from __future__ import annotations
 
-import sys
+import argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -56,31 +59,50 @@ def changelog_section(part: str, version: str) -> tuple[str, dict[str, list[str]
         if line.startswith("### "):
             current = line[4:].strip()
             body[current] = []
-        elif current and line.startswith("- "):
-            body[current].append(line)
+        elif current and line.strip() and not line.startswith(("#", "|", "---", "<")):
+            # Bullets and plain Summary prose are both valid entries.
+            body[current].append(line if line.startswith("- ") else "- " + line.strip())
     return date, body
+
+
+FILES = {
+    False: ["`skills.py` — CLI and GUI installer (stdlib-only)",
+            "`Scripts/` — named invariant checks and tooling"],
+    True: ["`skills.py` — CLI ve GUI yükleyici (yalnızca standart kütüphane)",
+           "`Scripts/` — adlandırılmış invariant kontrolleri ve araçlar"],
+}
+DOCS = {
+    False: ["[README.md](README.md)", "[CHANGELOG.md](CHANGELOG.md)", "[AGENTS.md](AGENTS.md)"],
+    True: ["[README.md](README.md)", "[CHANGELOG.md](CHANGELOG.md)", "[AGENTS.md](AGENTS.md)"],
+}
 
 
 def build(template_part: str, version: str, date: str, data: dict[str, list[str]],
           title_template: str, instructions: str, summary_label: str,
-          sections: list[tuple[str, str]]) -> str:
+          sections: list[tuple[str, str]], files_label: str, docs_label: str,
+          fallback: str, tr: bool) -> str:
     head = template_part.split(f"## {summary_label}", 1)[0]
     head = head.replace(title_template, title_template.split(" - ")[0] + f" - {version} ({date})")
     head = head.replace(instructions, "").rstrip() + "\n\n"
     added_key = sections[0][1]
-    summary = data.get(added_key, [])
-    out = head + f"## {summary_label}\n" + (summary[0][2:] if summary else f"Release {version}.") + "\n\n"
+    summary = data.get("Summary") or data.get("Özet") or data.get(added_key, [])
+    text = summary[0].removeprefix("- ").strip() if summary else fallback.format(version=version)
+    out = head + f"### {summary_label}\n" + text + "\n\n"
     for label, key in sections:
         bullets = data.get(key, [])
         if bullets:
-            out += f"## {label}\n" + "\n".join(bullets) + "\n\n"
+            out += f"### {label}\n" + "\n".join(bullets) + "\n\n"
+    out += f"### {files_label}\n" + "\n".join("- " + x for x in FILES[tr]) + "\n\n"
+    out += f"### {docs_label}\n" + "\n".join("- " + x for x in DOCS[tr]) + "\n\n"
     return out + "</details>\n\n"
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        raise SystemExit("usage: build_release_notes.py <version> <output>")
-    version, output = sys.argv[1], Path(sys.argv[2])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("version", help="bare version number, e.g. 1.2.1")
+    parser.add_argument("output", help="path to write the Markdown body to")
+    args = parser.parse_args()
+    version, output = args.version, Path(args.output)
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     template = (ROOT / "RELEASE-NOTE-TEMPLATE.md").read_text(encoding="utf-8")
 
@@ -91,11 +113,13 @@ def main() -> None:
 
     en = build(tpl_en, version, date_en, data_en,
                "# Release Notes - <Version> (<Date>)", EN_INSTRUCTIONS, "Summary",
-               [("Added", "Added"), ("Changed", "Changed"), ("Fixed", "Fixed"), ("Removed", "Removed")])
+               [("Added", "Added"), ("Changed", "Changed"), ("Fixed", "Fixed"), ("Removed", "Removed")],
+               "Files", "Documentation", "Release {version}.", False)
     tr = build(tpl_tr, version, date_tr, data_tr,
                "# Sürüm Notları - <Sürüm> (<Tarih>)", TR_INSTRUCTIONS, "Özet",
                [("Eklenenler", "Eklenenler"), ("Değişiklikler", "Değişiklikler"),
-                ("Düzeltmeler", "Düzeltmeler"), ("Kaldırılanlar", "Kaldırılanlar")])
+                ("Düzeltmeler", "Düzeltmeler"), ("Kaldırılanlar", "Kaldırılanlar")],
+               "Dosyalar", "Belgelendirme", "{version} sürümü.", True)
 
     result = template.replace(tpl_en, en).replace(tpl_tr, tr)
     output.write_text(result, encoding="utf-8")

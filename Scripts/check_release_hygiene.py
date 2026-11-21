@@ -9,6 +9,7 @@ failure exits 1):
   no-garbage     no bare #N, embedded changelog TOC, or other version's heading
   cross-host     title and body byte-identical after LF normalization
   changelog-coverage  every CHANGELOG bullet's lead words appear in the notes
+  note-generator  the template-backed generator emits canonical bilingual notes
 """
 from __future__ import annotations
 
@@ -159,6 +160,21 @@ def check() -> list[str]:
         failures.append("changelog-coverage: " + ", ".join(uncovered[:10]))
     else:
         print("PASS changelog-coverage: every changelog bullet is represented in its notes")
+
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp) / "notes.md"
+        subprocess.run(["python", str(ROOT / "Scripts" / "build_release_notes.py"),
+                        current_version(), str(out)], check=True, capture_output=True)
+        generated = out.read_text(encoding="utf-8")
+        required = ["### Summary", "### Özet", "### Files", "### Documentation",
+                    "### Dosyalar", "### Belgelendirme", "<a id=\"tr\"></a>"]
+        missing = [h for h in required if h not in generated]
+        if missing or f"Release {current_version()}." in generated:
+            failures.append("note-generator: missing " + ", ".join(missing or ["canonical summary"]))
+        else:
+            print("PASS note-generator: canonical bilingual notes with all required sections")
     return failures
 
 
