@@ -507,7 +507,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref and pin guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `check_action_refs.py` (action-ref, pin and expression-boundary guard), `check_repo_conventions.py` (final-newline and hidden-layer-name guard), `check_release_hygiene.py` (published-release audit), `python_floor.py` (EOL-driven CI floor resolver and parity guard), `verify_mirror.py` (mirror verifier), `release_title.py` (changelog-derived canonical title), `build_release_notes.py` (template-backed release-note builder), `install_hooks.py` + `pre-push` (opt-in local gate), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -527,10 +527,11 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Test: no suite exists (truth, not a backlog euphemism); `--check --profile temel|tam` reports profile coverage instead.
 - Lint/format: none configured; `Scripts/check_encoding.py` is an encoding gate, not a linter.
 - Commits: English Conventional Commits; template `.gitmessage` (see universal Commit message format for types and scopes).
+- Optional local enforcement: `python Scripts/install_hooks.py` copies the tracked `Scripts/pre-push` gate into Git's active hooks directory, backing up any existing hook first; `python Scripts/install_hooks.py --uninstall` removes it. It is opt-in because it writes outside the tracked tree.
 - Single local gate command (runs what CI runs, see universal Local gate):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/check_repo_conventions.py --selftest && py Scripts/check_repo_conventions.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
 ```
 
 ## Naming — Per-Directory Convention Table, Named Exemptions with Reasons
@@ -747,4 +748,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=63e228f860ef87b3ab7145c161070c40f473bd33 -->
+<!-- mirror-sync: sync-sha=1eb07badd669ed33ec49e75218b9981312bc9d98 -->

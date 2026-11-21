@@ -20,13 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **EOL-aware CI Python floor automation** — `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar (`https://peps.python.org/api/release-cycle.json`) weekly and opens an auto-merge PR when the oldest supported minor advances beyond the declared CI floor. `Scripts/python_floor.py` resolves the floor, refuses downgrades, retries transient network failures, and verifies parity across both hosts' matrices and the agent guide (including the local mirror); `selftest` proves the guards can fail. No minimum Python 3 runtime is advertised to users; the current release is the only recommended runtime.
-- **Named CI and release guards** — `Scripts/check_action_refs.py` verifies every action ref against a local default-branch map and forbids SHA/version/digest pins; `Scripts/check_release_hygiene.py` audits published titles and bilingual bodies on both hosts; `Scripts/verify_mirror.py --selftest` now also detects a deleted unanchored checklist step. Both guards run in `Hygiene` and the local gate (the release audit is network-bound and CI-only).
+- **Named CI and release guards** — `Scripts/check_action_refs.py` verifies every action ref against a local default-branch map, forbids SHA/version/digest pins and rejects `${{ ... }}` expressions inside `run:` blocks; `Scripts/check_repo_conventions.py` guards final newlines and hidden-layer names; `Scripts/check_release_hygiene.py` audits published titles, bilingual bodies and changelog coverage on both hosts; `Scripts/verify_mirror.py --selftest` now also detects a deleted unanchored checklist step. All run in `Hygiene` and the local gate (the release audit is network-bound and CI-only).
+- **Optional pre-push gate** — tracked `Scripts/pre-push` plus `Scripts/install_hooks.py` (with timestamped backup and `--uninstall`) enforce the local gate before a push. Installation is opt-in because it writes outside the tracked tree.
 
 ### Fixed
 
 - **SECURITY.md corrected** — the supported-version table now names `1.2.1` as active (was `1.0.2`), and EN/TR sections record the accepted risk of mutable CI references with date, zone and compensating controls.
 - **Release title descriptions** are derived from the canonical `CHANGELOG.md` `Summary` section instead of a curated dictionary, so a new tag cannot drift from the changelog.
-- **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation.
+- **Release workflow fails closed** on a missing or empty `skills.py` / `skills.py.sha256`; Python-Floor PRs get `automated` and `auto-merge` labels before creation. All workflow expressions now reach scripts through `env:` instead of inline `run:` text (shell-injection surface).
+- **v1.2.0 notes completed** — the omitted Security / Güvenlik bullet was added on both hosts so every changelog bullet is represented in its release notes.
 
 ## [1.2.1] - 2026-11-21
 
@@ -192,13 +194,15 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 ### Eklenenler
 
 - **CI Python alt sınırı için EOL otomasyonu** — `.github/workflows/Python-Floor.yml`, Python çekirdek ekibinin yayın takvimini (`https://peps.python.org/api/release-cycle.json`) haftalık okur ve desteklenen en eski küçük sürüm bildirilen CI alt sınırını geçtiğinde otomatik birleştirme PR'ı açar. `Scripts/python_floor.py` alt sınırı çözer, düşürmeyi reddeder, geçici ağ hatalarını yeniden dener ve iki hostun matrisleri ile ajan kılavuzu (yerel ayna dahil) arasındaki eşliği doğrular; `selftest` kontrollerin işe yaradığını kanıtlar. Kullanıcıya asgari bir Python 3 sürümü önerilmez; yalnızca güncel sürüm önerilen çalışma zamanıdır.
-- **Adlandırılmış CI ve yayın kontrolleri** — `Scripts/check_action_refs.py` her aksiyon referansını yerel varsayılan dal haritasıyla doğrular ve SHA/sürüm/özet pinlerini yasaklar; `Scripts/check_release_hygiene.py` her iki hosttaki yayın başlıklarını ve iki dilli gövdeleri denetler; `Scripts/verify_mirror.py --selftest` artık işaretsiz bir kontrol maddesinin silinmesini de yakalar. İkisi `Hygiene` ve yerel kapıda çalışır (yayın denetimi ağa bağlı, yalnızca CI'da).
+- **Adlandırılmış CI ve yayın kontrolleri** — `Scripts/check_action_refs.py` her aksiyon referansını yerel varsayılan dal haritasıyla doğrular, SHA/sürüm/özet pinlerini yasaklar ve `run:` bloklarındaki `${{ ... }}` ifadelerini reddeder; `Scripts/check_repo_conventions.py` son satırları ve gizli katman adlarını denetler; `Scripts/check_release_hygiene.py` her iki hosttaki yayın başlıklarını, iki dilli gövdeleri ve changelog kapsamını denetler; `Scripts/verify_mirror.py --selftest` artık işaretsiz bir kontrol maddesinin silinmesini de yakalar. Hepsi `Hygiene` ve yerel kapıda çalışır (yayın denetimi ağa bağlı, yalnızca CI'da).
+- **İsteğe bağlı pre-push kapısı** — takipli `Scripts/pre-push` ve `Scripts/install_hooks.py` (zaman damgalı yedek + `--uninstall`) yerel kapıyı push öncesi zorunlu kılar. Kurulum takip edilmeyen ağaca yazdığı için isteğe bağlıdır.
 
 ### Düzeltmeler
 
 - **SECURITY.md düzeltildi** — desteklenen sürüm tablosu `1.2.1`'i aktif gösteriyor (önce `1.0.2`); EN ve TR bölümleri değişken CI referanslarının kabul edilen riskini tarih, saat dilimi ve telafi kontrolleriyle kaydediyor.
 - **Yayın başlığı açıklamaları** sabit sözlük yerine kanonik `CHANGELOG.md` `Summary` bölümünden türetiliyor; yeni etiket changelog'dan sapamaz.
-- **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor.
+- **Yayın iş akışı** eksik veya boş `skills.py` / `skills.py.sha256` durumunda başarısız oluyor; Python-Floor PR'ları oluşturulmadan önce `automated` ve `auto-merge` etiketlerini alıyor. Tüm iş akışı ifadeleri satır içi `run:` metni yerine `env:` üzerinden betiklere iletiliyor (kabuk enjeksiyon yüzeyi).
+- **v1.2.0 notları tamamlandı** — atlanan Security / Güvenlik maddesi her iki hostta eklendi; böylece her changelog maddesi yayın notlarında temsil ediliyor.
 
 ## [1.2.1] - 2026-11-21
 
