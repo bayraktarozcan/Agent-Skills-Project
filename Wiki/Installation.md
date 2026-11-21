@@ -10,7 +10,7 @@
 
 | Requirement | Check command | Notes |
 |-------------|---------------|-------|
-| Python 3.8+ | `python --version` | If not installed, download from [python.org](https://python.org) |
+| Python 3 | `python --version` | Use the current release from [python.org](https://python.org) |
 | Git | `git --version` | If not installed, download from [git-scm.com](https://git-scm.com) |
 | tkinter (optional) | — | Needed only for `--gui` mode. Included with Python on Windows & macOS. Linux: `sudo apt install python3-tk` |
 
@@ -99,7 +99,7 @@ python skills.py --check
 ```
 
 This checks:
-- **Python version** — requires 3.8+
+- **Python version** — use the current Python 3 release
 - **Git availability** — searches common install paths if not in `PATH`; shows OS-specific install hint if missing
 - **Network connectivity** — pings `https://github.com` with a 10-second timeout
 - **Disk space** — warns if less than 500 MB free
@@ -173,7 +173,7 @@ Each subdirectory should contain at least one `SKILL.md` file.
 
 | Gereksinim | Kontrol komutu | Notlar |
 |------------|----------------|--------|
-| Python 3.8+ | `python --version` | Yüklü değilse [python.org](https://python.org) adresinden indirin |
+| Python 3 | `python --version` | Güncel sürümü [python.org](https://python.org) adresinden indirin |
 | Git | `git --version` | Yüklü değilse [git-scm.com](https://git-scm.com) adresinden indirin |
 | tkinter (isteğe bağlı) | — | Yalnızca `--gui` modu için gerekli. Windows ve macOS'ta Python ile gelir. Linux: `sudo apt install python3-tk` |
 
@@ -262,7 +262,7 @@ python skills.py --check
 ```
 
 Şunları kontrol eder:
-- **Python sürümü** — 3.8+ gerektirir
+- **Python sürümü** — güncel Python 3 sürümünü kullanın
 - **Git kullanılabilirliği** — `PATH`'te yoksa yaygın kurulum yollarını arar; eksikse işletim sistemine özel kurulum ipucu gösterir
 - **Ağ bağlantısı** — 10 saniye zaman aşımı ile `https://github.com` adresine ping atar
 - **Disk alanı** — 500 MB'den az boş alan varsa uyarır

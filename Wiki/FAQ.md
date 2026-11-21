@@ -115,7 +115,7 @@ Each repository is placed into a category based on its primary function. Criteri
 
 ### What Python Version is Required?
 
-Python 3.8 or later. The installer uses `from __future__ import annotations` and `pathlib.Path`, which are stable in 3.8+.
+Python 3 (use the current release). The installer is stdlib-only and uses `from __future__ import annotations` and `pathlib.Path`.
 
 ### Does It Work on Windows / macOS / Linux?
 
@@ -256,7 +256,7 @@ Her depo, birincil işlevine göre bir kategoriye yerleştirilir. Kriterler şun
 
 ### Hangi Python Sürümü Gerekli?
 
-Python 3.8 veya üstü. Yükleyici `from __future__ import annotations` ve `pathlib.Path` kullanır; bunlar 3.8+'da kararlıdır.
+Python 3 (güncel sürümü kullanın). Yükleyici sadece standart kütüphaneyi kullanır: `from __future__ import annotations` ve `pathlib.Path`.
 
 ### Windows / macOS / Linux'ta Çalışır mı?
 

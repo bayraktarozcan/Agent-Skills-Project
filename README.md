@@ -50,7 +50,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 ## Requirements
 
-- **Python 3.8+** (stdlib only -- no pip install needed)
+- **Python 3** (stdlib only -- use the current release; no pip install needed)
 - **Git** (for cloning repositories)
 - **tkinter** (optional, for `--gui` mode)
 
@@ -58,7 +58,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 ## Features
 
-- **One-command install** -- clone 35 repos, extract skills, deduplicate, done.
+- **One-command install** -- clone the recommended repository set, extract every `SKILL.md`, resolve duplicates by category, and install into `~/.agents/skills/`.
 - **10 functional categories** -- Core, AI & LLM, Cloud & Backend, Frontend & UI, Mobile, Security, Testing, Content, Community, Risk.
 - **Bilingual** -- English and Turkish interfaces. Auto-detects or `--lang tr`.
 - **Cross-platform** -- Windows, macOS, Linux. Single Python file, no dependencies.
@@ -316,7 +316,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 ## Gereksinimler
 
-- **Python 3.8+** (sadece standart kütüphane -- pip gerekmez)
+- **Python 3** (sadece standart kütüphane -- güncel sürümü kullanın; pip gerekmez)
 - **Git** (depoları klonlamak için)
 - **tkinter** (opsiyonel, `--gui` modu için)
 
@@ -324,7 +324,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 ## Özellikler
 
-- **Tek komutla kurulum** -- 35 depoyu klonla, becerileri çıkar, tekrarları temizle, bitti.
+- **Tek komutla kurulum** -- önerilen depo kümesini klonlar, her `SKILL.md` dosyasını çıkarır, kategoriye göre tekrarları çözer ve `~/.agents/skills/` altına kurar.
 - **10 işlevsel kategori** -- Çekirdek, AI & LLM, Bulut & Backend, Ön yüz & UI, Mobil, Güvenlik, Test, İçerik, Topluluk, Risk.
 - **İki dilli** -- İngilizce ve Türkçe. Otomatik algılama veya `--lang tr`.
 - **Çapraz platform** -- Windows, macOS, Linux. Tek Python dosyası, bağımlılık yok.

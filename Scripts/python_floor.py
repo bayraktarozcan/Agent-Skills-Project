@@ -11,9 +11,8 @@ Usage::
     python Scripts/python_floor.py apply 3.12
     python Scripts/python_floor.py selftest
 
-The installer's advertised runtime compatibility (currently 3.8+) is a separate
-statement about what the code parses under; it is intentionally not automated.
-stdlib only.
+No minimum Python 3 runtime is advertised to users; the current release is the
+only recommended runtime. stdlib only.
 """
 
 from __future__ import annotations
