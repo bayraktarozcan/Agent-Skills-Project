@@ -1,4 +1,4 @@
-# Detection patterns
+# Detection Patterns
 
 Each finding is reported as `file:line [label] masked-line`. The full
 secret value is never emitted. Masking rule: at most the first 4

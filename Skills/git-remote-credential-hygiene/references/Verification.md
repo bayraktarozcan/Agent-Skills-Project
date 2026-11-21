@@ -1,4 +1,4 @@
-# Verification per step
+# Verification per Step
 
 Stop the workflow on the first failed check. `...` means masked output.
 

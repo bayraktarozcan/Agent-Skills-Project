@@ -1,4 +1,4 @@
-# Remediation doctrine (rotation-first)
+# Remediation Doctrine (Rotation-First)
 
 Priority order. Cleanup never replaces rotation.
 

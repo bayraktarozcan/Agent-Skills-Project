@@ -1,4 +1,4 @@
-# Platform notes
+# Platform Notes
 
 Only claim what was tested. Everything else stays unsupported until
 verified on that OS.

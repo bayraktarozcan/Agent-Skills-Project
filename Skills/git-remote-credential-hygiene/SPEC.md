@@ -15,7 +15,7 @@ This skill guarantees:
 - Untested OS or tool combinations are reported as unsupported, never
   guessed.
 
-## Non-goals
+## Non-Goals
 
 History rewriting, secrets-manager backends (Vault, cloud KMS), CI OIDC
 setup, SSH key lifecycle, breach forensics, and operating secret
@@ -28,7 +28,7 @@ scanners (covered by scanner skills such as GitGuardian).
 clean, 1 findings, 2 error); `evals/evals.json` holds the trigger and
 behavior cases.
 
-## Change log
+## Change Log
 
 - 1.0.0 (2026-10-09): initial contract; reworked to the Agent Skills
   shape (router SKILL.md, trigger-rich description, evals.json).
