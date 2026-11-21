@@ -57,7 +57,9 @@ def check(root: Path = ROOT) -> list[str]:
 
     legacy = []
     for name in files:
-        if not name.endswith((".md", ".html")):
+        # CHANGELOG is a historical record: it may describe the removal of an
+        # old claim without advertising it. See AGENTS.md Historical records.
+        if name == "CHANGELOG.md" or not name.endswith((".md", ".html")):
             continue
         text = (root / name).read_bytes().decode("utf-8", errors="replace")
         for i, line in enumerate(text.splitlines(), 1):
