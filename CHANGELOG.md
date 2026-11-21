@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Workflow inventory corrected** — both guides now list all ten workflows (`Python-Floor` and `Dependabot-AutoMerge` were missing); `check_repo_conventions.py` guards the inventory.
 - **Release-note audit strengthened** — the generator now emits the same `## vX — ... (date)` version headings as published bodies, and `check_release_hygiene.py` verifies non-empty EN/TR summaries, matched content-section counts and exactly two version headings in generated notes.
 - **Stale-version guard generalized** — `check_repo_conventions.py` now reads the CI floor from `python_floor.py` and flags any advertised `Python 3.X+` below it, not just the former 3.8 case.
+- **Release audit resilient to rate limits** — the anonymous GitLab read retries transient errors three times and falls back to the local `glab` CLI when available; CI remains token-free.
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 - **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
 
@@ -215,6 +216,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **İş akışı envanteri düzeltildi** — her iki kılavuz da on iş akışını listeliyor (`Python-Floor` ve `Dependabot-AutoMerge` eksikti); `check_repo_conventions.py` envanteri koruyor.
 - **Yayın notu denetimi güçlendirildi** — üretici artık yayınlanmış gövdelerle aynı `## vX — ... (tarih)` sürüm başlıklarını üretiyor; `check_release_hygiene.py` üretilen notlarda boş olmayan EN/TR özetlerini, eşit içerik bölümü sayısını ve tam iki sürüm başlığını doğruluyor.
 - **Bayat sürüm kapısı genelleştirildi** — `check_repo_conventions.py`, CI alt sınırını `python_floor.py`'den okuyor ve yalnızca eski 3.8 durumu yerine alt sınırın altındaki her `Python 3.X+` iddiasını işaretliyor.
+- **Yayın denetimi hız sınırlarına dayanıklı** — anonim GitLab okuması geçici hataları üç kez yeniden dener ve yerel `glab` varsa ona düşer; CI'da token kullanılmaz.
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 - **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
 

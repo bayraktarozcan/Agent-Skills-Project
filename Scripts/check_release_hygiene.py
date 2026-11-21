@@ -17,6 +17,8 @@ import json
 import re
 import subprocess
 import sys
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -50,8 +52,25 @@ def releases() -> tuple[dict, dict]:
     # keyring-backed glab CLI remains available as a fallback.
     url = f"https://gitlab.com/api/v4/projects/{GL_PROJECT}/releases?per_page=100"
     req = urllib.request.Request(url, headers={"User-Agent": "AgentSynapse-hygiene"})
-    with urllib.request.urlopen(req, timeout=30) as response:
-        gl = json.load(response)
+    last: Exception | None = None
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as response:
+                gl = json.load(response)
+            break
+        except (urllib.error.URLError, OSError) as exc:
+            last = exc
+            if attempt < 3:
+                time.sleep(2 ** attempt)
+    else:
+        # Local fallback: glab is keyring-backed and may use a different quota.
+        import shutil
+        if shutil.which("glab"):
+            gl = json.loads(subprocess.check_output([
+                "glab", "api", f"projects/{GL_PROJECT}/releases?per_page=100"
+            ]).decode())
+        else:
+            raise SystemExit(f"could not read public GitLab releases after 3 attempts: {last}")
     return ({r["tag_name"]: r for r in gh}, {r["tag_name"]: r for r in gl})
 
 
