@@ -35,7 +35,6 @@ jobs:
       - name: Audit published release hygiene
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLAB_TOKEN: ${{ secrets.GITLAB_PUSH_TOKEN }}
         run: python Scripts/check_release_hygiene.py
       - name: Run actionlint
         uses: rhysd/actionlint@main

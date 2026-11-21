@@ -14,7 +14,6 @@ failure exits 1):
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 import sys
@@ -46,17 +45,13 @@ def releases() -> tuple[dict, dict]:
     gh = json.loads(subprocess.check_output([
         "gh", "api", "--paginate", f"repos/{GH_REPO}/releases"
     ]).decode())
-    # GitLab: CI runners do not ship glab, so use REST when a token is injected;
-    # locally fall back to glab's keyring-backed CLI.
-    if os.environ.get("GITLAB_TOKEN"):
-        url = f"https://gitlab.com/api/v4/projects/{GL_PROJECT}/releases?per_page=100"
-        req = urllib.request.Request(url, headers={"PRIVATE-TOKEN": os.environ["GITLAB_TOKEN"]})
-        with urllib.request.urlopen(req, timeout=30) as response:
-            gl = json.load(response)
-    else:
-        gl = json.loads(subprocess.check_output([
-            "glab", "api", f"projects/{GL_PROJECT}/releases?per_page=100"
-        ]).decode())
+    # Releases are public: read them anonymously over HTTPS. CI runners do not
+    # ship glab, so the public REST call is the primary path; locally the
+    # keyring-backed glab CLI remains available as a fallback.
+    url = f"https://gitlab.com/api/v4/projects/{GL_PROJECT}/releases?per_page=100"
+    req = urllib.request.Request(url, headers={"User-Agent": "AgentSynapse-hygiene"})
+    with urllib.request.urlopen(req, timeout=30) as response:
+        gl = json.load(response)
     return ({r["tag_name"]: r for r in gh}, {r["tag_name"]: r for r in gl})
 
 
