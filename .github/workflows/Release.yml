@@ -28,19 +28,23 @@ jobs:
 
       - name: Resolve version
         id: version
+        env:
+          TAG: ${{ github.event.inputs.version || github.ref_name }}
         run: |
-          TAG="${{ github.event.inputs.version || github.ref_name }}"
+          TAG="$TAG"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
       - name: Resolve canonical title
         id: meta
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           # Scripts/release_title.py <version> [--current]
           #   <version>   bare version (no leading v)
           #   --current   omit the [DEPRECATED] prefix (used for the live tag)
           # stdout line 1 = title (prefix at START), line 2 = short description.
-          TITLE=$(python Scripts/release_title.py "${{ steps.version.outputs.version }}" --current | head -n 1)
+          TITLE=$(python Scripts/release_title.py "$VERSION" --current | head -n 1)
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
 
       - name: Build artifact name
@@ -56,7 +60,9 @@ jobs:
         run: sha256sum skills.py > skills.py.sha256
 
       - name: Build release notes from template
-        run: python Scripts/build_release_notes.py "${{ steps.version.outputs.version }}" RELEASE-NOTES.md
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: python Scripts/build_release_notes.py "$VERSION" RELEASE-NOTES.md
 
       - name: Verify release artifacts
         if: matrix.python-version == '3.x'
@@ -82,16 +88,17 @@ jobs:
         if: matrix.python-version == '3.x'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUR: ${{ steps.version.outputs.tag }}
+          REPO: ${{ github.repository }}
         run: |
           # Prefix every older release title with [DEPRECATED] at the START.
-          CUR="${{ steps.version.outputs.tag }}"
-          gh api --paginate "repos/${{ github.repository }}/releases" \
+          gh api --paginate "repos/$REPO/releases" \
             --jq '.[] | select(.tag_name != "'"$CUR"'") | .id' |
           while read -r id; do
-            title=$(gh api "repos/${{ github.repository }}/releases/$id" --jq .name)
+            title=$(gh api "repos/$REPO/releases/$id" --jq .name)
             case "$title" in
               "[DEPRECATED] "*) ;;
-              *) gh api -X PATCH "repos/${{ github.repository }}/releases/$id" \
+              *) gh api -X PATCH "repos/$REPO/releases/$id" \
                    -f name="[DEPRECATED] $title" >/dev/null ;;
             esac
           done

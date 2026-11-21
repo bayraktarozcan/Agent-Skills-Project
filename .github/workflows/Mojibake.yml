@@ -44,4 +44,7 @@ jobs:
         run: python Scripts/check_encoding.py
       - name: Lint pushed commit metadata
         if: github.event_name == 'push'
-        run: python Scripts/check_encoding.py --commits "${{ github.event.before }}..${{ github.event.after }}"
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.event.after }}
+        run: python Scripts/check_encoding.py --commits "$BEFORE..$AFTER"
