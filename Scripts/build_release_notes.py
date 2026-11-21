@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
-"""Build short bilingual release notes from RELEASE-NOTE-TEMPLATE.md.
+"""Build short bilingual release notes from CHANGELOG.md (canonical source).
 
-Reads the requested version section from CHANGELOG.md and fills the template,
-keeping only sections that have entries. Used by Release.yml so the GitHub
-release body is a short note, not the entire changelog. stdlib only.
+Parameters (CLI):
+  <version>  bare version number, e.g. 1.2.1 (no leading v)
+  <output>   path to write the Markdown body to (UTF-8, LF)
+
+The emitted body is EN first, then TR, with sections:
+  ## vX — Release Notes / Sürüm Notları (date)
+  ### Summary / Özet
+  ### Added / Eklenenler, Changed / Değiştirilenler,
+      Removed / Kaldırılanlar, Fixed / Düzeltilenler (non-empty only)
+  ### Files / Dosyalar, Documentation / Belgelendirme
+
+Garbage is excluded: bare #N references, embedded CHANGELOG TOC, other-version
+lines, and emoji headings. Titles (including the leading [DEPRECATED] prefix on
+every non-current release) are produced by Scripts/release_title.py. stdlib only.
 """
 
 from __future__ import annotations

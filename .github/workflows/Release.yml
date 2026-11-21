@@ -33,6 +33,16 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
+      - name: Resolve canonical title
+        id: meta
+        run: |
+          # Scripts/release_title.py <version> [--current]
+          #   <version>   bare version (no leading v)
+          #   --current   omit the [DEPRECATED] prefix (used for the live tag)
+          # stdout line 1 = title (prefix at START), line 2 = short description.
+          TITLE=$(python Scripts/release_title.py "${{ steps.version.outputs.version }}" --current | head -n 1)
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
       - name: Build artifact name
         id: artifact
         run: |
@@ -53,10 +63,28 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.meta.outputs.title }}
           body_path: RELEASE-NOTES.md
           draft: false
           prerelease: false
           files: |
             skills.py
             skills.py.sha256
+
+      - name: Deprecate previous releases
+        if: matrix.python-version == '3.x'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Prefix every older release title with [DEPRECATED] at the START.
+          CUR="${{ steps.version.outputs.tag }}"
+          gh api --paginate "repos/${{ github.repository }}/releases" \
+            --jq '.[] | select(.tag_name != "'"$CUR"'") | .id' |
+          while read -r id; do
+            title=$(gh api "repos/${{ github.repository }}/releases/$id" --jq .name)
+            case "$title" in
+              "[DEPRECATED] "*) ;;
+              *) gh api -X PATCH "repos/${{ github.repository }}/releases/$id" \
+                   -f name="[DEPRECATED] $title" >/dev/null ;;
+            esac
+          done
