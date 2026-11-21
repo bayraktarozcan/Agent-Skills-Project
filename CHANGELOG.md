@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Workflow hardening** — replaced the third-party status-check waiter with `gh api` polling, passed PR context through environment variables to prevent script injection, and made LF authoritative for all text files in `.gitattributes`.
 - **Dependency-model audit** — grep verification confirmed there is no `pyproject.toml`, `requirements*.in`/`requirements.txt`, compiled lockfile, `pip install` consumer, regeneration workflow, sync script, `cache-dependency-path`, or bandit ignore in the repository; nothing needed unpinning or deletion. The stale `pip` entry was removed from Dependabot because no Python manifest exists. The program remains stdlib-only, and any future dependency list must be unpinned and latest-by-default.
 - **Stale metadata corrected** — AGENTS.md no longer claims an unregistered "Latest Release" badge; all five registered SVG badges were re-probed (HTTP 200, `image/svg+xml`, 2026-11-21). The specialization manifest no longer hardcodes a superseded source count, dropped the inaccurate `ratio: 0.4` field (76 of 620 C4 skills, not 40%), and refreshed its `generated` date.
+- **Release notes use the template** — `Release.yml` no longer publishes the whole `CHANGELOG.md` as the release body; `Scripts/build_release_notes.py` fills `RELEASE-NOTE-TEMPLATE.md` with the requested version section and drops empty sections. The already-published `v1.1.0` bodies on both hosts were corrected to the short bilingual notes.
 
 ### Fixed
 
@@ -140,6 +141,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **İş akışı sıkılaştırması** — üçüncü taraf durum-bekleme eylemi `gh api` sorgusuna çevrildi; script injection'i önlemek için PR bağlamı ortam değişkenlerinden geçirildi; `.gitattributes` içinde tüm metin dosyaları için LF esas kılındı.
 - **Bağımlılık modeli denetimi** — grep ile doğrulandı: depoda `pyproject.toml`, `requirements*.in`/`requirements.txt`, derlenmiş kilit dosyası, `pip install` tüketicisi, yeniden üretim iş akışı, senkron betiği, `cache-dependency-path` veya bandit ignore yok; sabitlemesi kaldırılacak veya silinecek bir şey yok. Python bildirimi olmadığı için Dependabot'taki bayat `pip` girdisi kaldırıldı. Program stdlib-only kalıyor; ileride eklenecek bağımlılık listesi sabitlemesiz ve varsayılan olarak güncel olacak.
 - **Bayat üst veri düzeltildi** — AGENTS.md artık kayıtlı olmayan "Latest Release" rozetini iddia etmiyor; kayıtlı beş SVG rozetinin tamamı yeniden sorgulandı (HTTP 200, `image/svg+xml`, 2026-11-21). Uzmanlaşma manifesti artık güncel olmayan kaynak sayısını sabitlemiyor, yanlış `ratio: 0.4` alanını kaldırdı (620 C4 becerisinin 76'sı, %40 değil) ve `generated` tarihini yeniledi.
+- **Sürüm notları şablonu kullanıyor** — `Release.yml` artık tüm `CHANGELOG.md`'yi yayın gövdesi olarak yayımlamıyor; `Scripts/build_release_notes.py`, `RELEASE-NOTE-TEMPLATE.md`'yi istenen sürüm bölümüyle dolduruyor ve boş bölümleri atıyor. Her iki hosttaki `v1.1.0` gövdeleri kısa iki dilli notlarla düzeltildi.
 
 ### Düzeltmeler
 

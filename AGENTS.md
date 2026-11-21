@@ -506,7 +506,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
 | `Wiki/` | Wiki chapters; source of truth, synced outward to both wikis by `Scripts/Sync-Wiki.ps1`, automated by `.github/workflows/Sync-Wiki.yml` on `Wiki/` changes (derived projections, never edited at the surface) |
-| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `verify_mirror.py` (mirror verifier), `Sync-Wiki.ps1` |
+| `Scripts/` | Tooling: `check_encoding.py` (encoding gate), `check_version_parity.py` (version-parity gate), `verify_mirror.py` (mirror verifier), `build_release_notes.py` (template-backed release-note builder), `Sync-Wiki.ps1` |
 | `.github/` | GitHub config: `dependabot.yml` (weekly), `ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE.md`, `workflows/` |
 | `.gitlab-ci.yml` | GitLab pipeline, default-branch only (see CI) |
 | `Logs/` (`.gitignore` pattern) | Ignored run artifacts: timestamped install logs |
@@ -579,8 +579,8 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 
 ## Releases — Procedure, Hosts, Parity Checks
 
-- Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `Release.yml` compiles `skills.py`, writes `skills.py.sha256`, and publishes a Release whose body is `CHANGELOG.md`.
-- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`; older titles carry a `[DEPRECATED]` prefix on both). The `v1.0.2` body is `CHANGELOG.md` with `skills.py` + `skills.py.sha256` assets on GitHub.
+- Procedure: push tag `v*.*.*` (or dispatch `workflow_dispatch` with a version); GitHub `Release.yml` compiles `skills.py`, writes `skills.py.sha256`, builds short bilingual notes from `RELEASE-NOTE-TEMPLATE.md` via `Scripts/build_release_notes.py`, and publishes a Release with those notes. The full history stays in `CHANGELOG.md`.
+- Hosts and parity: tags `v1.0.0`, `v1.0.1`, `v1.0.2`, `v1.1.0` resolve identically on both hosts (verified via `ls-remote --tags`), and Release objects with identical titles exist on both hosts (verified via `glab release list` and `gh release list`; older titles carry a `[DEPRECATED]` prefix on both). `v1.1.0` is tagged at commit `356f8c9` and its body is template-generated; `skills.py` + `skills.py.sha256` assets exist on GitHub.
 - Release notes: bilingual EN-first at equal scope when a release ships notes beyond the changelog body.
 
 ## Bypasses — Gates That Do Not Hold by Design, and What Runs Afterward
@@ -746,4 +746,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=337d18cb4f9efe28f978b91d2c80b89e8b24f5a9 -->
+<!-- mirror-sync: sync-sha=01dcbe69ec7870abc773d06687fe754cf51f54cc -->

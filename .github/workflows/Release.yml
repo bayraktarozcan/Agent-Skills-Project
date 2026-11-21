@@ -45,12 +45,15 @@ jobs:
       - name: Generate checksum
         run: sha256sum skills.py > skills.py.sha256
 
+      - name: Build release notes from template
+        run: python Scripts/build_release_notes.py "${{ steps.version.outputs.version }}" RELEASE-NOTES.md
+
       - name: Create Release
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
-          body_path: CHANGELOG.md
+          body_path: RELEASE-NOTES.md
           draft: false
           prerelease: false
           files: |
