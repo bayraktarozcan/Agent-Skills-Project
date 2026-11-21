@@ -5,7 +5,7 @@ Checks (PASS/FAIL by name, any failure exits 1):
   final-newline     every tracked text file ends with LF
   hidden-layer-names  no tracked file names or contents name a gitignored local
                     layer file (the .gitignore pattern is the only exception)
-  no-legacy-version  no prose advertises an end-of-life Python floor (3.8+)
+  no-legacy-version  no prose advertises a Python floor below the CI floor
   heading-case     documentation headings follow the title-case rule in AGENTS.md
   workflow-inventory  every tracked workflow name appears in both guides
 """
@@ -71,6 +71,11 @@ def check(root: Path = ROOT) -> list[str]:
     else:
         print("PASS hidden-layer-names: no local layer name in tracked output")
 
+    # The declared CI floor is the canonical lower bound; any advertised minor
+    # below it is stale. This generalizes the old 3.8-only check to every line.
+    floor_text = (root / "Scripts" / "python_floor.py").read_text(encoding="utf-8")
+    floor_match = re.search(r'^FLOOR = "(\d+)\.(\d+)"', floor_text, re.M)
+    floor_minor = int(floor_match.group(2)) if floor_match else None
     legacy = []
     for name in files:
         # CHANGELOG is a historical record: it may describe the removal of an
@@ -79,12 +84,14 @@ def check(root: Path = ROOT) -> list[str]:
             continue
         text = (root / name).read_bytes().decode("utf-8", errors="replace")
         for i, line in enumerate(text.splitlines(), 1):
-            if re.search(r"Python 3\.8\+|3\.8 or later|3\.8 veya üstü", line, re.I):
-                legacy.append(f"{name}:{i}")
+            for match in re.finditer(r"Python 3\.(\d+)\+|3\.(\d+) or later|3\.(\d+) veya üstü", line, re.I):
+                minor = int(match.group(1) or match.group(2) or match.group(3))
+                if floor_minor is not None and minor < floor_minor:
+                    legacy.append(f"{name}:{i}: 3.{minor}")
     if legacy:
         failures.append("no-legacy-version: " + ", ".join(legacy))
     else:
-        print("PASS no-legacy-version: no end-of-life Python floor advertised")
+        print("PASS no-legacy-version: no advertised floor below the CI floor")
 
     bad_headings: list[str] = []
     for name in files:
@@ -169,7 +176,12 @@ def selftest() -> int:
         if not any(re.search(r"^## [a-z]", l) for l in text.splitlines()):
             print("SELFTEST FAIL: planted lowercase heading not detected")
             return 1
-    print("SELFTEST OK: planted missing newline and lowercase heading fail by name")
+    stale = "Requires Python 3.9+"
+    hits = [int(m.group(1)) for m in re.finditer(r"Python 3\.(\d+)\+", stale, re.I)]
+    if not any(x < 11 for x in hits):
+        print("SELFTEST FAIL: planted stale minor line not detected")
+        return 1
+    print("SELFTEST OK: planted newline, lowercase heading and stale minor fail by name")
     return 0
 
 
