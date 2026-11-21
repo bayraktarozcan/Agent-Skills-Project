@@ -23,6 +23,7 @@ Added/Changed/Removed/Fixed sections, and Files/Documentation in both halves.
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -82,7 +83,9 @@ def build(template_part: str, version: str, date: str, data: dict[str, list[str]
           sections: list[tuple[str, str]], files_label: str, docs_label: str,
           fallback: str, tr: bool) -> str:
     head = template_part.split(f"## {summary_label}", 1)[0]
-    head = head.replace(title_template, title_template.split(" - ")[0] + f" - {version} ({date})")
+    # The version heading matches published bodies: "## vX — ... (date)".
+    heading = "Sürüm Notları" if tr else "Release Notes"
+    head = re.sub(r"(?m)^# .*$", f"## v{version} — {heading} ({date})", head, count=1)
     head = head.replace(instructions, "").rstrip() + "\n\n"
     added_key = sections[0][1]
     summary = data.get("Summary") or data.get("Özet") or data.get(added_key, [])

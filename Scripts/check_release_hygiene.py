@@ -165,11 +165,21 @@ def check() -> list[str]:
         generated = out.read_text(encoding="utf-8")
         required = ["### Summary", "### Özet", "### Files", "### Documentation",
                     "### Dosyalar", "### Belgelendirme", "<a id=\"tr\"></a>"]
-        missing = [h for h in required if h not in generated]
-        if missing or f"Release {current_version()}." in generated:
-            failures.append("note-generator: missing " + ", ".join(missing or ["canonical summary"]))
+        problems = [f"missing {h}" for h in required if h not in generated]
+        for label in ("Summary", "Özet"):
+            if not re.search(rf"(?m)^### {label}\s*\n+\S", generated):
+                problems.append(f"empty {label}")
+        en_sections = len(re.findall(r"(?m)^### (?:Added|Changed|Removed|Fixed)\s*$", generated))
+        tr_sections = len(re.findall(
+            r"(?m)^### (?:Eklenenler|Değişiklikler|Değiştirilenler|Kaldırılanlar|Düzeltilenler|Düzeltmeler)\s*$", generated))
+        if en_sections == 0 or en_sections != tr_sections:
+            problems.append("EN/TR content sections differ")
+        if len(re.findall(r"(?m)^## v", generated)) != 2:
+            problems.append("body does not have two version headings")
+        if problems:
+            failures.append("note-generator: " + ", ".join(problems))
         else:
-            print("PASS note-generator: canonical bilingual notes with all required sections")
+            print("PASS note-generator: canonical bilingual notes with matched sections")
     return failures
 
 
