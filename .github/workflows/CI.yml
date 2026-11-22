@@ -10,10 +10,6 @@ on:
       - ".github/workflows/CI.yml"
   pull_request:
     branches: [main]
-    paths:
-      - "skills.py"
-      - "Scripts/**"
-      - "Tests/**"
   workflow_dispatch:
 
 jobs:
