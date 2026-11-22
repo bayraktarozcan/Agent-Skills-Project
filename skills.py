@@ -93,6 +93,24 @@ S: dict[str, dict[str, str]] = {
         "unsafe_target": "rejected (unsafe target)",
         "subpath_link": "subpath resolves through a link",
         "rejected": "rejected",
+        "estimate_note": "Skill counts are measured by --inspect, not estimated here",
+        "inspect": "clone and report measured skill content (installs nothing)",
+        "inspect_title": "====== Content Inspection (no files installed) ======",
+        "inspect_repo": "Repo",
+        "inspect_trust": "Source tier",
+        "inspect_commit": "Commit",
+        "inspect_skill": "Skill",
+        "inspect_digest": "SHA-256",
+        "inspect_size": "Bytes",
+        "inspect_ok": "regular file, contained",
+        "inspect_unsafe": "REJECTED: {reason}",
+        "inspect_none": "no SKILL.md found",
+        "inspect_fail": "clone failed: {detail}",
+        "provenance_title": "====== Content Provenance ======",
+        "provenance_records": "Recorded skills: {count}",
+        "provenance_drift": "Digest drift: {count}",
+        "provenance_ok": "Digests match recorded values",
+        "provenance_missing": "No provenance records yet",
         "uninstall_unsafe": "refusing to remove a path containing a link",
         "uninstall_custom": "custom prefix — type the full path to confirm",
         "uninstall_quarantine": "quarantine directories found",
@@ -227,6 +245,24 @@ S: dict[str, dict[str, str]] = {
         "unsafe_target": "reddedildi (güvenli olmayan hedef)",
         "subpath_link": "alt klasör bir bağlantı üzerinden çözümleniyor",
         "rejected": "reddedildi",
+        "estimate_note": "Beceri sayısı burada tahmin edilmez; --inspect ile ölçülür",
+        "inspect": "becerileri klonlayıp ölçülmüş içeriği raporlar (kurulum yapmaz)",
+        "inspect_title": "====== İçerik İncelemesi (dosya kurulmaz) ======",
+        "inspect_repo": "Depo",
+        "inspect_trust": "Kaynak düzeyi",
+        "inspect_commit": "Commit",
+        "inspect_skill": "Beceri",
+        "inspect_digest": "SHA-256",
+        "inspect_size": "Bayt",
+        "inspect_ok": "normal dosya, kapsam içinde",
+        "inspect_unsafe": "REDDİLDİ: {reason}",
+        "inspect_none": "SKILL.md bulunamadı",
+        "inspect_fail": "klonlama başarısız: {detail}",
+        "provenance_title": "====== İçerik Kökeni ======",
+        "provenance_records": "Kayıtlı beceriler: {count}",
+        "provenance_drift": "Özet sapması: {count}",
+        "provenance_ok": "Özetler kayıtlı değerlerle eşleşiyor",
+        "provenance_missing": "Henüz köken kaydı yok",
         "uninstall_unsafe": "bağlantı içeren bir yol kaldırılamaz",
         "uninstall_custom": "özel önek — onaylamak için tam yolu yazın",
         "uninstall_quarantine": "karantina dizinleri bulundu",
@@ -745,6 +781,135 @@ def _rewrite_frontmatter_name(content: str, fixed_name: str) -> str:
     return content.replace(block, new_block, 1)
 
 
+# ─────────────────────────────── PROVENANCE ───────────────────────────────
+
+PROVENANCE_PATH = LOGS_DIR / "skills-provenance.jsonl"
+
+
+def _repo_ref(repo: str) -> str:
+    """Optional immutable commit pin recorded in the registry data layer."""
+    for cat in REPOS["categories"]:
+        for entry in cat["repos"]:
+            if entry["repo"] == repo:
+                return str(entry.get("ref", ""))
+    return ""
+
+
+def _repo_trust(repo: str) -> str:
+    """Editorial source tier derived from the registry's recorded classification."""
+    for cat in REPOS["categories"]:
+        for entry in cat["repos"]:
+            if entry["repo"] == repo:
+                if entry.get("trust"):
+                    return str(entry["trust"])
+                if cat["id"] == "K9":
+                    return "community"
+                if cat["id"] == "K10":
+                    return "risk"
+                default = bool(cat.get("recommended", True))
+                return "curated" if entry.get("recommended", default) else "opt-in"
+    return "unknown"
+
+
+def _repo_commit(repo_dir: Path) -> str:
+    """Resolve the exact commit that was checked out, for the audit trail."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo_dir), "rev-parse", "HEAD"],
+            capture_output=True, text=True, timeout=60,
+        )
+        return result.stdout.strip() if result.returncode == 0 else ""
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+
+
+def _checkout_ref(repo_dir: Path, ref: str) -> tuple[bool, str]:
+    """Fetch and check out an immutable ref; fail closed when it cannot be resolved."""
+    try:
+        fetch = subprocess.run(
+            ["git", "-C", str(repo_dir), "fetch", "--depth", "1", "origin", ref],
+            capture_output=True, text=True, timeout=120,
+        )
+        if fetch.returncode != 0:
+            return False, fetch.stderr.strip()[:200]
+        checkout = subprocess.run(
+            ["git", "-C", str(repo_dir), "checkout", "--detach", ref],
+            capture_output=True, text=True, timeout=120,
+        )
+        return (checkout.returncode == 0, checkout.stderr.strip()[:200])
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return False, str(exc)[:200]
+
+
+def _clone_once(repo: str, subpath: str, tmpdir: Path) -> tuple[bool, str]:
+    """One clone attempt (shallow, single-branch, sparse, optional ref pin)."""
+    clone_cmd = [
+        "git", "clone", "--depth", "1", "--single-branch", "--no-tags", "--filter=blob:none",
+    ]
+    if subpath:
+        clone_cmd.append("--sparse")
+    clone_cmd += [f"https://github.com/{repo}.git", str(tmpdir)]
+    result = subprocess.run(clone_cmd, capture_output=True, text=True, timeout=300)
+    if result.returncode != 0:
+        return False, result.stderr.strip()
+
+    if subpath:
+        sparse = subprocess.run(
+            ["git", "-C", str(tmpdir), "sparse-checkout", "set", subpath],
+            capture_output=True, text=True, timeout=120,
+        )
+        if sparse.returncode != 0:
+            logging.warning(
+                f"[WARN] {repo} sparse-checkout '{subpath}' failed: {sparse.stderr.strip()}"
+            )
+
+    ref = _repo_ref(repo)
+    if ref:
+        ok, detail = _checkout_ref(tmpdir, ref)
+        if not ok:
+            return False, f"pinned ref {ref}: {detail}"
+    return True, ""
+
+
+def _record_provenance(entry: dict[str, Any]) -> None:
+    """Append a structured, machine-readable audit record (one line per skill)."""
+    try:
+        LOGS_DIR.mkdir(parents=True, exist_ok=True)
+        with PROVENANCE_PATH.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False, sort_keys=True) + "\n")
+    except OSError as exc:
+        logging.warning(f"[WARN] provenance write failed: {exc}")
+
+
+def _provenance_drift() -> tuple[int, int]:
+    """Compare recorded digests with installed files; return (records, drifted)."""
+    if not PROVENANCE_PATH.is_file():
+        return 0, 0
+    latest: dict[str, dict[str, Any]] = {}
+    try:
+        for line in PROVENANCE_PATH.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            latest[str(record.get("skill", ""))] = record
+    except (OSError, ValueError):
+        return 0, 0
+    drifted = 0
+    for name, record in latest.items():
+        target = SKILLS_DIR / name / Path(str(record.get("source", "SKILL.md"))).name
+        if not target.is_file():
+            drifted += 1
+            continue
+        try:
+            digest = hashlib.sha256(target.read_bytes()).hexdigest()
+        except OSError:
+            drifted += 1
+            continue
+        if digest != record.get("sha256"):
+            drifted += 1
+    return len(latest), drifted
+
+
 # ─────────────────────────────── PROCESS A SINGLE REPO ───────────────────────────────
 
 def process_repo(
@@ -766,22 +931,7 @@ def process_repo(
 
     for attempt in range(1, max_retries + 1):
         try:
-            clone_cmd = [
-                "git", "clone", "--depth", "1", "--single-branch", "--no-tags", "--filter=blob:none",
-            ]
-            if subpath:
-                clone_cmd.append("--sparse")
-            clone_cmd += [f"https://github.com/{repo}.git", str(tmpdir)]
-            result = subprocess.run(clone_cmd, capture_output=True, text=True, timeout=300)
-            if result.returncode == 0 and subpath:
-                sc = subprocess.run(
-                    ["git", "-C", str(tmpdir), "sparse-checkout", "set", subpath],
-                    capture_output=True,
-                    text=True,
-                    timeout=120,
-                )
-                if sc.returncode != 0:
-                    logging.warning(f"[WARN] {repo} sparse-checkout '{subpath}' failed: {sc.stderr.strip()}")
+            ok, detail = _clone_once(repo, subpath, tmpdir)
         except FileNotFoundError:
             logging.error(f"[ERROR] git {_('not_found', lang)}")
             print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
@@ -800,10 +950,10 @@ def process_repo(
                 continue
             return 0, 0
 
-        if result.returncode == 0:
-            break  # success
+        if ok:
+            break
 
-        last_error = result.stderr.strip()
+        last_error = detail
         logging.error(f"[ERROR] {repo} — {_('clone_failed', lang)} (attempt {attempt}/{max_retries}): {last_error}")
         print(c(f"  [{_('error', lang)}] {repo} — {_('clone_failed', lang)}", "red"))
         if attempt < max_retries:
@@ -838,6 +988,9 @@ def process_repo(
         cleanup(tmpdir)
         return 0, 0
 
+    commit = _repo_commit(tmpdir)
+    trust = _repo_trust(repo)
+
     # Remove junk dirs
     for junk in (
         "node_modules", ".git", ".changeset", "dist", "build",
@@ -863,6 +1016,16 @@ def process_repo(
             logging.error(msg)
             print(c(f"  [{_('error', lang)}] {_('unsafe_source', lang)}: {verdict}", "red"))
             continue
+
+        try:
+            raw = mdfile.read_bytes()
+        except OSError as exc:
+            rejected += 1
+            logging.error(f"[ERROR] {repo} — {_('copy_failed', lang)}: {exc}")
+            print(c(f"  [{_('error', lang)}] {_('copy_failed', lang)}", "red"))
+            continue
+        digest = hashlib.sha256(raw).hexdigest()
+        size = len(raw)
 
         skill_dir = mdfile.parent
         dir_name = skill_dir.name
@@ -948,6 +1111,18 @@ def process_repo(
             logging.error(f"[ERROR] {name} — {_('copy_failed', lang)}: {exc}")
             print(c(f"  [{_('error', lang)}] {name} — {_('copy_failed', lang)}", "red"))
             continue
+        _record_provenance({
+            "timestamp": datetime.datetime.now().isoformat(timespec="seconds"),
+            "repo": repo,
+            "commit": commit,
+            "repo_trust": trust,
+            "skill": name,
+            "source": str(mdfile.relative_to(tmpdir)).replace("\\", "/"),
+            "sha256": digest,
+            "size": size,
+            "regular_file": True,
+            "contained": True,
+        })
         count += 1
 
     cleanup(tmpdir)
@@ -1135,10 +1310,8 @@ def _dry_run_list(target: str, lang: str) -> None:
         print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
         return
     cat_map: dict[str, list[str]] = {}
-    skill_est = 0
     for cat_id, cat_name, _cat_color, repo, subpath in rows:
         cat_map.setdefault(f"{cat_id} — {cat_name}", []).append(repo + (f" ({_('subpath', lang)}: {subpath})" if subpath else ""))
-        skill_est += 17
     print(c(f"\n  [{_('dry_run', lang).upper()}]", "white"))
     print(c("=" * 55, "white"))
     for cat_header, repos_list in cat_map.items():
@@ -1147,8 +1320,54 @@ def _dry_run_list(target: str, lang: str) -> None:
             print(f"    {r}")
         print()
     print(c(f"  {_('total', lang)}: {len(rows)} {_('dry_run', lang)}", "white"))
-    print(c(f"  ~{skill_est} {_('skills_extracted', lang)}", "white"))
+    print(c(f"  {_('estimate_note', lang)}", "yellow"))
     print()
+
+
+def inspect_target(target: str, lang: str) -> None:
+    """Clone to a temp dir and report measured skill content; install nothing."""
+    rows = list_repos(target, lang)
+    if not rows:
+        print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
+        return
+    print_header(f"  {_('inspect_title', lang)}", lang)
+    for _cid, _cname, _ccolor, repo, subpath in rows:
+        tmpdir = Path(tempfile.mkdtemp(prefix=f"asp-inspect-{repo.replace('/', '-')}-"))
+        try:
+            ok, detail = _clone_once(repo, subpath, tmpdir)
+            if not ok:
+                print(c(f"  [{_('error', lang)}] {repo}: {_('inspect_fail', lang).format(detail=detail)}", "red"))
+                continue
+            src = tmpdir / subpath if subpath else tmpdir
+            if _path_chain_has_link(tmpdir, tmpdir) or _path_chain_has_link(src, tmpdir):
+                print(c(f"  [{_('error', lang)}] {repo}: {_('subpath_link', lang)}", "red"))
+                continue
+            commit = _repo_commit(tmpdir)
+            trust = _repo_trust(repo)
+            print()
+            print(c(
+                f"  {_('inspect_repo', lang)}: {repo} | {_('inspect_trust', lang)}: {trust} "
+                f"| {_('inspect_commit', lang)}: {commit or '-'}", "cyan"))
+            found = 0
+            for mdfile in sorted(src.rglob("SKILL.md")):
+                verdict = _source_verdict(mdfile, src, tmpdir)
+                if verdict:
+                    print(c(
+                        f"    [{_('error', lang)}] {mdfile.name}: "
+                        f"{_('inspect_unsafe', lang).format(reason=verdict)}", "red"))
+                    continue
+                raw = mdfile.read_bytes()
+                name = _frontmatter_name(raw[:2000].decode("utf-8", "replace")) or mdfile.parent.name
+                print(f"    {_('inspect_skill', lang)}: {valid_name(name)}")
+                print(f"      {_('inspect_digest', lang)}: {hashlib.sha256(raw).hexdigest()}")
+                print(f"      {_('inspect_size', lang)}: {len(raw)} — {_('inspect_ok', lang)}")
+                found += 1
+            if not found:
+                print(c(f"    {_('inspect_none', lang)}", "yellow"))
+        except (FileNotFoundError, subprocess.TimeoutExpired, OSError) as exc:
+            print(c(f"  [{_('error', lang)}] {repo}: {_('inspect_fail', lang).format(detail=str(exc)[:160])}", "red"))
+        finally:
+            cleanup(tmpdir)
 
 
 def install(
@@ -1891,6 +2110,21 @@ def print_manifest_summary(m: dict[str, Any], profile: str, lang: str) -> None:
     print()
 
 
+def provenance_check(lang: str) -> None:
+    """Report measured digest drift between recorded provenance and installed files."""
+    print()
+    print(c(f"  {_('provenance_title', lang)}", "white"))
+    count, drift = _provenance_drift()
+    if not count:
+        print(c(f"  {_('provenance_missing', lang)}", "yellow"))
+        return
+    print(f"  {_('provenance_records', lang).format(count=count)}")
+    if drift:
+        print(c(f"  {_('provenance_drift', lang).format(count=drift)}", "yellow"))
+    else:
+        print(c(f"  {_('provenance_ok', lang)}", "green"))
+
+
 def manifest_check(m: dict[str, Any], profile: str, lang: str) -> None:
     """Manifest + profile status shown by --check."""
     members = profile_members(m, profile)
@@ -2011,6 +2245,7 @@ def _show_general_help(lang: str) -> None:
     print(f"    --gui       {_('gui', lang)}")
     print(f"    --lang tr   {_('lang', lang)}")
     print(f"    --dry-run   {_('dry_run', lang)}")
+    print(f"    --inspect   {_('inspect', lang)}")
     print(f"    --prefix PATH {_('prefix', lang)}")
     print(f"    --profile P   {_('profile_opt', lang)}")
     print(f"    --uninstall {_('uninstall', lang)}")
@@ -2035,6 +2270,25 @@ def _show_general_help(lang: str) -> None:
     print()
 
 
+def _resolve_targets(targets: list[str]) -> list[str]:
+    """Normalize aliases and deduplicate install targets case-insensitively."""
+    alias_map = {
+        "onerilen": "recommended",
+        "guvenli": "trusted",
+        "tumu": "all",
+        "tum": "all",
+    }
+    result: list[str] = []
+    seen: set[str] = set()
+    for raw in targets:
+        value = alias_map.get(raw.lower(), raw)
+        key = value.lower()
+        if key not in seen:
+            seen.add(key)
+            result.append(value)
+    return result or ["recommended"]
+
+
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     """Parse args supporting multiple positional targets."""
     parser = argparse.ArgumentParser(
@@ -2045,6 +2299,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--gui", action="store_true")
     parser.add_argument("--lang", choices=["en", "tr"], default=None)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--inspect", action="store_true")
     parser.add_argument("--prefix", type=str, default=None)
     parser.add_argument("--profile", choices=["temel", "dengeli", "tam"], default="tam")
     parser.add_argument("--uninstall", action="store_true")
@@ -2078,6 +2333,11 @@ def main() -> None:
         SKILLS_DIR = Path(args.prefix).resolve()
         AGENTS_DIR = SKILLS_DIR.parent
 
+    if args.inspect:
+        for target in _resolve_targets(args.targets):
+            inspect_target(target, lang)
+        return
+
     if args.help:
         _show_general_help(lang)
         return
@@ -2098,6 +2358,7 @@ def main() -> None:
         print(json.dumps(REPOS, indent=2, ensure_ascii=False))
     elif args.check:
         pre_flight_check(lang)
+        provenance_check(lang)
         manifest = load_manifest(lang)
         if manifest:
             manifest_check(manifest, args.profile, lang)
@@ -2149,20 +2410,7 @@ def main() -> None:
         if doc_done:
             return
 
-        alias_map = {
-            "onerilen": "recommended",
-            "guvenli": "trusted",
-            "tumu": "all",
-            "tum": "all",
-        }
-        _targets = [alias_map.get(t.lower(), t) for t in args.targets] or ["recommended"]
-        seen: set[str] = set()
-        targets: list[str] = []
-        for t in _targets:
-            key = t.lower()
-            if key not in seen:
-                seen.add(key)
-                targets.append(t)
+        targets = _resolve_targets(args.targets)
 
         if args.dry_run:
             for target in targets:
