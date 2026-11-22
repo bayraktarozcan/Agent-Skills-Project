@@ -28,6 +28,8 @@ $PY skills.py --check --profile temel >/dev/null
 $PY skills.py --check --profile tam >/dev/null
 $PY Scripts/check_encoding.py --selftest >/dev/null
 $PY Scripts/check_encoding.py >/dev/null
+$PY Scripts/check_install_safety.py --selftest >/dev/null
+$PY Scripts/check_install_safety.py >/dev/null
 $PY Scripts/check_version_parity.py >/dev/null
 $PY Scripts/verify_mirror.py AGENTS.md AGENTS-TR.md >/dev/null
 $PY Scripts/check_action_refs.py >/dev/null

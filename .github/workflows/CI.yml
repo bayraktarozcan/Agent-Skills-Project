@@ -60,6 +60,10 @@ jobs:
         run: python skills.py --help
       - name: List categories
         run: python skills.py --list
+      - name: Installer safety selftest
+        run: python Scripts/check_install_safety.py --selftest
+      - name: Installer safety unit tests
+        run: python Scripts/check_install_safety.py
 
   cross-platform:
     name: Cross-Platform (${{ matrix.os }}, Python ${{ matrix.python-version }})

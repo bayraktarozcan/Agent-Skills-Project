@@ -20,6 +20,7 @@ skills-syntax:
   script:
     - python skills.py --version
     - python skills.py --list
+    - python Scripts/check_install_safety.py
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
