@@ -98,21 +98,47 @@ def check_markers() -> list[str]:
 
 
 def check_repo_count_tables(paths: list[Path], expected: dict[str, str]) -> list[str]:
-    """Read repo-count cells from Markdown tables; a substring check cannot drift by one."""
+    """Read repo-count cells from Markdown tables; a substring check cannot drift by one.
+
+    A row qualifies only when a cell is exactly the backticked marker (or ends
+    with it, for a command cell such as ``python skills.py trusted``). The
+    first purely numeric cell after the marker is the repo count. Descriptive
+    prose mentioning "all" cannot be mistaken for the profile row.
+    """
     problems: list[str] = []
     for path in paths:
-        text = path.read_text(encoding="utf-8")
+        rows = [
+            line for line in path.read_text(encoding="utf-8").splitlines()
+            if line.startswith("|")
+        ]
+        cells_by_row = [
+            [cell.strip() for cell in row.strip().strip("|").split("|")]
+            for row in rows
+        ]
         for marker, count in expected.items():
-            pattern = re.compile(
-                r"(?m)^\|[^|\n]*" + re.escape(marker)
-                + r"[^|\n]*(?:\|[^|\n]*){0,3}\|\s*(\d+)\s*\|"
-            )
-            match = pattern.search(text)
-            if match is None:
+            found: str | None = None
+            for cells in cells_by_row:
+                marker_index = next(
+                    (i for i, cell in enumerate(cells)
+                     if cell.strip("`") == marker
+                     or cell.strip("`").endswith(" " + marker)
+                     or cell.endswith(f"`{marker}`")),
+                    None,
+                )
+                if marker_index is None:
+                    continue
+                found = next(
+                    (cell for cell in cells[marker_index + 1:]
+                     if re.fullmatch(r"\d+", cell)),
+                    None,
+                )
+                if found is not None:
+                    break
+            if found is None:
                 problems.append(f"{path.name} missing repo-count row for {marker}")
-            elif match.group(1) != count:
+            elif found != count:
                 problems.append(
-                    f"{path.name} {marker} reports {match.group(1)}, expected {count}"
+                    f"{path.name} {marker} reports {found}, expected {count}"
                 )
     return problems
 
@@ -143,6 +169,15 @@ def selftest() -> int:
         page.write_text("| `trusted` | 41 | ~645 |\n| `all` | 50 | ~1000 |\n", encoding="utf-8")
         if check_repo_count_tables([page], expected):
             print("FAIL selftest: corrected wiki counts were rejected")
+            return 1
+        noisy = base / "Noisy.md"
+        noisy.write_text(
+            "| prose | all sorts of text | 7 | x |\n"
+            "| row | `all` | 50 | ~1000 |\n",
+            encoding="utf-8",
+        )
+        if check_repo_count_tables([noisy], {"all": "50"}):
+            print("FAIL selftest: descriptive prose was mistaken for a repo row")
             return 1
     print("PASS selftest: docs stat and wiki count drift both fail by name")
     return 0

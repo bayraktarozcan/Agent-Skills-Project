@@ -103,6 +103,16 @@ class FrontmatterTests(unittest.TestCase):
         text = "name: only in body\n"
         self.assertEqual(skills._rewrite_frontmatter_name(text, "x"), text)
 
+    def test_name_beyond_old_2000_char_limit(self) -> None:
+        text = "---\ndescription: " + "x" * 2500 + "\nname: Real Name\n---\n"
+        self.assertEqual(skills._frontmatter_name(text), "Real Name")
+
+    def test_bom_frontmatter_is_rewritten(self) -> None:
+        text = "\ufeff---\nname: Bad Name\n---\n"
+        out = skills._rewrite_frontmatter_name(text, "good-name")
+        self.assertTrue(out.startswith("\ufeff"))
+        self.assertIn("name: good-name", out)
+
     def test_valid_name_sanitizes(self) -> None:
         self.assertEqual(skills.valid_name("../Bad Name_!!"), "bad-name")
 

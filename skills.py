@@ -754,8 +754,12 @@ _NAME_DETECT_RE = re.compile(r"^\s*name\s*:\s*(.*)$", re.IGNORECASE | re.MULTILI
 _NAME_LINE_RE = re.compile(r"^(\s*name\s*:)\s*.*$", re.IGNORECASE | re.MULTILINE)
 
 
+def _strip_bom(text: str) -> str:
+    return text[1:] if text.startswith("\ufeff") else text
+
+
 def _frontmatter_block(content: str) -> str:
-    lines = content.splitlines(keepends=True)
+    lines = _strip_bom(content).splitlines(keepends=True)
     if not lines or not lines[0].strip().startswith("---"):
         return ""
     end = next(
@@ -772,13 +776,15 @@ def _frontmatter_name(content: str) -> str:
 
 def _rewrite_frontmatter_name(content: str, fixed_name: str) -> str:
     """Rewrite only the name line inside the frontmatter, preserving key casing."""
-    block = _frontmatter_block(content)
+    prefix = "\ufeff" if content.startswith("\ufeff") else ""
+    body = content[len(prefix):]
+    block = _frontmatter_block(body)
     if not block or not _NAME_DETECT_RE.search(block):
         return content
     new_block = _NAME_LINE_RE.sub(
         lambda m: f"{m.group(1)} {fixed_name}", block, count=1
     )
-    return content.replace(block, new_block, 1)
+    return prefix + body.replace(block, new_block, 1)
 
 
 # ─────────────────────────────── PROVENANCE ───────────────────────────────
@@ -1034,14 +1040,9 @@ def process_repo(
         if dir_name in ("skills", "skill", "plugin"):
             dir_name = skill_dir.parent.name
 
-        # Try to extract 'name:' from frontmatter only (case-insensitive)
-        parsed_name = ""
-        try:
-            with open(mdfile, encoding="utf-8", errors="replace") as f:
-                head = f.read(2000)
-            parsed_name = _frontmatter_name(head)
-        except OSError:
-            pass
+        # The full decoded content is already in `raw` for the digest, so name
+        # detection is not limited to an arbitrary 2000-character prefix.
+        parsed_name = _frontmatter_name(raw.decode("utf-8", "replace"))
 
         name = parsed_name or dir_name
         fixed_name = valid_name(name)
