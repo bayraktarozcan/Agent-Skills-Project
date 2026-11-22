@@ -63,6 +63,8 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 - **Bilingual** -- English and Turkish interfaces. Auto-detects or `--lang tr`.
 - **Cross-platform** -- Windows, macOS, Linux. Single Python file, no dependencies.
 - **Trust by default** -- Recommended profile ships verified repos; Community & Risk are opt-in.
+- **Fail-closed source checks** -- linked paths and files resolving outside the clone are rejected before any read or write.
+- **Measured provenance** -- resolved commit SHA, source tier and SHA-256 digest per skill, with drift reporting in `--check` and a content-only `--inspect`.
 - **Automatic dedup** -- when two repos ship the same skill, the higher-category copy wins.
 - **Agent-native format** -- all skills are standard SKILL.md. No conversion needed.
 - **Full audit trail** -- timestamped logs, tree output per run.
@@ -127,6 +129,7 @@ python skills.py K2 K4 K6    # AI + Frontend + Security
 | `--lang tr` | Force Turkish language |
 | `--lang en` | Force English |
 | `--dry-run` | Preview repos without installing |
+| `--inspect` | Clone selected repos and report measured `SKILL.md` content, digests and source tier without installing |
 | `--prefix PATH` | Custom install directory |
 | `--profile P` | Enforce specialization profile (temel, dengeli, tam; default tam) |
 | `--uninstall` | Remove all installed skills |
@@ -329,6 +332,8 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 - **İki dilli** -- İngilizce ve Türkçe. Otomatik algılama veya `--lang tr`.
 - **Çapraz platform** -- Windows, macOS, Linux. Tek Python dosyası, bağımlılık yok.
 - **Varsayılan olarak güvenilir** -- Önerilen profili yalnızca doğrulanmış depolar içerir; Topluluk ve Risk opsiyoneldir.
+- **Kapalı devre kaynak denetimi** -- bağlantılı yollar ve klon dışına çözümlenen dosyalar herhangi bir okuma veya yazmadan önce reddedilir.
+- **Ölçülmüş köken** -- beceri başına çözümlenen commit SHA'sı, kaynak düzeyi ve SHA-256 özeti; `--check` sapmayı bildirir, `--inspect` yalnızca içeriği gösterir.
 - **Otomatik tekrar temizleme** -- iki depo aynı beceriye sahipse, üst kategorideki (yüksek K numarası) kazanır.
 - **Ajan-yerel formatı** -- tüm beceriler standart SKILL.md formatındadır. Dönüşüm gerekmez.
 - **Tam denetim izi** -- zaman damgalı günlükler, çalıştırma başına klasör ağacı.
@@ -387,6 +392,7 @@ python skills.py K10         # Risk (opsiyonel)
 | `--lang tr` | Türkçe'yi zorla |
 | `--lang en` | İngilizce'yi zorla |
 | `--dry-run` | Repoları kurmadan önizle |
+| `--inspect` | Seçili depoları klonlayıp ölçülmüş `SKILL.md` içeriğini, özetleri ve kaynak düzeyini kurmadan raporlar |
 | `--prefix PATH` | Özel kurulum dizini |
 | `--profile P` | Uzmanlaşma profilini uygula (temel, dengeli, tam; varsayılan tam) |
 | `--uninstall` | Tüm becerileri kaldır |

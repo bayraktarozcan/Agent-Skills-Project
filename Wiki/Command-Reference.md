@@ -59,6 +59,7 @@ Multiple categories can be combined: `python skills.py K1 K2 K3`
 | `--lang tr` | Force Turkish language |
 | `--lang en` | Force English language |
 | `--dry-run` | Preview repos without installing |
+| `--inspect` | Clone selected repos and report measured `SKILL.md` content, digests and source tier without installing |
 | `--prefix PATH` | Custom install directory |
 | `--uninstall` | Remove all installed skills |
 | `--check` | Pre-flight environment check (Python, Git, network, disk) |
@@ -165,6 +166,7 @@ Birden çok kategori birleştirilebilir: `python skills.py K1 K2 K3`
 | `--lang tr` | Türkçe dilini zorla |
 | `--lang en` | İngilizce dilini zorla |
 | `--dry-run` | Repoları kurmadan önizle |
+| `--inspect` | Seçili depoları klonlayıp ölçülmüş `SKILL.md` içeriğini, özetleri ve kaynak düzeyini kurmadan raporlar |
 | `--prefix PATH` | Özel kurulum dizini |
 | `--uninstall` | Tüm becerileri kaldır |
 | `--check` | Ön uçuş ortam kontrolü (Python, Git, ağ, disk) |
