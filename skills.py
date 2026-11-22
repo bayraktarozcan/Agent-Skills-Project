@@ -80,7 +80,11 @@ S: dict[str, dict[str, str]] = {
         "not_found": "not found",
         "timeout": "operation timed out",
         "subpath_not_found": "subpath not found",
-        "overwrite_same_name": "already exists with different content from another repo; overwriting",
+        "overwrite_same_name": "already exists with different content from another repo; keeping both copies",
+        "collision_renamed": "name claimed by a higher-trust source; installed as {name}",
+        "collision_swapped": "higher-trust source takes {name}; earlier copy kept as {other}",
+        "collision_duplicate": "identical copy from {repo} skipped",
+        "collisions_resolved": "collisions resolved",
         "copy_failed": "failed to copy",
         "ok": "OK",
         "warn": "WARN",
@@ -234,7 +238,11 @@ S: dict[str, dict[str, str]] = {
         "not_found": "bulunamadı",
         "timeout": "işlem zaman aşımına uğradı",
         "subpath_not_found": "alt klasör bulunamadı",
-        "overwrite_same_name": "başka bir depodan farklı içerikle zaten var; üzerine yazılıyor",
+        "overwrite_same_name": "başka bir depodan farklı içerikle zaten var; iki kopya da korunuyor",
+        "collision_renamed": "ad daha güvenilir bir kaynak tarafından alındı; {name} olarak kuruldu",
+        "collision_swapped": "daha güvenilir kaynak {name} adını aldı; önceki kopya {other} olarak korundu",
+        "collision_duplicate": "{repo} kaynağından gelen özdeş kopya atlandı",
+        "collisions_resolved": "çakışma çözüldü",
         "copy_failed": "kopyalama başarısız",
         "ok": "TAMAM",
         "warn": "UYARI",
@@ -835,6 +843,61 @@ def _repo_trust(repo: str) -> str:
     return "unknown"
 
 
+_TRUST_RANK = {
+    "curated": 0,
+    "opt-in": 1,
+    "community": 2,
+    "risk": 3,
+    "unknown": 4,
+}
+
+
+def _source_rank(repo: str) -> int:
+    """Explicit trust order, independent of the K-number processing order."""
+    return _TRUST_RANK.get(_repo_trust(repo), 4)
+
+
+def _unique_name(base: str, repo: str, claims: dict[str, dict[str, Any]]) -> str:
+    """Deterministic collision-free folder name for a lower-priority copy."""
+    stem = f"{base}--{valid_name(repo.replace('/', '-'))}"[:64].rstrip("-") or "skill"
+    candidate, number = stem, 2
+    while candidate in claims:
+        suffix = f"-{number}"
+        candidate = stem[:64 - len(suffix)].rstrip("-") + suffix
+        number += 1
+    return candidate
+
+
+def _rename_claim(
+    claims: dict[str, dict[str, Any]], name: str, other: str, lang: str
+) -> bool:
+    """Move an already-installed copy aside and rewrite its frontmatter name."""
+    old_path = claims[name]["path"]
+    new_path = SKILLS_DIR / other
+    if not old_path.is_dir() or _dest_verdict(
+        new_path, new_path / "SKILL.md", SKILLS_DIR
+    ) is not None:
+        return False
+    try:
+        shutil.move(str(old_path), str(new_path))
+        skill_file = new_path / "SKILL.md"
+        if skill_file.is_file():
+            text = skill_file.read_text(encoding="utf-8", errors="replace")
+            skill_file.write_text(
+                _rewrite_frontmatter_name(text, other),
+                encoding="utf-8", errors="replace",
+            )
+    except (OSError, UnicodeError):
+        return False
+    record = claims.pop(name)
+    record["path"] = new_path
+    claims[other] = record
+    msg = f"[INFO] {_('collision_swapped', lang).format(name=name, other=other)}"
+    logging.info(msg)
+    print(c(f"    {msg}", "yellow"))
+    return True
+
+
 def _repo_commit(repo_dir: Path) -> str:
     """Resolve the exact commit that was checked out, for the audit trail."""
     try:
@@ -937,13 +1000,19 @@ def _provenance_drift() -> tuple[int, int]:
 # ─────────────────────────────── PROCESS A SINGLE REPO ───────────────────────────────
 
 def process_repo(
-    repo: str, subpath: str, lang: str
+    repo: str, subpath: str, lang: str,
+    claims: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[int, int]:
     """
     Clone repo, find SKILL.md files, copy to SKILLS_DIR.
     Tries up to 3 attempts (2 retries) on clone failure.
-    Returns (skill_count, fix_count).
+    `claims` is shared across repos so name collisions resolve by source trust
+    and every distinct skill keeps its own folder. Returns (skill_count, fix_count).
     """
+    if claims is None:
+        claims = {}
+    rank = _source_rank(repo)
+    collisions = 0
     safe_name = repo.replace("/", "-")
     tmpdir = Path(tempfile.mkdtemp(prefix=f"asp-{safe_name}-"))
 
@@ -1059,30 +1128,65 @@ def process_repo(
         # detection is not limited to an arbitrary 2000-character prefix.
         parsed_name = _frontmatter_name(raw.decode("utf-8", "replace"))
 
-        name = parsed_name or dir_name
-        fixed_name = valid_name(name)
-
-        if name != fixed_name:
-            if parsed_name:
-                msg = f"[FIX] {_('invalid_name', lang)} '{parsed_name}' -> '{fixed_name}'"
-            else:
-                msg = f"[FIX] {_('missing_name', lang)} '{dir_name}' -> '{fixed_name}'"
+        original_name = parsed_name or dir_name
+        base_name = valid_name(original_name)
+        name = base_name
+        if parsed_name and base_name != parsed_name:
+            msg = f"[FIX] {_('invalid_name', lang)} '{parsed_name}' -> '{base_name}'"
+            logging.warning(msg)
+            print(c(f"    [{_('fix', lang)}] {msg}", "yellow"))
+        elif not parsed_name and base_name != dir_name:
+            msg = f"[FIX] {_('missing_name', lang)} '{dir_name}' -> '{base_name}'"
             logging.warning(msg)
             print(c(f"    [{_('fix', lang)}] {msg}", "yellow"))
 
-            # Only rewrite the frontmatter 'name:' line when we actually found
-            # one in the header; otherwise a bare re.sub could hit a body line.
-            if parsed_name and _source_verdict(mdfile, src, tmpdir) is None:
+        digest = hashlib.sha256(mdfile.read_bytes()).hexdigest()
+        claim = claims.get(base_name)
+        if claim:
+            if claim["digest"] == digest:
+                logging.info(f"[INFO] {_('collision_duplicate', lang).format(repo=repo)}")
+                continue
+            if claim["rank"] <= rank:
+                name = _unique_name(base_name, repo, claims)
+            elif not _rename_claim(
+                claims, base_name,
+                _unique_name(base_name, claim["repo"], claims), lang,
+            ):
+                name = _unique_name(base_name, repo, claims)
+            collisions += 1
+
+        # A file left by an earlier run is not in this run's claims: keep it and
+        # namespace the incoming copy rather than overwriting it.
+        if name not in claims:
+            previous = SKILLS_DIR / name / mdfile.name
+            if previous.is_file():
                 try:
-                    with open(mdfile, encoding="utf-8", errors="replace") as f:
-                        content = f.read()
-                    content = _rewrite_frontmatter_name(content, fixed_name)
-                    with open(mdfile, "w", encoding="utf-8", errors="replace") as f:
-                        f.write(content)
-                except (OSError, UnicodeError):
+                    if hashlib.sha256(previous.read_bytes()).hexdigest() != digest:
+                        name = _unique_name(name, repo, claims)
+                        collisions += 1
+                except OSError:
                     pass
-            name = fixed_name
-            fixes += 1
+
+        if name != base_name:
+            msg = f"[INFO] {_('collision_renamed', lang).format(name=name)}"
+            logging.info(msg)
+            print(c(f"    {msg}", "yellow"))
+
+        # Only rewrite the frontmatter 'name:' line when we actually found one
+        # in the header; the final name now also reflects collision resolution.
+        if (
+            parsed_name and name != parsed_name
+            and _source_verdict(mdfile, src, tmpdir) is None
+        ):
+            try:
+                with open(mdfile, encoding="utf-8", errors="replace") as f:
+                    content = f.read()
+                content = _rewrite_frontmatter_name(content, name)
+                with open(mdfile, "w", encoding="utf-8", errors="replace") as f:
+                    f.write(content)
+                fixes += 1
+            except (OSError, UnicodeError):
+                pass
 
         if not name or name in processed_names:
             continue
@@ -1105,16 +1209,6 @@ def process_repo(
             print(c(f"  [{_('error', lang)}] {_('unsafe_target', lang)}: {verdict}", "red"))
             continue
 
-        # Transparency: if a skill of the same name already exists with
-        # different content (i.e. a different source repo), surface it.
-        try:
-            if dest_file.is_file() and dest_file.read_bytes() != mdfile.read_bytes():
-                msg = f"[{_('warn', lang)}] {name} {_('overwrite_same_name', lang)}"
-                logging.warning(msg)
-                print(c(f"    {msg}", "yellow"))
-        except OSError:
-            pass
-
         if _source_verdict(mdfile, src, tmpdir) is not None:
             rejected += 1
             logging.error(f"[SECURITY] {_('security_path', lang)}: {mdfile}")
@@ -1133,6 +1227,7 @@ def process_repo(
             installed = dest_file.read_bytes()
         except OSError:
             installed = mdfile.read_bytes()
+        installed_digest = hashlib.sha256(installed).hexdigest()
         _record_provenance({
             "timestamp": datetime.datetime.now().isoformat(timespec="seconds"),
             "repo": repo,
@@ -1140,11 +1235,17 @@ def process_repo(
             "repo_trust": trust,
             "skill": name,
             "source": str(mdfile.relative_to(tmpdir)).replace("\\", "/"),
-            "sha256": hashlib.sha256(installed).hexdigest(),
+            "sha256": installed_digest,
             "size": len(installed),
             "regular_file": True,
             "contained": True,
         })
+        claims[name] = {
+            "repo": repo,
+            "rank": rank,
+            "digest": installed_digest,
+            "path": dest,
+        }
         count += 1
 
     cleanup(tmpdir)
@@ -1154,17 +1255,23 @@ def process_repo(
         print(c(f"  [{_('warn', lang)}] {repo} — {_('no_skill_found', lang)}", "yellow"))
         if rejected > 0:
             print(c(f"       {rejected} {_('rejected', lang)}", "red"))
+        if collisions > 0:
+            print(c(f"       {collisions} {_('collisions_resolved', lang)}", "yellow"))
         return 0, fixes
 
     msg = f"[{_('ok', lang)}] {repo} -> {count} {_('skills_extracted', lang)}"
     if fixes > 0:
         msg += f", {fixes} {_('names_fixed', lang)}"
+    if collisions > 0:
+        msg += f", {collisions} {_('collisions_resolved', lang)}"
     if rejected > 0:
         msg += f", {rejected} {_('rejected', lang)}"
     logging.info(msg)
     print(c(f"  [{_('ok', lang)}] {repo} -> {count} {_('skills_extracted', lang)}", "green"))
     if fixes > 0:
         print(c(f"       {fixes} {_('names_fixed', lang)}", "yellow"))
+    if collisions > 0:
+        print(c(f"       {collisions} {_('collisions_resolved', lang)}", "yellow"))
     if rejected > 0:
         print(c(f"       {rejected} {_('rejected', lang)}", "red"))
     return count, fixes
@@ -1418,6 +1525,7 @@ def install(
         return 0, 0, 0
 
     total_rows = len(rows)
+    claims: dict[str, dict[str, Any]] = {}
 
     prev_id = ""
     prev_name = ""
@@ -1458,7 +1566,7 @@ def install(
             )
         )
 
-        sk_count, fx_count = process_repo(repo, subpath, lang)
+        sk_count, fx_count = process_repo(repo, subpath, lang, claims)
         total_fixes += fx_count
 
         if sk_count > 0:
@@ -1833,6 +1941,7 @@ def gui_main(args: argparse.Namespace) -> None:
         ok_count = 0
         fail_count = 0
         fix_count = 0
+        claims: dict[str, dict[str, Any]] = {}
 
         prev_id = ""
         for idx, (cat_id, cat_name, _cat_color, repo, subpath) in enumerate(rows):
@@ -1844,7 +1953,7 @@ def gui_main(args: argparse.Namespace) -> None:
                      " " + _('cloning', current_lang) + "\n", "blue")
             root.update_idletasks()
 
-            sk_count, fx_count = process_repo(repo, subpath, current_lang)
+            sk_count, fx_count = process_repo(repo, subpath, current_lang, claims)
             fix_count += fx_count
             if sk_count > 0:
                 ok_count += 1

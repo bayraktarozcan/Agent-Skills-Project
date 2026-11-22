@@ -35,7 +35,7 @@ That's it. The recommended profile installs ~1001 skills from 35 curated repos.
 - **Cross-platform** — Windows, macOS, Linux
 - **CLI + GUI** — Terminal mode or `--gui` for tkinter interface
 - **Full audit trail** — Timestamped logs and directory tree snapshots
-- **Automatic deduplication** — When two repos ship the same skill, the higher-category copy wins
+- **Collision-safe deduplication** — identical copies are merged, while different content from a lower-trust source is namespaced so every requested skill is preserved
 
 ### Wiki Pages
 
@@ -80,7 +80,7 @@ Bu kadar. Önerilen profil, 35 küratörlü depodan ~1001 beceri yükler.
 - **Platformlar arası** — Windows, macOS, Linux
 - **CLI + GUI** — Terminal modu veya `--gui` ile tkinter arayüzü
 - **Tam denetim izi** — Zaman damgalı günlükler ve klasör yapısı görüntüleri
-- **Otomatik tekilleştirme** — İki depo aynı beceriyi içerdiğinde üst kategorideki kazanır
+- **Çakışmaya güvenli tekilleştirme** — özdeş kopyalar birleştirilir; farklı içerik daha az güvenilir kaynaktan geliyorsa adlandırılarak korunur
 
 ### Wiki Sayfaları
 

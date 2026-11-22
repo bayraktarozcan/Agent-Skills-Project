@@ -130,12 +130,12 @@ Yes. The installer is tested on:
 2. Filters repos based on the requested profile or category
 3. For each repo: clones it to a temp directory, finds `SKILL.md` files, copies them to `~/.agents/skills/<name>/`, cleans up temp files
 4. Fixes invalid skill names (spaces and underscores become hyphens; other invalid characters are removed)
-5. Deduplicates — if two repos ship the same skill name, the higher-category version wins
+5. Resolves collisions by source trust — identical copies are deduplicated, different content is namespaced so all requested skills are kept
 6. Saves a timestamped log and directory tree snapshot
 
 ### How are Duplicates Handled?
 
-When two repos contain a `SKILL.md` file with the same skill name, the one from the **higher category number** wins. For example, if both K2 (AI & LLM) and K4 (Frontend & UI) ship a skill named `react-skills`, the K4 version is kept because 4 > 2.
+When two repos contain a `SKILL.md` file with the same skill name, the source **trust rank** decides who keeps the canonical name (curated before opt-in, community and risk last) — not the category number. Identical content is deduplicated. If the content differs, the lower-trust copy is installed under a namespaced folder such as `react-skills--owner-repo`, and if a higher-trust source arrives later it takes `react-skills` while the earlier copy is renamed with its frontmatter updated. No different-content copy is silently overwritten.
 
 ### Where are Logs and Tree Files Saved?
 
@@ -271,12 +271,12 @@ Evet. Yükleyici aşağıdakilerde test edilmiştir:
 2. İstenen profile veya kategoriye göre depoları filtreler
 3. Her depo için: geçici bir dizine klonlar, `SKILL.md` dosyalarını bulur, `~/.agents/skills/<adi>/` konumuna kopyalar, geçici dosyaları temizler
 4. Geçersiz beceri adlarını düzeltir (boşluklar ve alt çizgiler tirelere dönüşür; diğer geçersiz karakterler kaldırılır)
-5. Tekilleştirir — iki depo aynı beceri adını gönderirse, yüksek kategori numarasına sahip olan kazanır
+5. Çakışmaları kaynak güven sırasına göre çözer — özdeş kopyalar tekilleştirilir, farklı içerik adlandırılarak korunur
 6. Zaman damgalı bir günlük ve dizin ağacı görüntüsü kaydeder
 
 ### Yinelenenler Nasıl Ele Alınıyor?
 
-İki depo aynı beceri adına sahip bir `SKILL.md` dosyası içerdiğinde, **daha yüksek kategori numarasına** sahip olan kazanır. Örneğin, hem K2 (AI & LLM) hem de K4 (Ön Yüz & Arayüz) `react-skills` adında bir beceri gönderirse, 4 > 2 olduğu için K4 sürümü korunur.
+İki depo aynı beceri adına sahip bir `SKILL.md` dosyası içerdiğinde, kanonik adı **kaynak güven sırası** belirler (küratörlü, isteğe bağlı, topluluk, risk); kategori numarası belirlemez. Özdeş içerik tekilleştirilir. İçerik farklıysa daha az güvenilir kopya `react-skills--sahip-depo` gibi adlandırılmış bir klasöre kurulur; daha güvenilir kaynak sonra gelirse `react-skills` adını alır, önceki kopya frontmatter'i güncellenerek yeniden adlandırılır. Farklı içerik sessizce üzerine yazılmaz.
 
 ### Günlükler ve Ağaç Dosyaları Nereye Kaydediliyor?
 

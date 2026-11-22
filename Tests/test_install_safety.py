@@ -328,6 +328,100 @@ class RewriteTests(unittest.TestCase):
         self.assertEqual(count, 1)
 
 
+class CollisionTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self.tmp.name)
+        self.clone = self.base / "clone"
+        self.samples: list[bytes] = []
+        self.calls: list[str] = []
+        self.saved = {
+            "clone_once": skills._clone_once,
+            "mkdtemp": skills.tempfile.mkdtemp,
+            "sleep": skills.time.sleep,
+            "commit": skills._repo_commit,
+            "trust": skills._repo_trust,
+            "skills_dir": skills.SKILLS_DIR,
+            "provenance": skills._record_provenance,
+        }
+        skills.SKILLS_DIR = self.base / "skills"
+        skills._record_provenance = lambda entry: None
+        skills._repo_commit = lambda _dir: "deadbeef"
+        skills.time.sleep = lambda _seconds: None
+        skills._repo_trust = lambda repo: (
+            "curated" if repo == "acme/trusted" else "risk"
+        )
+
+        def sample_dir(prefix: str = "") -> str:
+            self.clone.mkdir(parents=True, exist_ok=True)
+            index = min(len(self.calls), len(self.samples) - 1)
+            (self.clone / "SKILL.md").write_bytes(self.samples[index])
+            return str(self.clone)
+
+        def fake_clone(repo: str, subpath: str, target: Path) -> tuple[bool, str]:
+            self.calls.append(repo)
+            return True, ""
+
+        skills.tempfile.mkdtemp = sample_dir
+        skills._clone_once = fake_clone
+
+    def tearDown(self) -> None:
+        skills._clone_once = self.saved["clone_once"]
+        skills.tempfile.mkdtemp = self.saved["mkdtemp"]
+        skills.time.sleep = self.saved["sleep"]
+        skills._repo_commit = self.saved["commit"]
+        skills._repo_trust = self.saved["trust"]
+        skills.SKILLS_DIR = self.saved["skills_dir"]
+        skills._record_provenance = self.saved["provenance"]
+        self.tmp.cleanup()
+
+    def run_repos(
+        self, samples: list[bytes],
+        repos: tuple[str, ...] = ("acme/trusted", "acme/risk"),
+    ) -> dict:
+        self.samples = samples
+        claims: dict = {}
+        for repo in repos:
+            skills.process_repo(repo, "", "en", claims)
+        return claims
+
+    def test_lower_trust_copy_is_namespaced(self) -> None:
+        claims = self.run_repos([
+            b"---\nname: demo\n---\nA\n",
+            b"---\nname: demo\n---\nB\n",
+        ])
+        canonical = (skills.SKILLS_DIR / "demo" / "SKILL.md").read_text(encoding="utf-8")
+        other = (skills.SKILLS_DIR / "demo--acme-risk" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("\nA\n", canonical)
+        self.assertIn("\nB\n", other)
+        self.assertIn("name: demo--acme-risk", other)
+        self.assertIn("demo", claims)
+        self.assertIn("demo--acme-risk", claims)
+
+    def test_higher_trust_copy_takes_canonical_name(self) -> None:
+        claims = self.run_repos(
+            [
+                b"---\nname: demo\n---\nB\n",
+                b"---\nname: demo\n---\nA\n",
+            ],
+            repos=("acme/risk", "acme/trusted"),
+        )
+        canonical = (skills.SKILLS_DIR / "demo" / "SKILL.md").read_text(encoding="utf-8")
+        moved = (skills.SKILLS_DIR / "demo--acme-risk" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("\nA\n", canonical)
+        self.assertIn("\nB\n", moved)
+        self.assertIn("name: demo--acme-risk", moved)
+        self.assertEqual(claims["demo"]["repo"], "acme/trusted")
+
+    def test_identical_copy_is_deduplicated(self) -> None:
+        self.run_repos([
+            b"---\nname: demo\n---\nsame\n",
+            b"---\nname: demo\n---\nsame\n",
+        ])
+        folders = sorted(p.name for p in skills.SKILLS_DIR.iterdir() if p.is_dir())
+        self.assertEqual(folders, ["demo"])
+
+
 class RetryTests(unittest.TestCase):
     def test_process_repo_retries_after_failed_attempt(self) -> None:
         tmp = tempfile.TemporaryDirectory()

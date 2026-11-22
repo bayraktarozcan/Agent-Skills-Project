@@ -65,7 +65,7 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 - **Trust by default** -- Recommended profile ships verified repos; Community & Risk are opt-in.
 - **Fail-closed source checks** -- linked paths and files resolving outside the clone are rejected before any read or write; quarantine moves and tree snapshots apply the same link checks.
 - **Measured provenance** -- resolved commit SHA, source tier and SHA-256 digest per skill, with drift reporting in `--check` and a content-only `--inspect`.
-- **Automatic dedup** -- when two repos ship the same skill, the higher-category copy wins.
+- **Collision-safe install** -- identical copies are deduplicated; different content from a lower-trust source is installed under a namespaced folder, and a later higher-trust source takes the canonical name while the earlier copy is renamed. Every requested skill is preserved; nothing is silently overwritten.
 - **Agent-native format** -- all skills are standard SKILL.md. No conversion needed.
 - **Full audit trail** -- timestamped logs, tree output per run.
 - **Graphical interface** -- `--gui` launches a tkinter installer with profile quick-select.
@@ -334,7 +334,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 - **Varsayılan olarak güvenilir** -- Önerilen profili yalnızca doğrulanmış depolar içerir; Topluluk ve Risk opsiyoneldir.
 - **Kapalı devre kaynak denetimi** -- bağlantılı yollar ve klon dışına çözümlenen dosyalar herhangi bir okuma veya yazmadan önce reddedilir; karantina taşımaları ve klasör ağacı çıktısı da aynı bağlantı denetimini uygular.
 - **Ölçülmüş köken** -- beceri başına çözümlenen commit SHA'sı, kaynak düzeyi ve SHA-256 özeti; `--check` sapmayı bildirir, `--inspect` yalnızca içeriği gösterir.
-- **Otomatik tekrar temizleme** -- iki depo aynı beceriye sahipse, üst kategorideki (yüksek K numarası) kazanır.
+- **Çakışmaya güvenli kurulum** -- özdeş kopyalar tekilleştirilir; daha az güvenilir kaynaktan gelen farklı içerik adlandırılmış bir klasöre kurulur, daha güvenilir kaynak sonra gelirse kanonik adı alır ve önceki kopya yeniden adlandırılır. İstenen tüm beceriler korunur; farklı içerik sessizce üzerine yazılmaz.
 - **Ajan-yerel formatı** -- tüm beceriler standart SKILL.md formatındadır. Dönüşüm gerekmez.
 - **Tam denetim izi** -- zaman damgalı günlükler, çalıştırma başına klasör ağacı.
 - **Grafik arayüz** -- `--gui` ile tkinter yükleyici, profil hızlı seçimi.
