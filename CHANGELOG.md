@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Installer robustness** — `--inspect` reports the full frontmatter name without the old 2000-character limit, BOM-prefixed files are handled, and an invalid UTF-8 byte in one skill no longer aborts the whole run.
 - **CWD-independent provenance** — audit records are anchored to the script location, so `--check` run from another directory still finds them.
 - **Guard precision** — repo-count tables are parsed by cell structure rather than substrings, the count guard runs in GitHub Hygiene as well as locally, and CI now triggers on `Scripts/` and `Tests/` changes.
+- **Windows safety coverage** — the installer unit suite now also runs in the cross-platform CI job, so the Windows junction/reparse-point path is exercised on `windows-latest` instead of only under Ubuntu.
 - **Frontmatter rewrite corrected** — name detection and rewriting are case-insensitive, confined to the frontmatter block and preserve the original key casing; a `Name:` line no longer leaves the installed folder name and file content out of sync.
 - **Documentation drift closed** — the landing page statistic and every wiki profile table now report 35/41/50 repositories, and `check_version_parity.py` guards those exact cells with a planted-drift selftest.
 - **Turkish CLI strings** keep Turkish characters and use a consistent product name.
@@ -232,6 +233,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Yükleyici sağlamlığı** — `--inspect` artık eski 2000 karakter sınırı olmadan tam frontmatter adını bildiriyor, BOM'lu dosyalar işleniyor ve tek bir becerideki geçersiz UTF-8 baytı tüm çalışmayı durdurmuyor.
 - **CWD'den bağımsız köken** — denetim kayıtları betik konumuna sabitlendi; başka dizinden çalıştırılan `--check` kayıtları buluyor.
 - **Koruma hassasiyeti** — depo sayısı tabloları alt dizeler yerine hücre yapısına göre okunuyor; sayı koruması yerel kapının yanında GitHub Hygiene'de de çalışıyor ve CI artık `Scripts/` ve `Tests/` değişikliklerinde tetikleniyor.
+- **Windows güvenlik kapsamı** — yükleyici birim takımı artık çapraz platform CI işinde de çalışıyor; Windows junction/reparse-point yolu yalnızca Ubuntu'da değil, `windows-latest` üzerinde de sınanıyor.
 - **Frontmatter düzeltmesi düzeltildi** — isim algılama ve yazım büyük/küçük harfe duyarsız, yalnızca frontmatter bloğuyla sınırlı ve özgün anahtar büyüklüğünü koruyor; `Name:` satırı kurulan klasör adı ile dosya içeriğinin uyumsuz kalmasına yol açmıyor.
 - **Belgelendirme sapması kapatıldı** — açılış sayfası istatistiği ve tüm wiki profil tabloları artık 35/41/50 depoyu bildiriyor; `check_version_parity.py` bu hücreleri yerleştirilmiş sapma selftest'iyle koruyor.
 - **Türkçe CLI dizeleri** Türkçe karakterlerini koruyor ve tutarlı bir ürün adı kullanıyor.

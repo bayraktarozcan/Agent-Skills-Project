@@ -91,3 +91,5 @@ jobs:
         run: python skills.py --help
       - name: List categories
         run: python skills.py --list
+      - name: Installer safety unit tests (includes Windows junction)
+        run: python Scripts/check_install_safety.py
