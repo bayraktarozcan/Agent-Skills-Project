@@ -97,6 +97,29 @@ class PathSafetyTests(unittest.TestCase):
         self.assertIsNotNone(skills._source_verdict(candidate, self.root, self.root))
         self.assertTrue(skills._is_link_or_junction(junction))
 
+    def test_quarantine_chain_link_rejected(self) -> None:
+        qdir = self.root / "_quarantine_temel_2026-01-01"
+        saved = skills._is_link_or_junction
+        skills._is_link_or_junction = lambda path: path == qdir
+        try:
+            self.assertIsNotNone(
+                skills._quarantine_verdict(qdir, self.root, qdir / "demo")
+            )
+        finally:
+            skills._is_link_or_junction = saved
+
+    def test_quarantine_entry_link_rejected(self) -> None:
+        qdir = self.root / "quarantine"
+        qdir.mkdir()
+        dst = qdir / "demo"
+        victim = self.base / "victim.txt"
+        victim.write_text("do not overwrite", encoding="utf-8")
+        try:
+            dst.symlink_to(victim)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f"symlinks unavailable: {exc}")
+        self.assertIsNotNone(skills._quarantine_verdict(qdir, self.root, dst))
+
     def test_clean_destination_accepted(self) -> None:
         dest = self.root / "skill"
         self.assertIsNone(skills._dest_verdict(dest, dest / "SKILL.md", self.root))
@@ -208,6 +231,48 @@ class ProvenanceTests(unittest.TestCase):
             json.dumps(record, sort_keys=True) + "\n", encoding="utf-8"
         )
         self.assertEqual(skills._provenance_drift(), (1, 1))
+
+
+class TreeTests(unittest.TestCase):
+    def test_linked_directory_is_not_traversed(self) -> None:
+        tmp = tempfile.TemporaryDirectory()
+        base = Path(tmp.name)
+        agents = base / "agents"
+        agents.mkdir()
+        normal = agents / "normal"
+        normal.mkdir()
+        (normal / "child.txt").write_text("ok", encoding="utf-8")
+        linked = agents / "linked"
+        linked.mkdir()
+        (linked / "secret.txt").write_text("outside", encoding="utf-8")
+        saved_agents = skills.AGENTS_DIR
+        saved_tree = skills.TREE_DIR
+        saved_link_check = skills._is_link_or_junction
+        original = saved_link_check
+        skills.AGENTS_DIR = agents
+        skills.TREE_DIR = base / "logs"
+        skills._is_link_or_junction = lambda path: original(path) or path == linked
+        try:
+            result = skills.save_tree("en")
+            text = Path(result).read_text(encoding="utf-8") if result else ""
+        finally:
+            skills.AGENTS_DIR = saved_agents
+            skills.TREE_DIR = saved_tree
+            skills._is_link_or_junction = saved_link_check
+            tmp.cleanup()
+        self.assertIsNotNone(result)
+        self.assertIn("linked", text)
+        self.assertIn("[link", text)
+        self.assertNotIn("secret.txt", text)
+        self.assertIn("child.txt", text)
+
+    def test_linked_root_is_skipped(self) -> None:
+        saved_link_check = skills._is_link_or_junction
+        skills._is_link_or_junction = lambda _path: True
+        try:
+            self.assertIsNone(skills.save_tree("en"))
+        finally:
+            skills._is_link_or_junction = saved_link_check
 
 
 class RewriteTests(unittest.TestCase):

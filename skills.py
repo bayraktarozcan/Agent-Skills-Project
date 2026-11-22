@@ -189,6 +189,8 @@ S: dict[str, dict[str, str]] = {
         "reconcile_skipped": "Already quarantined (skipped): {count}",
         "reconcile_none": "Nothing to move \u2014 profile already satisfied",
         "reconcile_quarantine": "Quarantine: {path}",
+        "quarantine_unsafe": "quarantine target resolves through a link",
+        "tree_link": " -> [link, not traversed]",
         "reconcile_moved_list": "Moved list: {path}",
         "reconcile_dry_run": "dry run \u2014 would move {count} skills",
         "unknown_profile": "Unknown profile: {profile}",
@@ -341,6 +343,8 @@ S: dict[str, dict[str, str]] = {
         "reconcile_skipped": "Zaten karantinada (atlandı): {count}",
         "reconcile_none": "Taşınacak bir şey yok — profil zaten sağlanmış",
         "reconcile_quarantine": "Karantina: {path}",
+        "quarantine_unsafe": "karantina hedefi bir bağlantı üzerinden çözümleniyor",
+        "tree_link": " -> [bağlantı, geçilmedi]",
         "reconcile_moved_list": "Taşınan liste: {path}",
         "reconcile_dry_run": "kuru çalışma — {count} beceri taşınırdı",
         "unknown_profile": "Bilinmeyen profil: {profile}",
@@ -744,6 +748,15 @@ def _quarantine_dirs() -> list[Path]:
         p for p in AGENTS_DIR.iterdir()
         if p.is_dir() and not p.is_symlink() and p.name.startswith("_quarantine_")
     )
+
+
+def _quarantine_verdict(qdir: Path, qroot: Path, dst: Path) -> str | None:
+    """Fail closed when a quarantine directory or entry would redirect a move."""
+    if _path_chain_has_link(qdir, qroot, include_stop=False):
+        return "quarantine target contains a link"
+    if dst.is_symlink() or _path_chain_has_link(dst, qdir, include_stop=False):
+        return "existing quarantine entry is a link"
+    return None
 
 
 def _uninstall_verdict() -> str | None:
@@ -1473,7 +1486,8 @@ def install(
 # ─────────────────────────────── TREE ───────────────────────────────
 
 def save_tree(lang: str) -> str | None:
-    if not AGENTS_DIR.is_dir():
+    if not AGENTS_DIR.is_dir() or _is_link_or_junction(AGENTS_DIR):
+        logging.warning("[SECURITY] skills root is a link; directory tree skipped")
         return None
     TREE_DIR.mkdir(parents=True, exist_ok=True)
     tree_file = TREE_DIR / f"skills-tree_{datetime.datetime.now():%Y-%m-%d_%H-%M-%S}.txt"
@@ -1484,9 +1498,11 @@ def save_tree(lang: str) -> str | None:
         for i, entry in enumerate(entries):
             is_last = i == len(entries) - 1
             connector = "└── " if is_last else "├── "
-            suffix = "/" if entry.is_dir() else ""
+            linked = _is_link_or_junction(entry)
+            real_dir = entry.is_dir() and not linked
+            suffix = _('tree_link', lang) if linked else ("/" if real_dir else "")
             tree_lines.append(f"{prefix}{connector}{entry.name}{suffix}")
-            if entry.is_dir():
+            if real_dir:
                 extension = "    " if is_last else "│   "
                 _walk(entry, prefix + extension)
 
@@ -2199,12 +2215,28 @@ def reconcile(m: dict[str, Any], profile: str, lang: str, dry_run: bool = False)
     skipped = 0
     moved: list[str] = []
     if to_move:
-        qdir = SKILLS_DIR.parent / f"_quarantine_{profile}_{datetime.datetime.now():%Y-%m-%d}"
+        qroot = SKILLS_DIR.parent
+        qdir = qroot / f"_quarantine_{profile}_{datetime.datetime.now():%Y-%m-%d}"
+        verdict = _quarantine_verdict(qdir, qroot, qdir / to_move[0])
+        if verdict:
+            msg = f"[SECURITY] {_('quarantine_unsafe', lang)}: {verdict}: {qdir}"
+            logging.error(msg)
+            print(c(f"  [{_('error', lang)}] {msg}", "red"))
+            return 0, kept, 0
         qdir.mkdir(parents=True, exist_ok=True)
         for name in to_move:
             dst = qdir / name
+            verdict = _quarantine_verdict(qdir, qroot, dst)
+            if verdict:
+                skipped += 1
+                logging.error(f"[SECURITY] {name}: {verdict}")
+                continue
             if dst.exists():
                 skipped += 1
+                continue
+            if _path_chain_has_link(SKILLS_DIR / name, SKILLS_DIR, include_stop=False):
+                skipped += 1
+                logging.error(f"[SECURITY] {_('unsafe_source', lang)}: {name}")
                 continue
             try:
                 shutil.move(str(SKILLS_DIR / name), str(dst))
@@ -2212,14 +2244,18 @@ def reconcile(m: dict[str, Any], profile: str, lang: str, dry_run: bool = False)
             except OSError as e:
                 print(c(f"  [{_('error', lang)}] {name}: {e}", "red"))
         if moved:
-            try:
-                with (qdir / "_moved-list.txt").open("a", encoding="utf-8") as fh:
-                    fh.write(f"# {datetime.datetime.now():%Y-%m-%d %H:%M:%S} profile={profile} skills={len(moved)}\n")
-                    for name in moved:
-                        fh.write(f"{name}\n")
-                print(c(f"  [{_('ok', lang)}] {_('reconcile_moved_list', lang).format(path=str(qdir / '_moved-list.txt'))}", "green"))
-            except OSError:
-                pass
+            moved_list = qdir / "_moved-list.txt"
+            if moved_list.is_symlink():
+                logging.error(f"[SECURITY] quarantine moved-list is a link: {moved_list}")
+            else:
+                try:
+                    with moved_list.open("a", encoding="utf-8") as fh:
+                        fh.write(f"# {datetime.datetime.now():%Y-%m-%d %H:%M:%S} profile={profile} skills={len(moved)}\n")
+                        for name in moved:
+                            fh.write(f"{name}\n")
+                    print(c(f"  [{_('ok', lang)}] {_('reconcile_moved_list', lang).format(path=str(moved_list))}", "green"))
+                except OSError:
+                    pass
         print(c(f"  [{_('warn', lang)}] {_('reconcile_moved', lang).format(count=len(moved))}", "yellow"))
         print(c(f"  {_('reconcile_quarantine', lang).format(path=str(qdir))}", "yellow"))
     else:

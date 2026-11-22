@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CWD-independent provenance** — audit records are anchored to the script location, so `--check` run from another directory still finds them.
 - **Guard precision** — repo-count tables are parsed by cell structure rather than substrings, the count guard runs in GitHub Hygiene as well as locally, and CI now triggers on `Scripts/` and `Tests/` changes.
 - **Windows safety coverage** — the installer unit suite now also runs in the cross-platform CI job, so the Windows junction/reparse-point path is exercised on `windows-latest` instead of only under Ubuntu.
+- **Quarantine and tree traversal hardened** — `reconcile()` rejects a quarantine path chain or entry that resolves through a symlink/junction before moving skills, and `save_tree()` lists linked directories without traversing them or following a linked root.
 - **Frontmatter rewrite corrected** — name detection and rewriting are case-insensitive, confined to the frontmatter block and preserve the original key casing; a `Name:` line no longer leaves the installed folder name and file content out of sync.
 - **Documentation drift closed** — the landing page statistic and every wiki profile table now report 35/41/50 repositories, and `check_version_parity.py` guards those exact cells with a planted-drift selftest.
 - **Turkish CLI strings** keep Turkish characters and use a consistent product name.
@@ -242,6 +243,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **CWD'den bağımsız köken** — denetim kayıtları betik konumuna sabitlendi; başka dizinden çalıştırılan `--check` kayıtları buluyor.
 - **Koruma hassasiyeti** — depo sayısı tabloları alt dizeler yerine hücre yapısına göre okunuyor; sayı koruması yerel kapının yanında GitHub Hygiene'de de çalışıyor ve CI artık `Scripts/` ve `Tests/` değişikliklerinde tetikleniyor.
 - **Windows güvenlik kapsamı** — yükleyici birim takımı artık çapraz platform CI işinde de çalışıyor; Windows junction/reparse-point yolu yalnızca Ubuntu'da değil, `windows-latest` üzerinde de sınanıyor.
+- **Karantina ve ağaç gezinmesi sağlamlaştırıldı** — `reconcile()` becerileri taşımadan önce karantina yol zincirinde veya hedef girişte sembolik bağlantı/junction varsa işlemi reddediyor; `save_tree()` bağlantılı dizinleri listeliyor ama içlerine girmiyor, bağlantılı kökü de izlemiyor.
 - **Frontmatter düzeltmesi düzeltildi** — isim algılama ve yazım büyük/küçük harfe duyarsız, yalnızca frontmatter bloğuyla sınırlı ve özgün anahtar büyüklüğünü koruyor; `Name:` satırı kurulan klasör adı ile dosya içeriğinin uyumsuz kalmasına yol açmıyor.
 - **Belgelendirme sapması kapatıldı** — açılış sayfası istatistiği ve tüm wiki profil tabloları artık 35/41/50 depoyu bildiriyor; `check_version_parity.py` bu hücreleri yerleştirilmiş sapma selftest'iyle koruyor.
 - **Türkçe CLI dizeleri** Türkçe karakterlerini koruyor ve tutarlı bir ürün adı kullanıyor.
