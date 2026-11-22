@@ -11,6 +11,7 @@ Usage:
   python skills.py --gui                   Launch graphical interface
   python skills.py --lang tr               Force Turkish language
   python skills.py --dry-run               Preview repos without installing
+  python skills.py --inspect               Report measured SKILL.md content without installing
   python skills.py --prefix PATH           Install to custom directory
   python skills.py --profile temel         Enforce specialization profile (temel|dengeli|tam)
   python skills.py --uninstall             Remove all installed skills
@@ -95,7 +96,7 @@ S: dict[str, dict[str, str]] = {
         "rejected": "rejected",
         "estimate_note": "Skill counts are measured by --inspect, not estimated here",
         "inspect": "clone and report measured skill content (installs nothing)",
-        "inspect_title": "====== Content Inspection (no files installed) ======",
+        "inspect_title": "Content Inspection (no files installed)",
         "inspect_repo": "Repo",
         "inspect_trust": "Source tier",
         "inspect_commit": "Commit",
@@ -247,7 +248,7 @@ S: dict[str, dict[str, str]] = {
         "rejected": "reddedildi",
         "estimate_note": "Beceri sayısı burada tahmin edilmez; --inspect ile ölçülür",
         "inspect": "becerileri klonlayıp ölçülmüş içeriği raporlar (kurulum yapmaz)",
-        "inspect_title": "====== İçerik İncelemesi (dosya kurulmaz) ======",
+        "inspect_title": "İçerik İncelemesi (dosya kurulmaz)",
         "inspect_repo": "Depo",
         "inspect_trust": "Kaynak düzeyi",
         "inspect_commit": "Commit",
@@ -1331,7 +1332,7 @@ def inspect_target(target: str, lang: str) -> None:
     if not rows:
         print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
         return
-    print_header(f"  {_('inspect_title', lang)}", lang)
+    print_header(_("inspect_title", lang), lang)
     for _cid, _cname, _ccolor, repo, subpath in rows:
         tmpdir = Path(tempfile.mkdtemp(prefix=f"asp-inspect-{repo.replace('/', '-')}-"))
         try:
