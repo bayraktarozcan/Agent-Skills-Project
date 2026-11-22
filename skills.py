@@ -29,6 +29,7 @@ import logging
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -88,6 +89,10 @@ S: dict[str, dict[str, str]] = {
         "invalid_name": "invalid name",
         "missing_name": "missing name, defaulting to",
         "security_path": "Security — invalid target path",
+        "unsafe_source": "rejected (unsafe source)",
+        "unsafe_target": "rejected (unsafe target)",
+        "subpath_link": "subpath resolves through a link",
+        "rejected": "rejected",
         "final_success": "OPERATION COMPLETED SUCCESSFULLY",
         "final_none": "NO OPERATIONS PERFORMED",
         "final_partial": "OPERATION PARTIALLY COMPLETED (Errors Occurred)",
@@ -213,6 +218,10 @@ S: dict[str, dict[str, str]] = {
         "invalid_name": "geçersiz isim",
         "missing_name": "isim yok, varsayılan kullanılıyor",
         "security_path": "Güvenlik — geçersiz hedef yolu",
+        "unsafe_source": "reddedildi (güvenli olmayan kaynak)",
+        "unsafe_target": "reddedildi (güvenli olmayan hedef)",
+        "subpath_link": "alt klasör bir bağlantı üzerinden çözümleniyor",
+        "rejected": "reddedildi",
         "final_success": "İŞLEM BAŞARIYLA TAMAMLANDI",
         "final_none": "HİÇBİR İŞLEM YAPILMADI",
         "final_partial": "İŞLEM KISMEN TAMAMLANDI (Hatalar Oluştu)",
@@ -619,6 +628,94 @@ def cleanup(tmpdir: str | Path) -> None:
         pass
 
 
+# ─────────────────────────────── PATH SAFETY ───────────────────────────────
+
+_REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
+
+
+def _is_link_or_junction(path: Path) -> bool:
+    """True for symlinks and, on Windows, junctions/reparse points (3.11-safe)."""
+    if path.is_symlink():
+        return True
+    if os.name == "nt" and _REPARSE_POINT:
+        try:
+            return bool(path.lstat().st_file_attributes & _REPARSE_POINT)
+        except (OSError, AttributeError):
+            return False
+    return False
+
+
+def _path_chain_has_link(path: Path, stop: Path) -> bool:
+    """Walk path up to stop (inclusive); detect any link in every component."""
+    cur = path
+    while True:
+        if _is_link_or_junction(cur):
+            return True
+        if cur == stop or cur.parent == cur:
+            return False
+        cur = cur.parent
+
+
+def _source_verdict(mdfile: Path, src_root: Path, tmp_root: Path) -> str | None:
+    """Return a rejection reason, or None when a source file is safe to read/copy."""
+    if _path_chain_has_link(tmp_root, tmp_root):
+        return "clone root is a link"
+    if _path_chain_has_link(src_root, tmp_root):
+        return "subpath resolves through a link"
+    if _path_chain_has_link(mdfile, src_root):
+        return "skill file or a parent is a link"
+    try:
+        root_resolved = src_root.resolve(strict=True)
+        file_resolved = mdfile.resolve(strict=True)
+        if not file_resolved.is_relative_to(root_resolved):
+            return "resolved source escapes scan root"
+        if not stat.S_ISREG(os.lstat(mdfile).st_mode):
+            return "source is not a regular file"
+    except (OSError, ValueError) as exc:
+        return f"cannot verify source: {exc}"
+    return None
+
+
+def _dest_verdict(dest: Path, dest_file: Path, skills_dir: Path) -> str | None:
+    """Return a rejection reason, or None when a destination is safe to write."""
+    if _path_chain_has_link(dest, skills_dir):
+        return "install target contains a link"
+    if dest_file.is_symlink():
+        return "existing target file is a link"
+    return None
+
+
+_NAME_DETECT_RE = re.compile(r"^\s*name\s*:\s*(.*)$", re.IGNORECASE | re.MULTILINE)
+_NAME_LINE_RE = re.compile(r"^(\s*name\s*:)\s*.*$", re.IGNORECASE | re.MULTILINE)
+
+
+def _frontmatter_block(content: str) -> str:
+    lines = content.splitlines(keepends=True)
+    if not lines or not lines[0].strip().startswith("---"):
+        return ""
+    end = next(
+        (i for i in range(1, len(lines)) if lines[i].strip().startswith("---")),
+        None,
+    )
+    return "".join(lines[1:end]) if end is not None else ""
+
+
+def _frontmatter_name(content: str) -> str:
+    match = _NAME_DETECT_RE.search(_frontmatter_block(content))
+    return match.group(1).strip().strip("\"'") if match else ""
+
+
+def _rewrite_frontmatter_name(content: str, fixed_name: str) -> str:
+    """Rewrite only the name line inside the frontmatter, preserving key casing."""
+    block = _frontmatter_block(content)
+    if not block or not _NAME_DETECT_RE.search(block):
+        return content
+    new_block = _NAME_LINE_RE.sub(
+        lambda m: f"{m.group(1)} {fixed_name}", block, count=1
+    )
+    return content.replace(block, new_block, 1)
+
+
 # ─────────────────────────────── PROCESS A SINGLE REPO ───────────────────────────────
 
 def process_repo(
@@ -703,6 +800,15 @@ def process_repo(
             cleanup(tmpdir)
             return 0, 0
 
+    # A subpath reached through a link would let a repository redirect the scan
+    # outside the fresh clone; fail closed before scanning anything.
+    if _path_chain_has_link(tmpdir, tmpdir) or _path_chain_has_link(src, tmpdir):
+        msg = f"[SECURITY] {repo} — {_('subpath_link', lang)}"
+        logging.error(msg)
+        print(c(f"  [{_('error', lang)}] {msg}", "red"))
+        cleanup(tmpdir)
+        return 0, 0
+
     # Remove junk dirs
     for junk in (
         "node_modules", ".git", ".changeset", "dist", "build",
@@ -715,9 +821,20 @@ def process_repo(
 
     count = 0
     fixes = 0
+    rejected = 0
     processed_names: set[str] = set()
 
     for mdfile in src.rglob("SKILL.md"):
+        # Links and escaped paths are rejected before the file is opened: the
+        # read, the frontmatter rewrite and the copy all follow the same path.
+        verdict = _source_verdict(mdfile, src, tmpdir)
+        if verdict:
+            rejected += 1
+            msg = f"[SECURITY] {repo} — {mdfile.relative_to(tmpdir)}: {verdict}"
+            logging.error(msg)
+            print(c(f"  [{_('error', lang)}] {_('unsafe_source', lang)}: {verdict}", "red"))
+            continue
+
         skill_dir = mdfile.parent
         dir_name = skill_dir.name
 
@@ -725,21 +842,12 @@ def process_repo(
         if dir_name in ("skills", "skill", "plugin"):
             dir_name = skill_dir.parent.name
 
-        # Try to extract 'name:' from frontmatter
+        # Try to extract 'name:' from frontmatter only (case-insensitive)
         parsed_name = ""
         try:
             with open(mdfile, encoding="utf-8", errors="replace") as f:
                 head = f.read(2000)
-            in_front = 0
-            for line in head.splitlines():
-                if line.startswith("---"):
-                    in_front += 1
-                    if in_front >= 2:
-                        break
-                    continue
-                if in_front == 1 and line.lower().startswith("name:"):
-                    parsed_name = line.split(":", 1)[1].strip().strip("\"'")
-                    break
+            parsed_name = _frontmatter_name(head)
         except OSError:
             pass
 
@@ -756,17 +864,11 @@ def process_repo(
 
             # Only rewrite the frontmatter 'name:' line when we actually found
             # one in the header; otherwise a bare re.sub could hit a body line.
-            if parsed_name:
+            if parsed_name and _source_verdict(mdfile, src, tmpdir) is None:
                 try:
                     with open(mdfile, encoding="utf-8") as f:
                         content = f.read()
-                    content = re.sub(
-                        r"^name:\s*.*",
-                        f"name: {fixed_name}",
-                        content,
-                        count=1,
-                        flags=re.MULTILINE,
-                    )
+                    content = _rewrite_frontmatter_name(content, fixed_name)
                     with open(mdfile, "w", encoding="utf-8") as f:
                         f.write(content)
                 except OSError:
@@ -779,13 +881,21 @@ def process_repo(
         processed_names.add(name)
 
         dest = SKILLS_DIR / name
-        if not str(dest).startswith(str(SKILLS_DIR)):
-            logging.error(f"[SECURITY] {_('security_path', lang)}: {dest}")
-            print(c(f"  [{_('error', lang)}] {_('security_path', lang)}: {dest}", "red"))
+        dest_file = dest / mdfile.name
+        verdict = _dest_verdict(dest, dest_file, SKILLS_DIR)
+        if verdict:
+            rejected += 1
+            logging.error(f"[SECURITY] {_('security_path', lang)}: {dest} — {verdict}")
+            print(c(f"  [{_('error', lang)}] {_('unsafe_target', lang)}: {verdict}", "red"))
             continue
 
         dest.mkdir(parents=True, exist_ok=True)
-        dest_file = dest / mdfile.name
+        verdict = _dest_verdict(dest, dest_file, SKILLS_DIR)
+        if verdict:
+            rejected += 1
+            logging.error(f"[SECURITY] {_('security_path', lang)}: {dest} — {verdict}")
+            print(c(f"  [{_('error', lang)}] {_('unsafe_target', lang)}: {verdict}", "red"))
+            continue
 
         # Transparency: if a skill of the same name already exists with
         # different content (i.e. a different source repo), surface it.
@@ -796,6 +906,12 @@ def process_repo(
                 print(c(f"    {msg}", "yellow"))
         except OSError:
             pass
+
+        if _source_verdict(mdfile, src, tmpdir) is not None:
+            rejected += 1
+            logging.error(f"[SECURITY] {_('security_path', lang)}: {mdfile}")
+            print(c(f"  [{_('error', lang)}] {_('unsafe_source', lang)}", "red"))
+            continue
 
         try:
             shutil.copy2(mdfile, dest_file)
@@ -810,15 +926,21 @@ def process_repo(
     if count == 0:
         logging.warning(f"[WARN] {repo} — {_('no_skill_found', lang)}")
         print(c(f"  [{_('warn', lang)}] {repo} — {_('no_skill_found', lang)}", "yellow"))
+        if rejected > 0:
+            print(c(f"       {rejected} {_('rejected', lang)}", "red"))
         return 0, fixes
 
     msg = f"[{_('ok', lang)}] {repo} -> {count} {_('skills_extracted', lang)}"
     if fixes > 0:
         msg += f", {fixes} {_('names_fixed', lang)}"
+    if rejected > 0:
+        msg += f", {rejected} {_('rejected', lang)}"
     logging.info(msg)
     print(c(f"  [{_('ok', lang)}] {repo} -> {count} {_('skills_extracted', lang)}", "green"))
     if fixes > 0:
         print(c(f"       {fixes} {_('names_fixed', lang)}", "yellow"))
+    if rejected > 0:
+        print(c(f"       {rejected} {_('rejected', lang)}", "red"))
     return count, fixes
 
 
