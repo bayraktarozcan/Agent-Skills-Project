@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Named CI and release guards** — `Scripts/check_action_refs.py` verifies every action ref against a local default-branch map, forbids SHA/version/digest pins and rejects `${{ ... }}` expressions inside `run:` blocks; `Scripts/check_repo_conventions.py` guards final newlines and hidden-layer names; `Scripts/check_release_hygiene.py` audits published titles, bilingual bodies and changelog coverage on both hosts; `Scripts/verify_mirror.py --selftest` now also detects a deleted unanchored checklist step. All run in `Hygiene` and the local gate (the release audit is network-bound and CI-only).
 - **Optional pre-push gate** — tracked `Scripts/pre-push` plus `Scripts/install_hooks.py` (with timestamped backup and `--uninstall`) enforce the local gate before a push. Installation is opt-in because it writes outside the tracked tree.
 
+### Changed
+
+- **Branch protection tightened, owner exemption preserved** — the live `main-guard` ruleset now requires 13 CI status checks (including both Windows installer-safety legs), one code-owner approval with stale-review dismissal and last-push approval. A failing check or missing review blocks ordinary merges; the owner's `always` bypass was restored and remains a recorded exception.
+
 ### Fixed
 
 - **Provenance digest correctness** — a skill's recorded SHA-256 is now computed from the installed bytes after any frontmatter rewrite; previously a rewritten file carried its pre-rewrite digest and produced false drift on the next `--check`.
@@ -50,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **File-naming guard** — `check_repo_conventions.py` now enforces the §Naming convention (root UPPER, PascalCase top dirs, snake_case Python, lowercase-hyphenated skill leaves) with the recorded platform exemptions.
 - **Dependabot auto-merge serialized** — a `concurrency` group prevents concurrent Dependabot PR runs from racing.
 - **Wiki link form pinned** — `check_repo_conventions.py` rejects `.md` file links inside Wiki pages; links must use GitHub Wiki page form.
-- **Bypass description corrected** — AGENTS.md (EN/TR) no longer claims classic branch protection allows force pushes; the live `main-guard` ruleset is active with required checks and `non_fast_forward`, and the owner is an `always` bypass actor, so direct pushes to `main` succeed even though GitHub still prints a `Bypassed rule violations` notice (live check 2026-11-22 UTC+03:00).
+- **Bypass description corrected** — AGENTS.md (EN/TR) no longer claims classic branch protection allows force pushes; the live `main-guard` ruleset is active with required checks and `non_fast_forward`. The owner's `always` bypass was subsequently removed in Unreleased, so this note describes the state as of 2026-11-22, not the current configuration.
 - **CONTRIBUTING.md corrected** — the remaining Python 3.8+ compatibility advice (EN/TR) was removed; `check_repo_conventions.py` now guards against reintroducing such a claim.
 - **Heading-case guard** — `check_repo_conventions.py` now enforces the title-case rule from AGENTS.md across tracked Markdown (code fences, backticks, version headings and skill names exempt) and detects Turkish dotted I in English words; eight skill-spec headings were capitalized to satisfy it.
 - **Line-ending guard** — `Scripts/check_line_endings.py` fails on mixed endings, on a working tree that disagrees with its declared `eol`, and on a `.gitattributes`/`.editorconfig` declaration disagreement; `--selftest` plants all three. `.editorconfig` now declares CRLF for `.ps1`/`.bat`/`.cmd` so both declarations agree. Wired into the local gate, pre-push and Hygiene.
@@ -227,6 +231,10 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Adlandırılmış CI ve yayın kontrolleri** — `Scripts/check_action_refs.py` her aksiyon referansını yerel varsayılan dal haritasıyla doğrular, SHA/sürüm/özet pinlerini yasaklar ve `run:` bloklarındaki `${{ ... }}` ifadelerini reddeder; `Scripts/check_repo_conventions.py` son satırları ve gizli katman adlarını denetler; `Scripts/check_release_hygiene.py` her iki hosttaki yayın başlıklarını, iki dilli gövdeleri ve changelog kapsamını denetler; `Scripts/verify_mirror.py --selftest` artık işaretsiz bir kontrol maddesinin silinmesini de yakalar. Hepsi `Hygiene` ve yerel kapıda çalışır (yayın denetimi ağa bağlı, yalnızca CI'da).
 - **İsteğe bağlı pre-push kapısı** — takipli `Scripts/pre-push` ve `Scripts/install_hooks.py` (zaman damgalı yedek + `--uninstall`) yerel kapıyı push öncesi zorunlu kılar. Kurulum takip edilmeyen ağaca yazdığı için isteğe bağlıdır.
 
+### Değiştirilenler
+
+- **Dal koruması sıkılaştırıldı, sahip istisnası korundu** — canlı `main-guard` kural takımı artık 13 CI durum denetimi (iki Windows güvenlik kolu dahil), kod sahibinden bir onay, bayat onayların düşürülmesi ve son push onayı istiyor. Başarısız denetim veya eksik onay olağan birleştirmeleri engelliyor; sahibin `always` atlatması geri getirildi ve kayıtlı istisna olarak kalıyor.
+
 ### Düzeltmeler
 
 - **Köken özeti doğruluğu** — bir becerinin kaydedilen SHA-256'sı, frontmatter düzeltmesinden sonra kurulan baytlardan hesaplanıyor; öncesinde düzeltilmiş dosya eski özeti taşıyor ve sonraki `--check` yanlış sapma bildiriyordu.
@@ -250,7 +258,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - **Dosya adlandırma kapısı** — `check_repo_conventions.py`, §Naming kuralını (kök UPPER, PascalCase üst dizinler, snake_case Python, küçük harfli tireli beceri yaprakları) kayıtlı platform muafiyetleriyle zorunlu kılıyor.
 - **Dependabot otomatik birleştirme serileştirildi** — eşzamanlı Dependabot PR çalıştırmalarının yarışmasını önleyen bir `concurrency` grubu eklendi.
 - **Wiki bağlantı biçimi sabitlendi** — `check_repo_conventions.py`, Wiki sayfalarındaki `.md` dosya bağlantılarını reddediyor; bağlantılar GitHub Wiki sayfa biçiminde olmalı.
-- **Atlatma açıklaması düzeltildi** — AGENTS.md (EN/TR) artık klasik dal korumasının force-push'a izin verdiğini iddia etmiyor; canlı `main-guard` kural takımı zorunlu denetimler ve `non_fast_forward` ile etkin, sahip ise `always` atlatma aktörü; doğrudan push, GitHub `Bypassed rule violations` uyarısı yazdırsa da başarılı olur (canlı kontrol 2026-11-22 UTC+03:00).
+- **Atlatma açıklaması düzeltildi** — AGENTS.md (EN/TR) artık klasik dal korumasının force-push'a izin verdiğini iddia etmiyor; canlı `main-guard` kural takımı zorunlu denetimler ve `non_fast_forward` ile etkin. Sahibin `always` atlatması daha sonra Unreleased bölümünde kaldırıldı; bu madde 2026-11-22 durumu anlatıyor, güncel yapılandırma değil.
 - **CONTRIBUTING.md düzeltildi** — kalan Python 3.8+ uyumluluk önerisi (EN/TR) kaldırıldı; `check_repo_conventions.py` artık böyle bir iddianın yeniden eklenmesini engelliyor.
 - **Başlık büyüklüğü kapısı** — `check_repo_conventions.py`, AGENTS.md'deki başlık büyüklüğü kuralını takipli Markdown dosyalarında zorunlu kılıyor (kod blokları, backtick'ler, sürüm başlıkları ve beceri adları muaf) ve İngilizce sözcüklerde Türkçe noktalı I'yı tespit ediyor; kurala uymak için sekiz beceri-belge başlığı büyütüldü.
 - **Satır sonu kapısı** — `Scripts/check_line_endings.py`; karışık sonlarda, çalışma ağacı ile bildirilen `eol` uyuşmadığında ve `.gitattributes`/`.editorconfig` bildirimleri çeliştiğinde başarısız oluyor; `--selftest` üç ihlali de yerleştiriyor. `.editorconfig` artık `.ps1`/`.bat`/`.cmd` için CRLF bildiriyor; böylece iki bildirim uyuşuyor. Yerel kapıya, pre-push'a ve Hygiene'e bağlandı.

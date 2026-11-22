@@ -203,6 +203,10 @@ def selftest() -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--selftest", action="store_true")
+    parser.add_argument(
+        "--allow-missing-markers", action="store_true",
+        help="skip local-layer marker presence (CI checks out no ignored files)",
+    )
     args = parser.parse_args()
     if args.selftest:
         return selftest()
@@ -232,8 +236,9 @@ def main() -> int:
          + check_text_contains(ROOT / "Wiki" / "Installation.md", [str(tam), "35"])),
         ("cli-text", check_cli_text(manifest, readme)),
         ("pin-refs", check_pin_refs(skills.REPOS["categories"])),
-        ("markers", check_markers()),
     ]
+    if not args.allow_missing_markers:
+        suites.append(("markers", check_markers()))
     failed = False
     for name, problems in suites:
         if problems:
