@@ -148,6 +148,15 @@ def check_docs_stat(path: Path, recommended: int) -> list[str]:
     return [f"{path.name} stat value is not {recommended}"] if needle not in path.read_text(encoding="utf-8") else []
 
 
+def check_pin_refs(categories: list[dict]) -> list[str]:
+    """Every source repo must carry a full 40-hex commit pin, never a branch."""
+    return [
+        f"{entry['repo']} has no immutable SHA pin"
+        for category in categories for entry in category["repos"]
+        if not re.fullmatch(r"[0-9a-f]{40}", str(entry.get("ref", "")))
+    ]
+
+
 def selftest() -> int:
     with tempfile.TemporaryDirectory() as temp:
         base = Path(temp)
@@ -179,6 +188,13 @@ def selftest() -> int:
         )
         if check_repo_count_tables([noisy], {"all": "50"}):
             print("FAIL selftest: descriptive prose was mistaken for a repo row")
+            return 1
+        if check_pin_refs([{"repos": [{"repo": "acme/x", "ref": "main"}]}]):
+            if not check_pin_refs([{"repos": [{"repo": "acme/x"}]}]):
+                print("FAIL selftest: missing pin was not detected")
+                return 1
+        else:
+            print("FAIL selftest: branch name accepted as an immutable pin")
             return 1
     print("PASS selftest: docs stat and wiki count drift both fail by name")
     return 0
@@ -215,6 +231,7 @@ def main() -> int:
         ("wiki", check_text_contains(ROOT / "Wiki" / "Home.md", [str(tam), "35"])
          + check_text_contains(ROOT / "Wiki" / "Installation.md", [str(tam), "35"])),
         ("cli-text", check_cli_text(manifest, readme)),
+        ("pin-refs", check_pin_refs(skills.REPOS["categories"])),
         ("markers", check_markers()),
     ]
     failed = False

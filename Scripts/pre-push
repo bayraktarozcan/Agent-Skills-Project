@@ -32,6 +32,7 @@ $PY Scripts/check_install_safety.py --selftest >/dev/null
 $PY Scripts/check_install_safety.py >/dev/null
 $PY Scripts/check_version_parity.py --selftest >/dev/null
 $PY Scripts/check_version_parity.py >/dev/null
+$PY Scripts/update_pin_refs.py --selftest >/dev/null
 $PY Scripts/verify_mirror.py AGENTS.md AGENTS-TR.md >/dev/null
 $PY Scripts/check_action_refs.py >/dev/null
 $PY Scripts/check_repo_conventions.py >/dev/null
