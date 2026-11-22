@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Branch protection enforced** — the live `main-guard` ruleset now requires 13 CI status checks (including both Windows installer-safety legs), one code-owner approval with stale-review dismissal and last-push approval, and has an empty `bypass_actors` list; a failing check or missing review blocks the merge instead of merely being reported.
+- **Branch protection tightened, owner exemption preserved** — the live `main-guard` ruleset now requires 13 CI status checks (including both Windows installer-safety legs), one code-owner approval with stale-review dismissal and last-push approval. A failing check or missing review blocks ordinary merges; the owner's `always` bypass was restored and remains a recorded exception.
 
 ### Fixed
 
@@ -233,7 +233,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ### Değiştirilenler
 
-- **Dal koruması zorunlu kılındı** — canlı `main-guard` kural takımı artık 13 CI durum denetimi (iki Windows güvenlik kolu dahil), kod sahibinden bir onay, bayat onayların düşürülmesi ve son push onayı istiyor; `bypass_actors` boş. Başarısız denetim veya eksik onay artık yalnızca raporlanmakla kalmıyor, birleştirmeyi engelliyor.
+- **Dal koruması sıkılaştırıldı, sahip istisnası korundu** — canlı `main-guard` kural takımı artık 13 CI durum denetimi (iki Windows güvenlik kolu dahil), kod sahibinden bir onay, bayat onayların düşürülmesi ve son push onayı istiyor. Başarısız denetim veya eksik onay olağan birleştirmeleri engelliyor; sahibin `always` atlatması geri getirildi ve kayıtlı istisna olarak kalıyor.
 
 ### Düzeltmeler
 

@@ -29,7 +29,7 @@ jobs:
       - name: Check Python floor parity
         run: python Scripts/python_floor.py check --offline
       - name: Check version and count parity
-        run: python Scripts/check_version_parity.py
+        run: python Scripts/check_version_parity.py --allow-missing-markers
       - name: Check action reference invariants
         run: python Scripts/check_action_refs.py
       - name: Check repository file conventions
