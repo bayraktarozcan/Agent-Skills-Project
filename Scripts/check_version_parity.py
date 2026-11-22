@@ -15,8 +15,11 @@ Checks:
 
 from __future__ import annotations
 
+import argparse
 import json
+import re
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -94,16 +97,81 @@ def check_markers() -> list[str]:
             if not (ROOT / p).is_file()]
 
 
+def check_repo_count_tables(paths: list[Path], expected: dict[str, str]) -> list[str]:
+    """Read repo-count cells from Markdown tables; a substring check cannot drift by one."""
+    problems: list[str] = []
+    for path in paths:
+        text = path.read_text(encoding="utf-8")
+        for marker, count in expected.items():
+            pattern = re.compile(
+                r"(?m)^\|[^|\n]*" + re.escape(marker)
+                + r"[^|\n]*(?:\|[^|\n]*){0,3}\|\s*(\d+)\s*\|"
+            )
+            match = pattern.search(text)
+            if match is None:
+                problems.append(f"{path.name} missing repo-count row for {marker}")
+            elif match.group(1) != count:
+                problems.append(
+                    f"{path.name} {marker} reports {match.group(1)}, expected {count}"
+                )
+    return problems
+
+
+def check_docs_stat(path: Path, recommended: int) -> list[str]:
+    needle = f'<div class="stat-value">{recommended}</div>'
+    return [f"{path.name} stat value is not {recommended}"] if needle not in path.read_text(encoding="utf-8") else []
+
+
+def selftest() -> int:
+    with tempfile.TemporaryDirectory() as temp:
+        base = Path(temp)
+        doc = base / "index.html"
+        doc.write_text('<div class="stat-value">34</div>\n', encoding="utf-8")
+        if not check_docs_stat(doc, 35):
+            print("FAIL selftest: stale docs stat was not detected")
+            return 1
+        doc.write_text('<div class="stat-value">35</div>\n', encoding="utf-8")
+        if check_docs_stat(doc, 35):
+            print("FAIL selftest: correct docs stat was rejected")
+            return 1
+        page = base / "Home.md"
+        page.write_text("| `trusted` | 40 | ~645 |\n| `all` | 49 | ~1000 |\n", encoding="utf-8")
+        expected = {"trusted": "41", "all": "50"}
+        if not check_repo_count_tables([page], expected):
+            print("FAIL selftest: stale wiki counts were not detected")
+            return 1
+        page.write_text("| `trusted` | 41 | ~645 |\n| `all` | 50 | ~1000 |\n", encoding="utf-8")
+        if check_repo_count_tables([page], expected):
+            print("FAIL selftest: corrected wiki counts were rejected")
+            return 1
+    print("PASS selftest: docs stat and wiki count drift both fail by name")
+    return 0
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--selftest", action="store_true")
+    args = parser.parse_args()
+    if args.selftest:
+        return selftest()
     manifest = json.loads((ROOT / "SKILL-SPECIALIZATION.json").read_text(encoding="utf-8"))
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     tam = manifest["profiles"]["tam"]["count"]
     temel = manifest["profiles"]["temel"]["count"]
     dengeli = manifest["profiles"]["dengeli"]["count"]
+    recommended = len(skills.list_repos("recommended", "en"))
+    trusted = len(skills.list_repos("trusted", "en"))
+    all_repos = len(skills.list_repos("all", "en"))
     suites = [
         ("manifest-internal", check_manifest_internal(manifest)),
         ("registry-repos", check_registry_repos(
             {"recommended": 35, "trusted": 41, "all": 50})),
+        ("docs-counts", check_docs_stat(ROOT / "docs" / "index.html", recommended)),
+        ("wiki-counts", check_repo_count_tables(
+            [ROOT / "Wiki" / "Home.md", ROOT / "Wiki" / "Installation.md",
+             ROOT / "Wiki" / "Command-Reference.md"],
+            {"trusted": str(trusted), "all": str(all_repos),
+             "guvenli": str(trusted), "tumu": str(all_repos)})),
         ("readme", check_text_contains(ROOT / "README.md",
                                        [str(tam), str(temel), str(dengeli), "35", "41", "50"])),
         ("docs", check_text_contains(ROOT / "docs" / "index.html",

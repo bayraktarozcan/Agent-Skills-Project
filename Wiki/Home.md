@@ -25,8 +25,8 @@ That's it. The recommended profile installs ~1001 skills from 35 curated repos.
 | Profile | Repos | Skills | Description |
 |---------|-------|--------|-------------|
 | `recommended` (default) | 35 | ~1001 | Curated subset — highest quality |
-| `trusted` | 40 | ~645 | K1–K8, all trusted categories |
-| `all` | 49 | ~1000 | Everything including K9–K10 |
+| `trusted` | 41 | ~645 | K1–K8, all trusted categories |
+| `all` | 50 | ~1000 | Everything including K9–K10 |
 
 ### Features
 
@@ -70,8 +70,8 @@ Bu kadar. Önerilen profil, 35 küratörlü depodan ~1001 beceri yükler.
 | Profil | Depo | Beceri | Açıklama |
 |--------|------|--------|----------|
 | `onerilen` (varsayılan) | 35 | ~1001 | Küratörlü alt küme — en yüksek kalite |
-| `guvenli` | 40 | ~645 | K1–K8, tüm güvenli kategoriler |
-| `tumu` | 49 | ~1000 | K9–K10 dahil her şey |
+| `guvenli` | 41 | ~645 | K1–K8, tüm güvenli kategoriler |
+| `tumu` | 50 | ~1000 | K9–K10 dahil her şey |
 
 ### Özellikler
 

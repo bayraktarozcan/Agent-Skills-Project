@@ -20,8 +20,8 @@ If no argument is given, the **recommended** profile is used.
 |----------|--------|:-----:|:------:|
 | _(none)_ | Recommended — curated subset, best quality | 35 | ~1001 |
 | `recommended` | Same as default | 35 | ~1001 |
-| `trusted` | All trusted categories K1–K8 | 40 | ~645 |
-| `all` | Everything including K9–K10 | 49 | ~1000 |
+| `trusted` | All trusted categories K1–K8 | 41 | ~645 |
+| `all` | Everything including K9–K10 | 50 | ~1000 |
 
 ## Single Categories
 
@@ -126,8 +126,8 @@ Hiçbir argüman verilmezse **önerilen** profil kullanılır.
 |---------|------|:----:|:------:|
 | _(yok)_ | Önerilen — küratörlü alt küme, en iyi kalite | 35 | ~1001 |
 | `onerilen` | Varsayılan ile aynı | 35 | ~1001 |
-| `guvenli` | Tüm güvenli kategoriler K1–K8 | 40 | ~645 |
-| `tumu` | K9–K10 dahil her şey | 49 | ~1000 |
+| `guvenli` | Tüm güvenli kategoriler K1–K8 | 41 | ~645 |
+| `tumu` | K9–K10 dahil her şey | 50 | ~1000 |
 
 ## Tek Kategoriler
 

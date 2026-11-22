@@ -532,7 +532,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 - Single local gate command (runs what CI runs, see universal Local gate; `Scripts/check_gate_parity.py` verifies parity from this block and the workflow files, with declared CI-only and local-only exceptions):
 
 ```text
-py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --help && py skills.py --dry-run && py skills.py --dry-run trusted && py skills.py --dry-run all && py skills.py --dry-run K2 && py skills.py --dry-run K2 K4 K6 && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_encoding.py && py Scripts/check_install_safety.py --selftest && py Scripts/check_install_safety.py && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/check_repo_conventions.py --selftest && py Scripts/check_repo_conventions.py && py Scripts/check_line_endings.py --selftest && py Scripts/check_line_endings.py && py Scripts/check_gate_parity.py --selftest && py Scripts/check_gate_parity.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
+py -m py_compile skills.py && py skills.py --version && py skills.py --list && py skills.py --help && py skills.py --dry-run && py skills.py --dry-run trusted && py skills.py --dry-run all && py skills.py --dry-run K2 && py skills.py --dry-run K2 K4 K6 && py skills.py --check --profile temel && py skills.py --check --profile tam && py Scripts/check_encoding.py --selftest && py Scripts/check_encoding.py && py Scripts/check_install_safety.py --selftest && py Scripts/check_install_safety.py && py Scripts/check_version_parity.py --selftest && py Scripts/check_version_parity.py && py Scripts/verify_mirror.py --selftest && py Scripts/check_action_refs.py --selftest && py Scripts/check_action_refs.py && py Scripts/check_repo_conventions.py --selftest && py Scripts/check_repo_conventions.py && py Scripts/check_line_endings.py --selftest && py Scripts/check_line_endings.py && py Scripts/check_gate_parity.py --selftest && py Scripts/check_gate_parity.py && py Scripts/python_floor.py selftest && py Scripts/python_floor.py check --offline
 ```
 
 ## Naming — Per-Directory Convention Table, Named Exemptions with Reasons
@@ -749,4 +749,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=ad085e0172751b287ee0056e385276e8654a4102 -->
+<!-- mirror-sync: sync-sha=a7a784e45923bcf5a00cee34a90c8e8c6887adff -->

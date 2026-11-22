@@ -36,8 +36,8 @@ This installs the **recommended** profile (35 repos, ~1001 skills). Output goes 
 | Command | What it installs | Repos | Skills |
 |---------|-----------------|-------|--------|
 | `python skills.py` | Recommended — curated subset | 35 | ~1001 |
-| `python skills.py trusted` | All trusted (K1–K8) | 40 | ~645 |
-| `python skills.py all` | Everything (K1–K10) | 49 | ~1000 |
+| `python skills.py trusted` | All trusted (K1–K8) | 41 | ~645 |
+| `python skills.py all` | Everything (K1–K10) | 50 | ~1000 |
 | `python skills.py K2` | Single category (AI & LLM) | 9 | varies |
 | `python skills.py K1 K3 K5` | Multiple categories | varies | varies |
 
@@ -199,8 +199,8 @@ Bu, **önerilen** profili (35 depo, ~1001 beceri) yükler. Çıktı `~/.agents/s
 | Komut | Ne yükler | Depo | Beceri |
 |-------|-----------|------|--------|
 | `python skills.py` | Önerilen — küratörlü alt küme | 35 | ~1001 |
-| `python skills.py guvenli` | Tüm güvenli (K1–K8) | 40 | ~645 |
-| `python skills.py tumu` | Her şey (K1–K10) | 49 | ~1000 |
+| `python skills.py guvenli` | Tüm güvenli (K1–K8) | 41 | ~645 |
+| `python skills.py tumu` | Her şey (K1–K10) | 50 | ~1000 |
 | `python skills.py K2` | Tek kategori (AI & LLM) | 9 | değişir |
 | `python skills.py K1 K3 K5` | Birden çok kategori | değişir | değişir |
 
