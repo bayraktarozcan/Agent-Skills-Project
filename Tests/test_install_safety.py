@@ -82,6 +82,15 @@ class PathSafetyTests(unittest.TestCase):
         dest = self.root / "skill"
         self.assertIsNone(skills._dest_verdict(dest, dest / "SKILL.md", self.root))
 
+    def test_trusted_install_root_is_not_rejected(self) -> None:
+        saved = skills._is_link_or_junction
+        skills._is_link_or_junction = lambda path: path == self.root
+        try:
+            dest = self.root / "skill"
+            self.assertIsNone(skills._dest_verdict(dest, dest / "SKILL.md", self.root))
+        finally:
+            skills._is_link_or_junction = saved
+
 
 class FrontmatterTests(unittest.TestCase):
     def test_name_is_case_insensitive(self) -> None:

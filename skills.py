@@ -692,10 +692,12 @@ def _is_link_or_junction(path: Path) -> bool:
     return False
 
 
-def _path_chain_has_link(path: Path, stop: Path) -> bool:
-    """Walk path up to stop (inclusive); detect any link in every component."""
+def _path_chain_has_link(path: Path, stop: Path, include_stop: bool = True) -> bool:
+    """Walk path up to stop; detect any link in every component visited."""
     cur = path
     while True:
+        if cur == stop and not include_stop:
+            return False
         if _is_link_or_junction(cur):
             return True
         if cur == stop or cur.parent == cur:
@@ -725,7 +727,7 @@ def _source_verdict(mdfile: Path, src_root: Path, tmp_root: Path) -> str | None:
 
 def _dest_verdict(dest: Path, dest_file: Path, skills_dir: Path) -> str | None:
     """Return a rejection reason, or None when a destination is safe to write."""
-    if _path_chain_has_link(dest, skills_dir):
+    if _path_chain_has_link(dest, skills_dir, include_stop=False):
         return "install target contains a link"
     if dest_file.is_symlink():
         return "existing target file is a link"
