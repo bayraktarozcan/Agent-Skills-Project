@@ -93,6 +93,11 @@ S: dict[str, dict[str, str]] = {
         "unsafe_target": "rejected (unsafe target)",
         "subpath_link": "subpath resolves through a link",
         "rejected": "rejected",
+        "uninstall_unsafe": "refusing to remove a path containing a link",
+        "uninstall_custom": "custom prefix — type the full path to confirm",
+        "uninstall_quarantine": "quarantine directories found",
+        "uninstall_quarantine_done": "quarantine directories removed",
+        "uninstall_nothing": "nothing to remove",
         "final_success": "OPERATION COMPLETED SUCCESSFULLY",
         "final_none": "NO OPERATIONS PERFORMED",
         "final_partial": "OPERATION PARTIALLY COMPLETED (Errors Occurred)",
@@ -222,6 +227,11 @@ S: dict[str, dict[str, str]] = {
         "unsafe_target": "reddedildi (güvenli olmayan hedef)",
         "subpath_link": "alt klasör bir bağlantı üzerinden çözümleniyor",
         "rejected": "reddedildi",
+        "uninstall_unsafe": "bağlantı içeren bir yol kaldırılamaz",
+        "uninstall_custom": "özel önek — onaylamak için tam yolu yazın",
+        "uninstall_quarantine": "karantina dizinleri bulundu",
+        "uninstall_quarantine_done": "karantina dizinleri kaldırıldı",
+        "uninstall_nothing": "kaldırılacak bir şey yok",
         "final_success": "İŞLEM BAŞARIYLA TAMAMLANDI",
         "final_none": "HİÇBİR İŞLEM YAPILMADI",
         "final_partial": "İŞLEM KISMEN TAMAMLANDI (Hatalar Oluştu)",
@@ -682,6 +692,25 @@ def _dest_verdict(dest: Path, dest_file: Path, skills_dir: Path) -> str | None:
         return "install target contains a link"
     if dest_file.is_symlink():
         return "existing target file is a link"
+    return None
+
+
+def _quarantine_dirs() -> list[Path]:
+    """List quarantine directories without following links."""
+    if not AGENTS_DIR.is_dir() or AGENTS_DIR.is_symlink():
+        return []
+    return sorted(
+        p for p in AGENTS_DIR.iterdir()
+        if p.is_dir() and not p.is_symlink() and p.name.startswith("_quarantine_")
+    )
+
+
+def _uninstall_verdict() -> str | None:
+    """Refuse removal through a link, whatever prefix was selected."""
+    if _path_chain_has_link(SKILLS_DIR, SKILLS_DIR.parent):
+        return "install path contains a link"
+    if AGENTS_DIR.is_symlink():
+        return "agents directory is a link"
     return None
 
 
@@ -2076,17 +2105,41 @@ def main() -> None:
     elif args.version:
         print(_("version_str", lang))
     elif args.uninstall:
+        verdict = _uninstall_verdict()
+        if verdict:
+            print(c(f"  [{_('error', lang)}] {_('uninstall_unsafe', lang)}: {verdict}", "red"))
+            return
+        qdirs = _quarantine_dirs()
         print()
         print(c(f"  {_('uninstall_confirm', lang)}: {SKILLS_DIR}", "red"))
+        if qdirs:
+            print(c(f"  {_('uninstall_quarantine', lang)}: {len(qdirs)}", "yellow"))
+        if SKILLS_DIR != (Path.home() / ".agents" / "skills"):
+            typed = input(c(f"  {_('uninstall_custom', lang)}: ", "yellow")).strip()
+            if typed != str(SKILLS_DIR):
+                print(c(f"  {_('uninstall_cancel', lang)}", "white"))
+                return
         answer = input(c(f"  {_('proceed', lang)} ", "yellow")).strip().lower()
-        if answer in ("y", "yes"):
+        if answer not in ("y", "yes"):
+            print(c(f"  {_('uninstall_cancel', lang)}", "white"))
+        else:
+            removed = 0
             if SKILLS_DIR.is_dir():
                 shutil.rmtree(SKILLS_DIR)
+                removed += 1
+            for qdir in qdirs:
+                if _path_chain_has_link(qdir, AGENTS_DIR):
+                    logging.warning(f"[SECURITY] quarantine skipped (link): {qdir}")
+                    continue
+                shutil.rmtree(qdir, ignore_errors=True)
+                if not qdir.exists():
+                    removed += 1
+            if removed:
                 print(c(f"  [{_('ok', lang)}] {_('uninstall_done', lang)}", "green"))
+                if qdirs:
+                    print(c(f"       {len(qdirs)} {_('uninstall_quarantine_done', lang)}", "green"))
             else:
-                print(c(f"  [{_('warn', lang)}] {SKILLS_DIR} {_('not_found', lang)}", "yellow"))
-        else:
-            print(c(f"  {_('uninstall_cancel', lang)}", "white"))
+                print(c(f"  [{_('warn', lang)}] {_('uninstall_nothing', lang)}", "yellow"))
     else:
         doc_done = False
         for flag_name in ("readme", "changelog", "conduct", "security", "support", "license"):
