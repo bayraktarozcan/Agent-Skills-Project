@@ -546,7 +546,9 @@ def show_doc(name: str, lang: str) -> None:
 SCRIPT_DIR = Path(__file__).parent.resolve()
 SKILLS_DIR = Path.home() / ".agents" / "skills"
 AGENTS_DIR = Path.home() / ".agents"
-LOGS_DIR = Path.cwd() / "Logs"
+# Anchored to the script location so a `--check` from another directory still
+# finds the provenance written during installation.
+LOGS_DIR = SCRIPT_DIR / "Logs"
 TREE_DIR = LOGS_DIR
 
 # ─────────────────────────────── LOGGING ───────────────────────────────
@@ -1033,9 +1035,6 @@ def process_repo(
             logging.error(f"[ERROR] {repo} — {_('copy_failed', lang)}: {exc}")
             print(c(f"  [{_('error', lang)}] {_('copy_failed', lang)}", "red"))
             continue
-        digest = hashlib.sha256(raw).hexdigest()
-        size = len(raw)
-
         skill_dir = mdfile.parent
         dir_name = skill_dir.name
 
@@ -1062,12 +1061,12 @@ def process_repo(
             # one in the header; otherwise a bare re.sub could hit a body line.
             if parsed_name and _source_verdict(mdfile, src, tmpdir) is None:
                 try:
-                    with open(mdfile, encoding="utf-8") as f:
+                    with open(mdfile, encoding="utf-8", errors="replace") as f:
                         content = f.read()
                     content = _rewrite_frontmatter_name(content, fixed_name)
-                    with open(mdfile, "w", encoding="utf-8") as f:
+                    with open(mdfile, "w", encoding="utf-8", errors="replace") as f:
                         f.write(content)
-                except OSError:
+                except (OSError, UnicodeError):
                     pass
             name = fixed_name
             fixes += 1
@@ -1115,6 +1114,12 @@ def process_repo(
             logging.error(f"[ERROR] {name} — {_('copy_failed', lang)}: {exc}")
             print(c(f"  [{_('error', lang)}] {name} — {_('copy_failed', lang)}", "red"))
             continue
+        # Digest the bytes that were actually installed: a frontmatter rewrite
+        # changes the source before the copy, so an earlier digest would lie.
+        try:
+            installed = dest_file.read_bytes()
+        except OSError:
+            installed = mdfile.read_bytes()
         _record_provenance({
             "timestamp": datetime.datetime.now().isoformat(timespec="seconds"),
             "repo": repo,
@@ -1122,8 +1127,8 @@ def process_repo(
             "repo_trust": trust,
             "skill": name,
             "source": str(mdfile.relative_to(tmpdir)).replace("\\", "/"),
-            "sha256": digest,
-            "size": size,
+            "sha256": hashlib.sha256(installed).hexdigest(),
+            "size": len(installed),
             "regular_file": True,
             "contained": True,
         })
@@ -1361,8 +1366,8 @@ def inspect_target(target: str, lang: str) -> None:
                         f"{_('inspect_unsafe', lang).format(reason=verdict)}", "red"))
                     continue
                 raw = mdfile.read_bytes()
-                name = _frontmatter_name(raw[:2000].decode("utf-8", "replace")) or mdfile.parent.name
-                print(f"    {_('inspect_skill', lang)}: {valid_name(name)}")
+                name = _frontmatter_name(raw.decode("utf-8", "replace")) or mdfile.parent.name
+                print(f"    {_('inspect_skill', lang)}: {name}")
                 print(f"      {_('inspect_digest', lang)}: {hashlib.sha256(raw).hexdigest()}")
                 print(f"      {_('inspect_size', lang)}: {len(raw)} — {_('inspect_ok', lang)}")
                 found += 1

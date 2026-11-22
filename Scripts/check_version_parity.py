@@ -120,9 +120,9 @@ def check_repo_count_tables(paths: list[Path], expected: dict[str, str]) -> list
             for cells in cells_by_row:
                 marker_index = next(
                     (i for i, cell in enumerate(cells)
-                     if cell.strip("`") == marker
-                     or cell.strip("`").endswith(" " + marker)
-                     or cell.endswith(f"`{marker}`")),
+                     if cell.startswith("`") and cell.endswith("`")
+                     and (cell.strip("`") == marker
+                          or cell.strip("`").endswith(" " + marker))),
                     None,
                 )
                 if marker_index is None:
@@ -173,6 +173,7 @@ def selftest() -> int:
         noisy = base / "Noisy.md"
         noisy.write_text(
             "| prose | all sorts of text | 7 | x |\n"
+            "| row | Everything including all | 7 | x |\n"
             "| row | `all` | 50 | ~1000 |\n",
             encoding="utf-8",
         )

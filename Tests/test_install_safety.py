@@ -9,6 +9,8 @@ fixtures. stdlib only.
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -77,6 +79,23 @@ class PathSafetyTests(unittest.TestCase):
         except (OSError, NotImplementedError) as exc:
             self.skipTest(f"symlinks unavailable: {exc}")
         self.assertIsNotNone(skills._dest_verdict(dest, dest_file, self.root))
+
+    def test_junction_parent_rejected(self) -> None:
+        if os.name != "nt":
+            self.skipTest("junctions are Windows-only")
+        real = self.base / "elsewhere"
+        real.mkdir()
+        (real / "SKILL.md").write_text("---\nname: x\n---\n", encoding="utf-8")
+        junction = self.root / "linked"
+        result = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(junction), str(real)],
+            capture_output=True, text=True,
+        )
+        if result.returncode != 0:
+            self.skipTest(f"junction creation unavailable: {result.stderr.strip()}")
+        candidate = junction / "SKILL.md"
+        self.assertIsNotNone(skills._source_verdict(candidate, self.root, self.root))
+        self.assertTrue(skills._is_link_or_junction(junction))
 
     def test_clean_destination_accepted(self) -> None:
         dest = self.root / "skill"
@@ -189,6 +208,59 @@ class ProvenanceTests(unittest.TestCase):
             json.dumps(record, sort_keys=True) + "\n", encoding="utf-8"
         )
         self.assertEqual(skills._provenance_drift(), (1, 1))
+
+
+class RewriteTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self.tmp.name)
+        self.clone = self.base / "clone"
+        self.saved = {
+            "clone_once": skills._clone_once,
+            "mkdtemp": skills.tempfile.mkdtemp,
+            "sleep": skills.time.sleep,
+            "commit": skills._repo_commit,
+            "skills_dir": skills.SKILLS_DIR,
+            "provenance": skills._record_provenance,
+        }
+        self.entries: list[dict] = []
+        self.sample = b"---\nname: Bad Name\ndesc: x\n---\n"
+
+        def sample_dir(prefix: str = "") -> str:
+            self.clone.mkdir(parents=True, exist_ok=True)
+            (self.clone / "SKILL.md").write_bytes(self.sample)
+            return str(self.clone)
+
+        skills._clone_once = lambda repo, subpath, target: (True, "")
+        skills.tempfile.mkdtemp = sample_dir
+        skills.time.sleep = lambda _seconds: None
+        skills._repo_commit = lambda _dir: "deadbeef"
+        skills.SKILLS_DIR = self.base / "skills"
+        skills._record_provenance = self.entries.append
+
+    def tearDown(self) -> None:
+        skills._clone_once = self.saved["clone_once"]
+        skills.tempfile.mkdtemp = self.saved["mkdtemp"]
+        skills.time.sleep = self.saved["sleep"]
+        skills._repo_commit = self.saved["commit"]
+        skills.SKILLS_DIR = self.saved["skills_dir"]
+        skills._record_provenance = self.saved["provenance"]
+        self.tmp.cleanup()
+
+    def test_recorded_digest_matches_installed_file(self) -> None:
+        count, fixes = skills.process_repo("acme/demo", "", "en")
+        self.assertEqual((count, fixes), (1, 1))
+        self.assertEqual(len(self.entries), 1)
+        installed = skills.SKILLS_DIR / "bad-name" / "SKILL.md"
+        self.assertEqual(
+            self.entries[0]["sha256"],
+            skills.hashlib.sha256(installed.read_bytes()).hexdigest(),
+        )
+
+    def test_invalid_utf8_does_not_crash_install(self) -> None:
+        self.sample = b"---\nname: Bad Name\ndesc: \xff\xfe\n---\n"
+        count, _fixes = skills.process_repo("acme/demo", "", "en")
+        self.assertEqual(count, 1)
 
 
 class RetryTests(unittest.TestCase):
