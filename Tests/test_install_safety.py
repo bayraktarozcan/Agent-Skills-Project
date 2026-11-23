@@ -345,7 +345,8 @@ class CollisionTests(unittest.TestCase):
             "provenance": skills._record_provenance,
         }
         skills.SKILLS_DIR = self.base / "skills"
-        skills._record_provenance = lambda entry: None
+        self.entries: list[dict] = []
+        skills._record_provenance = self.entries.append
         skills._repo_commit = lambda _dir: "deadbeef"
         skills.time.sleep = lambda _seconds: None
         skills._repo_trust = lambda repo: (
@@ -407,11 +408,23 @@ class CollisionTests(unittest.TestCase):
             repos=("acme/risk", "acme/trusted"),
         )
         canonical = (skills.SKILLS_DIR / "demo" / "SKILL.md").read_text(encoding="utf-8")
-        moved = (skills.SKILLS_DIR / "demo--acme-risk" / "SKILL.md").read_text(encoding="utf-8")
+        moved_bytes = (skills.SKILLS_DIR / "demo--acme-risk" / "SKILL.md").read_bytes()
+        moved = moved_bytes.decode("utf-8")
         self.assertIn("\nA\n", canonical)
         self.assertIn("\nB\n", moved)
         self.assertIn("name: demo--acme-risk", moved)
         self.assertEqual(claims["demo"]["repo"], "acme/trusted")
+        moved_records = [
+            record for record in self.entries
+            if record.get("skill") == "demo--acme-risk"
+        ]
+        self.assertTrue(moved_records)
+        record = moved_records[-1]
+        self.assertEqual(record.get("moved_from"), "demo")
+        self.assertEqual(
+            record.get("sha256"),
+            skills.hashlib.sha256(moved_bytes).hexdigest(),
+        )
 
     def test_identical_copy_is_deduplicated(self) -> None:
         self.run_repos([

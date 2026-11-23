@@ -885,13 +885,34 @@ def _rename_claim(
             text = skill_file.read_text(encoding="utf-8", errors="replace")
             skill_file.write_text(
                 _rewrite_frontmatter_name(text, other),
-                encoding="utf-8", errors="replace",
+                encoding="utf-8", errors="replace", newline="\n",
             )
     except (OSError, UnicodeError):
         return False
     record = claims.pop(name)
     record["path"] = new_path
+    try:
+        installed = (new_path / "SKILL.md").read_bytes()
+    except OSError:
+        installed = b""
+    new_digest = hashlib.sha256(installed).hexdigest()
+    record["digest"] = new_digest
     claims[other] = record
+    # Append a corrected audit record: the renamed file has a new name and a
+    # new digest after its frontmatter was rewritten.
+    _record_provenance({
+        "timestamp": datetime.datetime.now().isoformat(timespec="seconds"),
+        "repo": record.get("repo", ""),
+        "commit": record.get("commit", ""),
+        "repo_trust": record.get("trust", ""),
+        "skill": other,
+        "source": record.get("source", "SKILL.md"),
+        "sha256": new_digest,
+        "size": len(installed),
+        "regular_file": True,
+        "contained": True,
+        "moved_from": name,
+    })
     msg = f"[INFO] {_('collision_swapped', lang).format(name=name, other=other)}"
     logging.info(msg)
     print(c(f"    {msg}", "yellow"))
@@ -1245,6 +1266,9 @@ def process_repo(
             "rank": rank,
             "digest": installed_digest,
             "path": dest,
+            "commit": commit,
+            "trust": trust,
+            "source": str(mdfile.relative_to(tmpdir)).replace("\\", "/"),
         }
         count += 1
 
