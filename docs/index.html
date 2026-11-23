@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgentSynapse — Curated AI Agent Skills Ecosystem</title>
-  <meta name="description" content="1001+ curated AI agent skills from 35 top-tier repositories, organized into 10 functional categories. Install with a single command.">
-  <meta property="og:title" content="AgentSynapse — AI Agent Skills Ecosystem">
-  <meta property="og:description" content="1001+ curated AI agent skills from 35 top-tier repositories, organized into 10 functional categories. Install with a single command.">
+  <title>Agent Skills — Curated AI Agent Skills Ecosystem</title>
+  <meta name="description" content="1001+ classified AI agent skills across 50 source repositories (35 recommended), 10 functional categories. One-command installer, no external dependencies.">
+  <meta property="og:title" content="Agent Skills — Curated AI Agent Skills Ecosystem">
+  <meta property="og:description" content="1001+ classified AI agent skills across 50 source repositories (35 recommended), 10 functional categories.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://bayraktarozcan.github.io/AgentSynapse/">
+  <meta property="og:url" content="https://bayraktarozcan.github.io/Agent-Skills-Project/">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="Assets/CSS/Style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#x1F9E9;</text></svg>">
@@ -16,9 +16,9 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
-      "name": "AgentSynapse",
-      "description": "Curated ecosystem of 1001+ AI agent skills across 10 functional categories, installable in one command.",
-      "url": "https://github.com/bayraktarozcan/AgentSynapse",
+      "name": "Agent Skills",
+      "description": "Curated ecosystem of 1001+ classified AI agent skills across 50 source repositories, installable in one command.",
+      "url": "https://github.com/bayraktarozcan/Agent-Skills-Project",
       "programmingLanguage": "Python",
       "license": "https://spdx.org/licenses/MIT.html"
     }
@@ -32,7 +32,7 @@
   <div class="container">
     <a href="/" class="logo">Agent Skills</a>
     <div class="nav-right">
-      <button class="hamburger" aria-label="Toggle navigation menu">
+      <button class="hamburger" aria-label="Toggle navigation menu" data-aria-en="Toggle navigation menu" data-aria-tr="Menüyü aç veya kapat">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
@@ -46,13 +46,15 @@
         <a href="#categories" lang="tr">Kategoriler</a>
         <a href="#quickstart" lang="en">Quickstart</a>
         <a href="#quickstart" lang="tr">Hızlı Başlangıç</a>
+        <a href="#safety" lang="en">Safety</a>
+        <a href="#safety" lang="tr">Güvenlik</a>
         <a href="#faq" lang="en">FAQ</a>
         <a href="#faq" lang="tr">SSS</a>
-        <a href="https://github.com/bayraktarozcan/AgentSynapse" aria-label="GitHub repository">
+        <a href="https://github.com/bayraktarozcan/Agent-Skills-Project" aria-label="GitHub repository">
           <svg height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         </a>
       </div>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#x1F30D;</button>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" data-aria-en="Toggle theme" data-aria-tr="Temayı değiştir">&#x1F30D;</button>
     </div>
   </div>
 </nav>
@@ -61,47 +63,47 @@
   <div class="container">
     <h1 lang="en"><span class="gradient-text">Agent Skills</span> Ecosystem</h1>
     <h1 lang="tr"><span class="gradient-text">Agent Becerileri</span> Ekosistemi</h1>
-    <p lang="en">1001+ curated AI agent skills from 35 top-tier repositories, organized into 10 functional categories. Install with a single command.</p>
-    <p lang="tr">35 üst düzey depodan 1001+ küratörlü AI ajan becerisi, 10 kategoride düzenlenmiş. Tek komutla yükleyin.</p>
+    <p lang="en">1001+ classified skills from 50 pinned source repositories (35 recommended), organized into 10 functional categories. One Python file, no external dependencies.</p>
+    <p lang="tr">50 sabit kaynak depodan (35'i önerilen) 1001+ sınıflandırılmış beceri, 10 işlevsel kategoride. Tek Python dosyası, harici bağımlılık yok.</p>
     <div class="badges">
-      <img src="https://img.shields.io/badge/skills-1001%2B-blue?style=flat-square&color=58a6ff" alt="1001+ Skills" loading="lazy">
-      <img src="https://img.shields.io/badge/repos-35-success?style=flat-square&color=3fb950" alt="35 Repos" loading="lazy">
-      <img src="https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff" alt="10 Categories" loading="lazy">
-      <img src="https://img.shields.io/badge/license-MIT-yellow?style=flat-square&color=d29922" alt="MIT License" loading="lazy">
-      <img src="https://img.shields.io/badge/OS-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=flat-square&color=58a6ff" alt="Cross Platform" loading="lazy">
+      <img src="https://img.shields.io/badge/skills-1001%2B-blue?style=flat-square&color=58a6ff" alt="1001+ classified skills" loading="lazy">
+      <img src="https://img.shields.io/badge/repos-50-success?style=flat-square&color=3fb950" alt="50 source repositories, 35 recommended" loading="lazy">
+      <img src="https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff" alt="10 categories" loading="lazy">
+      <img src="https://img.shields.io/badge/license-MIT-yellow?style=flat-square&color=d29922" alt="MIT license" loading="lazy">
+      <img src="https://img.shields.io/badge/OS-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=flat-square&color=58a6ff" alt="Windows, macOS, Linux" loading="lazy">
     </div>
     <div class="btn-group">
       <a href="#quickstart" class="btn btn-primary">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zM6.5 4.5v7l5.5-3.5-5.5-3.5z"/></svg>
-        <span lang="en">Get Started</span>
+        <span lang="en">Get started</span>
         <span lang="tr">Başlayın</span>
       </a>
       <a href="#categories" class="btn btn-secondary">
-        <span lang="en">Browse Categories</span>
-        <span lang="tr">Kategorilere Göz At</span>
+        <span lang="en">Browse categories</span>
+        <span lang="tr">Kategorilere göz at</span>
       </a>
-      <a href="https://github.com/bayraktarozcan/AgentSynapse" class="btn btn-secondary">GitHub</a>
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project" class="btn btn-secondary">GitHub</a>
     </div>
     <div class="stats">
       <div class="stat">
         <div class="stat-value">1001+</div>
-        <div class="stat-label" lang="en">Agent Skills</div>
-        <div class="stat-label" lang="tr">Ajan Becerisi</div>
+        <div class="stat-label" lang="en">classified skills</div>
+        <div class="stat-label" lang="tr">sınıflandırılmış beceri</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">50</div>
+        <div class="stat-label" lang="en">source repositories</div>
+        <div class="stat-label" lang="tr">kaynak depo</div>
       </div>
       <div class="stat">
         <div class="stat-value">35</div>
-        <div class="stat-label" lang="en">Source Repos</div>
-        <div class="stat-label" lang="tr">Kaynak Depo</div>
+        <div class="stat-label" lang="en">recommended repos</div>
+        <div class="stat-label" lang="tr">önerilen depo</div>
       </div>
       <div class="stat">
         <div class="stat-value">10</div>
-        <div class="stat-label" lang="en">Categories</div>
-        <div class="stat-label" lang="tr">Kategori</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">3</div>
-        <div class="stat-label" lang="en">Platforms</div>
-        <div class="stat-label" lang="tr">Platform</div>
+        <div class="stat-label" lang="en">categories</div>
+        <div class="stat-label" lang="tr">kategori</div>
       </div>
     </div>
   </div>
@@ -111,50 +113,50 @@
   <div class="container">
     <h2 lang="en">Why Agent Skills?</h2>
     <h2 lang="tr">Neden Agent Becerileri?</h2>
-    <p class="subtitle" lang="en">A curated, categorized, trust-graded ecosystem — not a raw dump.</p>
-    <p class="subtitle" lang="tr">Küratörlü, kategorize edilmiş, güven dereceli bir ekosistem — ham bir yığın değil.</p>
+    <p class="subtitle" lang="en">A curated, categorized, trust-ranked ecosystem — not a raw dump.</p>
+    <p class="subtitle" lang="tr">Küratörlü, kategorize edilmiş, güven sıralaması olan bir ekosistem — ham bir yığın değil.</p>
     <div class="cards">
       <div class="card fade-in">
         <div class="card-icon icon-core">&#x26A1;</div>
-        <h3 lang="en">One-Command Install</h3>
-        <h3 lang="tr">Tek Komutla Kurulum</h3>
-        <p lang="en">Clone 35 repos, extract 1001+ SKILL.md files, deduplicate, and organize — all with a single Python command.</p>
-        <p lang="tr">35 depoyu klonlayın, 1001+ SKILL.md dosyasını çıkarın, tekilleştirin ve düzenleyin — tek bir Python komutuyla.</p>
+        <h3 lang="en">One-command install</h3>
+        <h3 lang="tr">Tek komutla kurulum</h3>
+        <p lang="en">Clone pinned repos, extract SKILL.md files, resolve collisions, and install to <code>~/.agents/skills/</code> with one Python command.</p>
+        <p lang="tr">Sabit depoları klonlar, SKILL.md dosyalarını çıkarır, çakışmaları çözer ve tek Python komutuyla <code>~/.agents/skills/</code> altına kurar.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-ai">&#x1F3F7;&#xFE0F;</div>
-        <h3 lang="en">10 Functional Categories</h3>
-        <h3 lang="tr">10 Kategori</h3>
-        <p lang="en">Core, AI & LLM, Cloud, Frontend, Mobile, Security, Testing, Content, Community, Risk.</p>
-        <p lang="tr">Temel, AI & LLM, Bulut, Ön Yüz, Mobil, Güvenlik, Test, İçerik, Topluluk, Risk.</p>
+        <h3 lang="en">Ten functional categories</h3>
+        <h3 lang="tr">On işlevsel kategori</h3>
+        <p lang="en">Core, AI &amp; LLM, Cloud &amp; Backend, Frontend &amp; UI, Mobile, Security, Testing, Content, Community, Risk.</p>
+        <p lang="tr">Çekirdek, AI &amp; LLM, Bulut &amp; Arka Uç, Ön Yüz &amp; Arayüz, Mobil, Güvenlik, Test, İçerik, Topluluk, Risk.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-cloud">&#x1F512;</div>
-        <h3 lang="en">Trust by Default</h3>
-        <h3 lang="tr">Varsayılan Olarak Güvenli</h3>
-        <p lang="en">Recommended profile ships 35 repos with verified quality. Community and Risk categories are always opt-in.</p>
-        <p lang="tr">Önerilen profil, doğrulanmış 35 depo içerir. Topluluk ve Risk kategorileri her zaman isteğe bağlıdır.</p>
+        <h3 lang="en">Immutable source pins</h3>
+        <h3 lang="tr">Değişmez kaynak pinleri</h3>
+        <p lang="en">Every source is pinned to a reviewed commit SHA. A weekly workflow proposes controlled updates, so installs stay reproducible and current.</p>
+        <p lang="tr">Her kaynak gözden geçirilmiş bir commit SHA'sına sabitlenir. Haftalık iş akışı kontrollü güncellemeler önerir; kurulumlar yeniden üretilebilir ve güncel kalır.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-frontend">&#x1F504;</div>
-        <h3 lang="en">Automatic Dedup</h3>
-        <h3 lang="tr">Otomatik Tekilleştirme</h3>
-        <p lang="en">When two repos ship the same skill, the higher-category copy wins. No duplicates, no conflicts.</p>
-        <p lang="tr">İki depo aynı beceriyi içerdiğinde, üst kategorideki kopya kazanır. Yinelenen yok, çakışma yok.</p>
+        <h3 lang="en">Collision-safe deduplication</h3>
+        <h3 lang="tr">Çakışmaya güvenli tekilleştirme</h3>
+        <p lang="en">Identical copies are merged. Different content gets a namespaced folder ordered by source trust, so no skill is silently overwritten.</p>
+        <p lang="tr">Özdeş kopyalar birleştirilir. Farklı içerik, kaynak güven sırasına göre adlandırılmış bir klasörde korunur; hiçbir beceri sessizce üzerine yazılmaz.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-mobile">&#x1F4E6;</div>
-        <h3 lang="en">Agent-Native Format</h3>
-        <h3 lang="tr">Ajan Yerel Formatı</h3>
-        <p lang="en">Every skill is a standard SKILL.md — natively discovered by Claude Code, OpenCode, and Cursor.</p>
-        <p lang="tr">Her beceri standart bir SKILL.md'dir — Claude Code, OpenCode ve Cursor tarafından yerel olarak keşfedilir.</p>
+        <h3 lang="en">Provenance and digests</h3>
+        <h3 lang="tr">Köken ve özetler</h3>
+        <p lang="en">Each install records the resolved commit, source tier, and SHA-256 digest of every skill. <code>--check</code> reports later drift.</p>
+        <p lang="tr">Her kurulum, her beceri için çözümlenen commit'i, kaynak düzeyini ve SHA-256 özetini kaydeder. <code>--check</code> sonraki sapmayı bildirir.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-security">&#x1F4CB;</div>
-        <h3 lang="en">Full Audit Trail</h3>
-        <h3 lang="tr">Tam Denetim İzleme</h3>
-        <p lang="en">Timestamped logs, directory tree snapshots, and full bilingual documentation.</p>
-        <p lang="tr">Zaman damgalı günlükler, klasör yapısı görüntüleri ve tam çift dilli dokümantasyon.</p>
+        <h3 lang="en">Bilingual, dependency-free</h3>
+        <h3 lang="tr">İki dilli, bağımlılıksız</h3>
+        <p lang="en">English and Turkish CLI and GUI. Standard library only — no pip install, no third-party packages.</p>
+        <p lang="tr">İngilizce ve Türkçe CLI ve GUI. Yalnızca standart kütüphane — pip kurulumu yok, harici paket yok.</p>
       </div>
     </div>
   </div>
@@ -162,31 +164,31 @@
 
 <section class="section fade-in" id="categories">
   <div class="container">
-    <h2 lang="en">Category Overview</h2>
-    <h2 lang="tr">Kategori Genel Bakış</h2>
-    <p class="subtitle" lang="en">Skills organized by function, not by source. Always know what you're getting.</p>
-    <p class="subtitle" lang="tr">Beceriler kaynağa göre değil, işleve göre düzenlenmiştir. Ne yüklediğinizi her zaman bilirsiniz.</p>
+    <h2 lang="en">Category overview</h2>
+    <h2 lang="tr">Kategori genel bakış</h2>
+    <p class="subtitle" lang="en">Skills organized by function, not by source. Community and Risk categories stay opt-in.</p>
+    <p class="subtitle" lang="tr">Beceriler kaynağa göre değil, işleve göre düzenlenir. Topluluk ve Risk kategorileri isteğe bağlıdır.</p>
     <div style="overflow-x:auto">
       <table class="cat-table">
         <thead>
           <tr>
-            <th>Code</th>
+            <th><span lang="en">Code</span><span lang="tr">Kod</span></th>
             <th><span lang="en">Category</span><span lang="tr">Kategori</span></th>
-            <th><span lang="en">Repos</span><span lang="tr">Repo</span></th>
+            <th><span lang="en">Repos</span><span lang="tr">Depo</span></th>
             <th><span lang="en">Description</span><span lang="tr">Açıklama</span></th>
           </tr>
         </thead>
         <tbody>
-           <tr><td><span class="cat-tag tag-core">K1</span></td><td><strong lang="en">Core</strong><strong lang="tr">Temel</strong></td><td>5</td><td><span lang="en">Languages, tooling, general-purpose development skills</span><span lang="tr">Diller, araçlar, genel amaçlı geliştirme becerileri</span></td></tr>
-           <tr><td><span class="cat-tag tag-ai">K2</span></td><td><strong lang="en">AI & LLM</strong><strong lang="tr">AI & LLM</strong></td><td>9</td><td><span lang="en">Prompt engineering, RAG, vector search, AI agents</span><span lang="tr">Prompt mühendisliği, RAG, vektör arama, AI ajanları</span></td></tr>
-           <tr><td><span class="cat-tag tag-cloud">K3</span></td><td><strong lang="en">Cloud & Backend</strong><strong lang="tr">Bulut & Arka Uç</strong></td><td>11</td><td><span lang="en">Vercel, Supabase, Firebase, Stripe, Neon, Convex, Metabase</span><span lang="tr">Vercel, Supabase, Firebase, Stripe, Neon, Convex, Metabase</span></td></tr>
-           <tr><td><span class="cat-tag tag-frontend">K4</span></td><td><strong lang="en">Frontend & UI</strong><strong lang="tr">Ön Yüz & Arayüz</strong></td><td>8</td><td><span lang="en">React, shadcn/ui, design systems, HyperFrames, Stitch</span><span lang="tr">React, shadcn/ui, tasarım sistemleri, HyperFrames, Stitch</span></td></tr>
-           <tr><td><span class="cat-tag tag-mobile">K5</span></td><td><strong lang="en">Mobile</strong><strong lang="tr">Mobil</strong></td><td>1</td><td><span lang="en">iOS, Android, React Native, Expo</span><span lang="tr">iOS, Android, React Native, Expo</span></td></tr>
-           <tr><td><span class="cat-tag tag-security">K6</span></td><td><strong lang="en">Security</strong><strong lang="tr">Güvenlik</strong></td><td>2</td><td><span lang="en">Security reviews, vulnerability scanning, hardening, auth</span><span lang="tr">Güvenlik incelemeleri, zafiyet taraması, sertleştirme, kimlik doğrulama</span></td></tr>
-           <tr><td><span class="cat-tag tag-testing">K7</span></td><td><strong lang="en">Testing</strong><strong lang="tr">Test</strong></td><td>1</td><td><span lang="en">E2E, unit, integration, visual regression testing</span><span lang="tr">Uçtan uca, birim, entegrasyon, görsel regresyon testi</span></td></tr>
-           <tr><td><span class="cat-tag tag-content">K8</span></td><td><strong lang="en">Content</strong><strong lang="tr">İçerik</strong></td><td>2</td><td><span lang="en">Writing, documentation, content creation, WordPress</span><span lang="tr">Yazma, dokümantasyon, içerik oluşturma, WordPress</span></td></tr>
-           <tr><td><span class="cat-tag tag-ai">K9</span></td><td><strong lang="en">Community</strong><strong lang="tr">Topluluk</strong></td><td>5</td><td><span lang="en">Third-party contributions, lower trust (opt-in)</span><span lang="tr">Üçüncü taraf katkıları, düşük güven (isteğe bağlı)</span></td></tr>
-           <tr><td><span class="cat-tag tag-security">K10</span></td><td><strong lang="en">Risk</strong><strong lang="tr">Risk</strong></td><td>4</td><td><span lang="en">Experimental or unmaintained (opt-in)</span><span lang="tr">Deneysel veya bakımı yapılmayan (isteğe bağlı)</span></td></tr>
+          <tr><td><span class="cat-tag tag-core">K1</span></td><td><strong lang="en">Core</strong><strong lang="tr">Temel</strong></td><td>5</td><td><span lang="en">Languages, tooling, general development</span><span lang="tr">Diller, araçlar, genel geliştirme</span></td></tr>
+          <tr><td><span class="cat-tag tag-ai">K2</span></td><td><strong>AI &amp; LLM</strong></td><td>10</td><td><span lang="en">Agents, RAG, prompting, browser agents</span><span lang="tr">Ajanlar, RAG, yönlendirme, tarayıcı ajanları</span></td></tr>
+          <tr><td><span class="cat-tag tag-cloud">K3</span></td><td><strong lang="en">Cloud &amp; Backend</strong><strong lang="tr">Bulut &amp; Arka Uç</strong></td><td>11</td><td><span lang="en">Supabase, Neon, Convex, Stripe, Sentry, Metabase</span><span lang="tr">Supabase, Neon, Convex, Stripe, Sentry, Metabase</span></td></tr>
+          <tr><td><span class="cat-tag tag-frontend">K4</span></td><td><strong lang="en">Frontend &amp; UI</strong><strong lang="tr">Ön Yüz &amp; Arayüz</strong></td><td>8</td><td><span lang="en">React, shadcn/ui, design systems, visual tools</span><span lang="tr">React, shadcn/ui, tasarım sistemleri, görsel araçlar</span></td></tr>
+          <tr><td><span class="cat-tag tag-mobile">K5</span></td><td><strong lang="en">Mobile</strong><strong lang="tr">Mobil</strong></td><td>1</td><td><span lang="en">iOS, Android, React Native, Expo</span><span lang="tr">iOS, Android, React Native, Expo</span></td></tr>
+          <tr><td><span class="cat-tag tag-security">K6</span></td><td><strong lang="en">Security</strong><strong lang="tr">Güvenlik</strong></td><td>3</td><td><span lang="en">Security reviews, secret scanning, hardening, auth</span><span lang="tr">Güvenlik incelemesi, sır taraması, sertleştirme, kimlik doğrulama</span></td></tr>
+          <tr><td><span class="cat-tag tag-testing">K7</span></td><td><strong lang="en">Testing</strong><strong lang="tr">Test</strong></td><td>1</td><td><span lang="en">E2E, unit, integration, visual regression</span><span lang="tr">Uçtan uca, birim, entegrasyon, görsel regresyon</span></td></tr>
+          <tr><td><span class="cat-tag tag-content">K8</span></td><td><strong lang="en">Content</strong><strong lang="tr">İçerik</strong></td><td>2</td><td><span lang="en">Writing, documentation, publishing</span><span lang="tr">Yazma, dokümantasyon, yayınlama</span></td></tr>
+          <tr><td><span class="cat-tag tag-ai">K9</span></td><td><strong lang="en">Community</strong><strong lang="tr">Topluluk</strong></td><td>5</td><td><span lang="en">Third-party contributions (opt-in)</span><span lang="tr">Üçüncü taraf katkıları (isteğe bağlı)</span></td></tr>
+          <tr><td><span class="cat-tag tag-security">K10</span></td><td><strong lang="en">Risk</strong><strong lang="tr">Risk</strong></td><td>4</td><td><span lang="en">Experimental or unmaintained (opt-in)</span><span lang="tr">Deneysel veya bakımsız (isteğe bağlı)</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -197,8 +199,8 @@
   <div class="container">
     <h2 lang="en">Quickstart</h2>
     <h2 lang="tr">Hızlı Başlangıç</h2>
-    <p class="subtitle" lang="en">Install the recommended profile (~1001 skills) or a specific category — CLI or GUI.</p>
-    <p class="subtitle" lang="tr">Önerilen profili (~1001 beceri) veya belirli bir kategoriyi yükleyin — CLI veya GUI.</p>
+    <p class="subtitle" lang="en">Requirements: current Python 3, Git, and optional tkinter for the GUI.</p>
+    <p class="subtitle" lang="tr">Gereksinimler: güncel Python 3, Git ve GUI için isteğe bağlı tkinter.</p>
 
     <div class="terminal fade-in">
       <div class="terminal-header">
@@ -208,29 +210,28 @@
         <span style="color:var(--text-muted);font-size:12px;margin-left:8px">Python 3</span>
       </div>
       <div class="terminal-body">
-        <button class="copy-btn" aria-label="Copy to clipboard">Copy</button>
-        <pre><span class="comment"># Clone the project</span>
-<span class="prompt">&#x276E;</span> git clone https://github.com/bayraktarozcan/AgentSynapse.git
-<span class="prompt">&#x276E;</span> cd AgentSynapse
+        <button class="copy-btn" aria-label="Copy to clipboard" lang="en">Copy</button>
+        <button class="copy-btn" aria-label="Panoya kopyala" lang="tr">Kopyala</button>
+        <pre><span class="comment" lang="en"># Clone the project</span><span class="comment" lang="tr"># Projeyi klonlayın</span>
+<span class="prompt">&#x276E;</span> git clone https://github.com/bayraktarozcan/Agent-Skills-Project.git
+<span class="prompt">&#x276E;</span> cd Agent-Skills-Project
 
-<span class="comment"># Recommended install — 1001+ skills, auto-curated (35 repos)</span>
+<span class="comment" lang="en"># Recommended: 35 curated repos</span><span class="comment" lang="tr"># Önerilen: 35 küratörlü depo</span>
 <span class="prompt">&#x276E;</span> python skills.py
 
-<span class="comment"># Launch graphical interface (tkinter)</span>
-<span class="prompt">&#x276E;</span> python skills.py --gui
-
-<span class="comment"># Full trusted suite — all K1-K8 repos (41 repos, ~645 skills)</span>
+<span class="comment" lang="en"># Trusted suite: K1-K8, 41 repos</span><span class="comment" lang="tr"># Güvenli paket: K1-K8, 41 depo</span>
 <span class="prompt">&#x276E;</span> python skills.py trusted
 
-<span class="comment"># Install a specific category</span>
-<span class="prompt">&#x276E;</span> python skills.py K2        <span class="comment"># AI & LLM skills</span>
-<span class="prompt">&#x276E;</span> python skills.py K3        <span class="comment"># Cloud & Backend skills</span>
+<span class="comment" lang="en"># Everything: K1-K10, 50 repos</span><span class="comment" lang="tr"># Tümü: K1-K10, 50 depo</span>
+<span class="prompt">&#x276E;</span> python skills.py all
 
-<span class="comment"># Include community and risk repos</span>
-<span class="prompt">&#x276E;</span> python skills.py all        <span class="comment"># All repos including K9-K10 (50 repos)</span>
+<span class="comment" lang="en"># One category, preview, real content, or GUI</span><span class="comment" lang="tr"># Tek kategori, önizleme, gerçek içerik veya GUI</span>
+<span class="prompt">&#x276E;</span> python skills.py K2
+<span class="prompt">&#x276E;</span> python skills.py --dry-run
+<span class="prompt">&#x276E;</span> python skills.py --inspect
+<span class="prompt">&#x276E;</span> python skills.py --gui
 
-      <span class="comment"># Output</span>
-      <span class="success">&#x2714; 1001 skills installed &rarr; ~\.agents\skills\</span></pre>
+<span class="success">&#x2714; <span lang="en">Skills installed to</span><span lang="tr">Beceriler kuruldu:</span> ~/.agents/skills/</span></pre>
       </div>
     </div>
 
@@ -239,15 +240,51 @@
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
-        <span style="color:var(--text-muted);font-size:12px;margin-left:8px">Python 3</span>
+        <span><span style="color:var(--text-muted);font-size:12px" lang="en">Turkish aliases</span><span style="color:var(--text-muted);font-size:12px" lang="tr">Türkçe takma adlar</span></span>
       </div>
       <div class="terminal-body">
-        <button class="copy-btn" aria-label="Copy to clipboard">Copy</button>
-        <pre><span class="comment"># Turkish aliases also work:</span>
-<span class="prompt">&#x276E;</span> python skills.py onerilen    <span class="comment"># Önerilen profil (varsayılan)</span>
-<span class="prompt">&#x276E;</span> python skills.py guvenli     <span class="comment"># Güvenli profil (K1-K8)</span>
-<span class="prompt">&#x276E;</span> python skills.py tumu        <span class="comment"># Tümü (K1-K10)</span>
-<span class="prompt">&#x276E;</span> python skills.py --lang tr   <span class="comment"># Türkçe arayüz</span></pre>
+        <button class="copy-btn" aria-label="Copy to clipboard" lang="en">Copy</button>
+        <button class="copy-btn" aria-label="Panoya kopyala" lang="tr">Kopyala</button>
+        <pre><span class="comment" lang="en"># Turkish aliases work in English too:</span><span class="comment" lang="tr"># Türkçe takma adlar İngilizce arayüzde de çalışır:</span>
+<span class="prompt">&#x276E;</span> python skills.py onerilen    <span class="comment" lang="en"># Recommended profile (default)</span><span class="comment" lang="tr"># Önerilen profil (varsayılan)</span>
+<span class="prompt">&#x276E;</span> python skills.py guvenli     <span class="comment" lang="en"># Trusted profile (K1-K8)</span><span class="comment" lang="tr"># Güvenli profil (K1-K8)</span>
+<span class="prompt">&#x276E;</span> python skills.py tumu        <span class="comment" lang="en"># All categories (K1-K10)</span><span class="comment" lang="tr"># Tüm kategoriler (K1-K10)</span>
+<span class="prompt">&#x276E;</span> python skills.py --lang tr   <span class="comment" lang="en"># Switch interface to Turkish</span><span class="comment" lang="tr"># Arayüzü Türkçeye geçirir</span></pre>
+      </div>
+    </div>
+
+    <p class="subtitle" lang="en">Repo scopes: recommended 35, trusted 41, all 50. Specialization profiles: <code>temel</code> 227, <code>dengeli</code> 360, <code>tam</code> 1001 skills. Preview with <code>--dry-run</code>, measure real content with <code>--inspect</code>.</p>
+    <p class="subtitle" lang="tr">Depo kapsamları: önerilen 35, güvenli 41, tümü 50. Uzmanlaşma profilleri: <code>temel</code> 227, <code>dengeli</code> 360, <code>tam</code> 1001 beceri. <code>--dry-run</code> ile önizleyin, <code>--inspect</code> ile gerçek içeriği ölçün.</p>
+  </div>
+</section>
+
+<section class="section fade-in" id="safety">
+  <div class="container">
+    <h2 lang="en">Built for trust</h2>
+    <h2 lang="tr">Güven için tasarlandı</h2>
+    <p class="subtitle" lang="en">A SKILL.md file carries instructions that can shape agent behaviour. Source trust is enforced mechanically, not merely asserted.</p>
+    <p class="subtitle" lang="tr">Bir SKILL.md dosyası ajan davranışını etkileyebilen talimatlar taşır. Kaynak güveni yalnızca iddia edilmez, mekanik olarak zorunlu kılınır.</p>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="card-icon icon-security">&#x1F6E1;&#xFE0F;</div>
+        <h3 lang="en">Fail-closed paths</h3>
+        <h3 lang="tr">Kapalı devre yollar</h3>
+        <p lang="en">Symlinks and junctions are rejected; every candidate must resolve inside its clone root before it is read, rewritten, copied, or quarantined.</p>
+        <p lang="tr">Sembolik bağlantılar ve junction'lar reddedilir; her aday okunmadan, düzeltilmeden, kopyalanmadan veya karantinaya alınmadan önce klon kökü içinde çözümlenmelidir.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon icon-cloud">&#x1F517;</div>
+        <h3 lang="en">Measured, not estimated</h3>
+        <h3 lang="tr">Tahmin değil, ölçüm</h3>
+        <p lang="en"><code>--inspect</code> clones a source and reports real names, sizes, and digests. CI verifies a real install and an all-source inventory baseline.</p>
+        <p lang="tr"><code>--inspect</code> bir kaynağı klonlayıp gerçek adları, boyutları ve özetleri bildirir. CI gerçek kurulumu ve tüm kaynakların envanter tabanını doğrular.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon icon-core">&#x1F9EA;</div>
+        <h3 lang="en">Continuous verification</h3>
+        <h3 lang="tr">Sürekli doğrulama</h3>
+        <p lang="en">Unit tests, named invariant checks, and required gates run on every pull request; a weekly workflow proposes reviewed pin updates.</p>
+        <p lang="tr">Birim sınamaları, adlandırılmış invariant kontrolleri ve zorunlu kapılar her PR'da çalışır; haftalık iş akışı gözden geçirilmiş pin güncellemeleri önerir.</p>
       </div>
     </div>
   </div>
@@ -255,10 +292,10 @@
 
 <section class="section fade-in" id="faq">
   <div class="container">
-    <h2 lang="en">Frequently Asked Questions</h2>
-    <h2 lang="tr">Sıkça Sorulan Sorular</h2>
-    <p class="subtitle" lang="en">Common questions about Agent Skills and the ecosystem.</p>
-    <p class="subtitle" lang="tr">Agent Becerileri ve ekosistemi hakkında sık sorulan sorular.</p>
+    <h2 lang="en">Frequently asked questions</h2>
+    <h2 lang="tr">Sıkça sorulan sorular</h2>
+    <p class="subtitle" lang="en">Common questions about the ecosystem and the installer.</p>
+    <p class="subtitle" lang="tr">Ekosistem ve yükleyici hakkında sık sorulan sorular.</p>
     <div class="faq-list">
       <div class="faq-item fade-in">
         <button class="faq-question">
@@ -267,30 +304,41 @@
           <span class="faq-arrow">&#x25BC;</span>
         </button>
         <div class="faq-answer">
-          <p lang="en">SKILL.md is a standardized format for AI agent instructions. Tools like Claude Code, OpenCode, and Cursor natively discover and load these files, giving agents domain expertise on demand.</p>
-          <p lang="tr">SKILL.md, AI ajan talimatları için standartlaştırılmış bir formattır. Claude Code, OpenCode ve Cursor gibi araçlar bu dosyaları yerel olarak keşfeder ve yükler.</p>
+          <p lang="en">A standard format for AI agent instructions. Claude Code, OpenCode, and compatible tools discover these files automatically.</p>
+          <p lang="tr">AI ajan talimatları için standart bir formattır. Claude Code, OpenCode ve uyumlu araçlar bu dosyaları otomatik keşfeder.</p>
         </div>
       </div>
       <div class="faq-item fade-in">
         <button class="faq-question">
-          <span lang="en">How do agents discover installed skills?</span>
-          <span lang="tr">Ajanlar yüklenen becerileri nasıl keşfeder?</span>
+          <span lang="en">Where do skills install?</span>
+          <span lang="tr">Beceriler nereye kurulur?</span>
           <span class="faq-arrow">&#x25BC;</span>
         </button>
         <div class="faq-answer">
-          <p lang="en">Skills install to <code>~/.agents/skills/</code>. Claude Code, OpenCode, and Cursor read this directory automatically for the standard SKILL.md format.</p>
-          <p lang="tr">Beceriler <code>~/.agents/skills/</code> klasörüne kurulur. Claude Code, OpenCode ve Cursor, standart SKILL.md formatı için bu dizini otomatik okur.</p>
+          <p lang="en">To <code>~/.agents/skills/</code>. Use <code>--prefix PATH</code> for a different directory.</p>
+          <p lang="tr"><code>~/.agents/skills/</code> altına. Farklı bir dizin için <code>--prefix PATH</code> kullanın.</p>
         </div>
       </div>
       <div class="faq-item fade-in">
         <button class="faq-question">
-          <span lang="en">Can I add my own repository?</span>
-          <span lang="tr">Kendi depomu ekleyebilir miyim?</span>
+          <span lang="en">What happens when two repos ship the same skill?</span>
+          <span lang="tr">İki depo aynı beceriyi gönderirse ne olur?</span>
           <span class="faq-arrow">&#x25BC;</span>
         </button>
         <div class="faq-answer">
-          <p lang="en">Yes! Submit a pull request adding your repo to the <code>REPOS</code> registry in <code>skills.py</code> with a category assignment. Core and AI categories require Community review; K9-K10 have lower thresholds.</p>
-          <p lang="tr">Evet! Deponuzu <code>skills.py</code> içindeki <code>REPOS</code> kaydına kategori atamasıyla ekleyerek bir PR gönderin.</p>
+          <p lang="en">Identical content is deduplicated. Different content is kept under a namespaced folder; the higher-trust source keeps the canonical name. Nothing is silently overwritten.</p>
+          <p lang="tr">Özdeş içerik tekilleştirilir. Farklı içerik adlandırılmış bir klasörde korunur; kanonik adı daha güvenilir kaynak alır. Hiçbir şey sessizce üzerine yazılmaz.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-question">
+          <span lang="en">Can I pin a source to a specific commit?</span>
+          <span lang="tr">Bir kaynağı belirli bir commit'e sabitleyebilir miyim?</span>
+          <span class="faq-arrow">&#x25BC;</span>
+        </button>
+        <div class="faq-answer">
+          <p lang="en">Yes. Every registry entry carries a 40-character commit SHA. A weekly workflow proposes reviewed updates, keeping reproducibility and currency together.</p>
+          <p lang="tr">Evet. Her kayıt girdisi 40 karakterli bir commit SHA'sı taşır. Haftalık iş akışı gözden geçirilmiş güncellemeler önerir; yeniden üretilebilirlik ve güncellik birlikte korunur.</p>
         </div>
       </div>
       <div class="faq-item fade-in">
@@ -300,19 +348,8 @@
           <span class="faq-arrow">&#x25BC;</span>
         </button>
         <div class="faq-answer">
-          <p lang="en">First run clones 35-50 repos (1-5 min depending on connection). Subsequent runs skip cloning and process in seconds. Dedup and categorization are near-instant.</p>
-          <p lang="tr">İlk çalıştırma 35-50 depoyu klonlar (bağlantıya bağlı 1-5 dk). Sonraki çalıştırmalar saniyeler sürer.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <button class="faq-question">
-          <span lang="en">What's the difference between profiles?</span>
-          <span lang="tr">Profiller arasındaki fark nedir?</span>
-          <span class="faq-arrow">&#x25BC;</span>
-        </button>
-        <div class="faq-answer">
-          <p lang="en"><strong>Recommended</strong> (default, 35 repos): highest quality, curated. <strong>Trusted</strong> (K1-K8, 41 repos): full suite without opt-in categories. <strong>All</strong> (50 repos): includes Community and Risk repos.</p>
-          <p lang="tr"><strong>Önerilen</strong> (varsayılan, 35 repo): en yüksek kalite. <strong>Güvenli</strong> (K1-K8, 41 repo): tam paket. <strong>Tümü</strong> (50 repo): Topluluk ve Risk depolarını içerir.</p>
+          <p lang="en">The first run shallow-clones the selected repos (typically a few minutes). Later runs reuse cached repositories and finish faster.</p>
+          <p lang="tr">İlk çalıştırma seçili depoları sığ olarak klonlar (genellikle birkaç dakika). Sonraki çalıştırmalar önbellekteki depoları kullanır ve daha hızlı tamamlanır.</p>
         </div>
       </div>
     </div>
@@ -324,68 +361,51 @@
     <h2 lang="en">Documentation</h2>
     <h2 lang="tr">Dokümantasyon</h2>
     <p class="subtitle" lang="en">Everything you need to use, extend, and contribute.</p>
-    <p class="subtitle" lang="tr">Kullanmak, genişletmek ve katkıda bulunmak için her şey.</p>
+    <p class="subtitle" lang="tr">Kullanmak, genişletmek ve katkıda bulunmak için gereken her şey.</p>
     <div class="cards">
       <div class="card fade-in">
         <div class="card-icon icon-core">&#x1F4D6;</div>
-        <h3 lang="en">Installation Guide</h3>
-        <h3 lang="tr">Kurulum Kılavuzu</h3>
-        <p lang="en">Windows (PowerShell), macOS, Linux. Prerequisites, customization, and troubleshooting.</p>
-        <p lang="tr">Windows (PowerShell), macOS, Linux. Gereksinimler, özelleştirme ve sorun giderme.</p>
+        <h3>README</h3>
+        <p lang="en">Quickstart, profiles, flags, and category reference.</p>
+        <p lang="tr">Hızlı başlangıç, profiller, bayraklar ve kategori referansı.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-ai">&#x1F3F7;&#xFE0F;</div>
-        <h3 lang="en">Category Reference</h3>
-        <h3 lang="tr">Kategori Referansı</h3>
-        <p lang="en">Complete classification: all 50 repos, their categories, and rationale.</p>
-        <p lang="tr">Tam sınıflandırma: 50 depo, kategorileri ve gerekçeleri.</p>
+        <h3>Wiki</h3>
+        <p lang="en">Installation, command reference, categories, and FAQ.</p>
+        <p lang="tr">Kurulum, komut referansı, kategoriler ve SSS.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-cloud">&#x1F91D;</div>
-        <h3 lang="en">Contributing</h3>
-        <h3 lang="tr">Katkıda Bulunma</h3>
-        <p lang="en">How to add a repo, propose a reclassification, or improve the tooling.</p>
-        <p lang="tr">Depo ekleme, yeniden sınıflandırma önerme veya araçları geliştirme.</p>
-      </div>
-      <div class="card fade-in">
-        <div class="card-icon icon-frontend">&#x1F527;</div>
-        <h3 lang="en">Architecture</h3>
-        <h3 lang="tr">Mimari</h3>
-        <p lang="en">How skills.py works: clone, parse, dedup, install. Cross-platform, zero deps.</p>
-        <p lang="tr">skills.py nasıl çalışır: klonla, ayrıştır, tekilleştir, yükle. Platformlar arası, sıfır bağımlılık.</p>
-      </div>
-      <div class="card fade-in">
-        <div class="card-icon icon-mobile">&#x1F41B;</div>
-        <h3 lang="en">FAQ & Troubleshooting</h3>
-        <h3 lang="tr">SSS & Sorun Giderme</h3>
-        <p lang="en">Common issues: slow install, permission errors, agent not picking up skills.</p>
-        <p lang="tr">Sık karşılaşılan sorunlar: yavaş kurulum, izin hataları, ajanın becerileri görmemesi.</p>
+        <h3 lang="en">Contributing</h3><h3 lang="tr">Katkıda bulunma</h3>
+        <p lang="en">How to add a repository or improve the tooling.</p>
+        <p lang="tr">Depo ekleme ve araçları geliştirme.</p>
       </div>
       <div class="card fade-in">
         <div class="card-icon icon-security">&#x1F4DC;</div>
-        <h3 lang="en">Changelog</h3>
-        <h3 lang="tr">Değişiklik Günlüğü</h3>
-        <p lang="en">Version history, breaking changes, and migration guides.</p>
-        <p lang="tr">Sürüm geçmişi, kırılan değişiklikler ve geçiş kılavuzları.</p>
+        <h3 lang="en">Changelog</h3><h3 lang="tr">Değişiklik günlüğü</h3>
+        <p lang="en">Version history and release notes.</p>
+        <p lang="tr">Sürüm geçmişi ve yayın notları.</p>
       </div>
+    </div>
+    <div class="btn-group">
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project#readme" class="btn btn-secondary">README</a>
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project/wiki" class="btn btn-secondary">Wiki</a>
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project/blob/main/CHANGELOG.md" class="btn btn-secondary">CHANGELOG</a>
     </div>
   </div>
 </section>
 
-<button id="back-to-top" aria-label="Back to top">&#x2191;</button>
+<button id="back-to-top" aria-label="Back to top" data-aria-en="Back to top" data-aria-tr="Yukarı çık">&#x2191;</button>
 
 <footer>
   <div class="container">
-    <p>MIT Licensed &mdash; <span lang="en">Built for the AI agent community</span><span lang="tr">AI ajan topluluğu için yapıldı</span></p>
+    <p>MIT &mdash; <span lang="en">built for the AI agent community</span><span lang="tr">AI ajan topluluğu için yapıldı</span></p>
     <p style="margin-top:8px">
-      <a href="https://github.com/bayraktarozcan/AgentSynapse">GitHub</a> &middot;
-      <a href="https://github.com/bayraktarozcan/AgentSynapse/issues">Issues</a> &middot;
-      <a href="https://github.com/bayraktarozcan/AgentSynapse/wiki">Wiki</a> &middot;
-      <a href="https://github.com/bayraktarozcan/AgentSynapse/discussions">Discussions</a>
-    </p>
-    <p style="margin-top:8px;font-size:12px;color:var(--text-muted)">
-      <span lang="en">Made with</span>
-      <span lang="tr">Sevgiyle yapıldı</span>
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project">GitHub</a> &middot;
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project/issues"><span lang="en">Issues</span><span lang="tr">Sorunlar</span></a> &middot;
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project/wiki">Wiki</a> &middot;
+      <a href="https://github.com/bayraktarozcan/Agent-Skills-Project/discussions"><span lang="en">Discussions</span><span lang="tr">Tartışmalar</span></a>
     </p>
   </div>
 </footer>

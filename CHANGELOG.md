@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Landing page rebuilt** — `docs/index.html` is fully bilingual, including English and Turkish versions of the alias examples, uses verified counts (50 sources, 35 recommended, 1001+ classified), documents pinned sources and collision-safe installs, and stays under 10 KB gzipped.
 - **Mandatory hygiene and integration gates** — `Hygiene` now runs on every pull request, and the live ruleset requires its `Lint Workflows` job plus `Pinned Source Integration`. The integration job also evaluates inventory drift across all sources before merge; known drift remains visible in its log.
 - **Collision provenance rewritten** — when a higher-trust source takes the canonical skill name, the moved copy gets a new provenance record with the updated name and SHA-256 digest and a `moved_from` marker; a regression test asserts the corrected record.
 - **Branch protection tightened, owner exemption preserved** — the live `main-guard` ruleset now requires 13 CI status checks (including both Windows installer-safety legs), one code-owner approval with stale-review dismissal and last-push approval. A failing check or missing review blocks ordinary merges; the owner's `always` bypass was restored and remains a recorded exception.
@@ -243,6 +244,7 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ### Değiştirilenler
 
+- **Açılış sayfası yenilendi** — `docs/index.html` tamamen iki dilli; Türkçe takma ad örneklerinin de İngilizce ve Türkçe sürümleri var, doğrulanmış sayılar (50 kaynak, 35 önerilen, 1001+ sınıflandırılmış) kullanılıyor, sabit kaynaklar ve çakışmaya güvenli kurulum anlatılıyor ve gzip boyutu 10 KB altında.
 - **Zorunlu hijyen ve bütünleşme kapıları** — `Hygiene` artık her pull request'ta çalışıyor; canlı kural takımı `Lint Workflows` ve `Pinned Source Integration` işlerini zorunlu denetimlere ekledi. Bütünleşme işi birleştirme öncesinde tüm kaynakların envanter sapmasını da değerlendiriyor; bilinen sapma günlükte görünür kalıyor.
 - **Çakışma köken kaydı güncellendi** — daha güvenilir kaynak kanonik adı aldığında taşınan kopya için yeni adı ve SHA-256 özetini içeren, `moved_from` işaretli bir köken kaydı ekleniyor; regresyon sınaması düzeltilmiş kaydı doğruluyor.
 - **Dal koruması sıkılaştırıldı, sahip istisnası korundu** — canlı `main-guard` kural takımı artık 13 CI durum denetimi (iki Windows güvenlik kolu dahil), kod sahibinden bir onay, bayat onayların düşürülmesi ve son push onayı istiyor. Başarısız denetim veya eksik onay olağan birleştirmeleri engelliyor; sahibin `always` atlatması geri getirildi ve kayıtlı istisna olarak kalıyor.

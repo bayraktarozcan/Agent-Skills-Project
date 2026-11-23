@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
       langLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
       document.body.classList.toggle('lang-tr', lang === 'tr');
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-aria-en]').forEach(el => {
+        el.setAttribute('aria-label', el.getAttribute(lang === 'tr' ? 'data-aria-tr' : 'data-aria-en'));
+      });
       try { localStorage.setItem('agent-synapse-lang', lang); } catch (_) {}
     });
   });
@@ -81,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
+      const suffix = el.textContent.trim().endsWith('+') ? '+' : '';
       const raw = el.textContent.replace(/[,+]/g, '');
       const target = parseInt(raw, 10);
       if (isNaN(target)) return;
@@ -90,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target).toLocaleString() + '+';
+        el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
         if (progress < 1) requestAnimationFrame(update);
       }
       requestAnimationFrame(update);
@@ -126,7 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       const pre = btn.parentElement.querySelector('pre');
       if (!pre) return;
-      const text = pre.textContent.replace(/\u{276E}\s*/gu, '').trim();
+      const clone = pre.cloneNode(true);
+      const showTurkish = document.body.classList.contains('lang-tr');
+      clone.querySelectorAll('[lang]').forEach(el => {
+        const keep = showTurkish
+          ? el.getAttribute('lang') === 'tr'
+          : el.getAttribute('lang') === 'en';
+        if (!keep) el.remove();
+      });
+      const text = clone.textContent.replace(/\u{276E}\s*/gu, '').trim();
       navigator.clipboard.writeText(text).then(() => {
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
