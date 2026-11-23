@@ -65,6 +65,19 @@ jobs:
       - name: Installer safety unit tests
         run: python Scripts/check_install_safety.py
 
+  integration:
+    name: Pinned Source Integration
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-python@main
+        with:
+          python-version: "3.x"
+      - name: Verify real clone, pin and skill inventory
+        run: python Scripts/check_install_integration.py
+
   cross-platform:
     name: Cross-Platform (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}

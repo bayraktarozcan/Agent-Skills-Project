@@ -48,6 +48,7 @@ jobs:
           fi
           python Scripts/update_pin_refs.py
           python Scripts/check_version_parity.py
+          python Scripts/check_install_integration.py --all || true
           if git diff --quiet; then
             echo "Pins already current; nothing to commit."
             exit 0

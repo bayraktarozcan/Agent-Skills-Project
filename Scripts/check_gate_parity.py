@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 CI_ONLY = (
     "Scripts/check_release_hygiene.py",
+    "Scripts/check_install_integration.py",
     "Scripts/check_encoding.py --commits",
     "lychee",
 )
