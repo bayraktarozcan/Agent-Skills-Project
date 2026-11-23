@@ -1203,7 +1203,9 @@ def process_repo(
                 with open(mdfile, encoding="utf-8", errors="replace") as f:
                     content = f.read()
                 content = _rewrite_frontmatter_name(content, name)
-                with open(mdfile, "w", encoding="utf-8", errors="replace") as f:
+                with open(
+                    mdfile, "w", encoding="utf-8", errors="replace", newline="\n"
+                ) as f:
                     f.write(content)
                 fixes += 1
             except (OSError, UnicodeError):

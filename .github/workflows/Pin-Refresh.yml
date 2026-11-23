@@ -54,7 +54,7 @@ jobs:
             exit 0
           fi
           git checkout -b "$BRANCH"
-          git add skills.py
+          git add skills.py SKILL-INVENTORY.json
           git commit -m "chore(deps): refresh source commit pins"
           git push origin "$BRANCH"
           URL=$(gh pr create \

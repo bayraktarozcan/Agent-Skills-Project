@@ -164,7 +164,7 @@ def check(root: Path = ROOT) -> list[str]:
                   "SECURITY.md", "SUPPORT.md", "PRIVACY.md", ".gitignore",
                   ".gitattributes", ".editorconfig", ".gitlab-ci.yml", ".gitmessage",
                   "RELEASE-NOTE-TEMPLATE.md", "LOW-GLOW-DESIGN-CORE.md",
-                  "SKILL-SPECIALIZATION.json", "skills.py"}
+                  "SKILL-SPECIALIZATION.json", "SKILL-INVENTORY.json", "skills.py"}
     exempt_dirs = {".github", "docs", "Logs", "Skills", "__pycache__", "Scratch"}
     naming_bad: list[str] = []
     for name in files:
