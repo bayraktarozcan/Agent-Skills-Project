@@ -78,7 +78,6 @@ jobs:
       - name: Verify real clone, pin and skill inventory
         run: python Scripts/check_install_integration.py
       - name: Evaluate inventory drift across all sources
-        continue-on-error: true
         run: python Scripts/check_install_integration.py --all
 
   cross-platform:

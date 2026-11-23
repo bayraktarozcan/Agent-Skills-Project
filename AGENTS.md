@@ -503,6 +503,7 @@ Project facts for AgentSynapse. Each entry points at its owning universal rule i
 | `skills.py` | The installer: CLI + GUI, bilingual, stdlib-only (see Commands) |
 | `Skills/` | Project-local skill sources (Agent Skills layout); not read by the installer, which clones upstreams |
 | `SKILL-SPECIALIZATION.json` | Data layer: skill-to-class map plus profile counts (see Toolchain) |
+| `SKILL-INVENTORY.json` | Data layer: pinned commit and expected skill names per source repo, refreshed by `Scripts/check_install_integration.py --refresh` |
 | `README.md` | Project front door (bilingual EN/TR) |
 | `CHANGELOG.md` | Canonical changelog, Keep a Changelog (see Releases) |
 | `docs/` | Landing page sources (GitHub Pages legacy `/docs` source plus GitLab Pages; see Naming exemptions) |
@@ -599,7 +600,7 @@ py -m py_compile skills.py && py skills.py --version && py skills.py --list && p
 - GitHub `.github/workflows/` (verified listing): `CI`, `Dependabot-AutoMerge`, `Gitleaks` (secret scanner in CI), `Hygiene`, `Link-Check`, `Mojibake`, `Pages`, `Pin-Refresh`, `Python-Floor`, `Release`, `Sync-Wiki` (Wiki publisher). Details live in the files; the local gate mirrors them. `Hygiene` additionally audits published releases on both hosts (`Scripts/check_release_hygiene.py`, network-bound, weekly) because that check cannot run offline.
 - Python jobs run a matrix of `3.11` plus the current line (`3.x` on GitHub, `latest` on GitLab), so a supported baseline and the latest interpreter are both verified before release. The floor is maintained automatically: `.github/workflows/Python-Floor.yml` reads the Python core team's release calendar weekly, and `Scripts/python_floor.py` resolves the oldest supported minor, refuses downgrades, verifies parity across both hosts' matrices and this guide (plus the local mirror), and applies bumps via an auto-merge PR. No minimum Python 3 version is advertised to users; the current release is the only recommended runtime.
 - Source content is immutable per install: every `REPOS` entry carries a 40-hex `ref`, the installer fetches and checks out that exact commit, and `Scripts/update_pin_refs.py --check` verifies the pins against upstream HEAD. `.github/workflows/Pin-Refresh.yml` resolves new HEAD values weekly and opens an auto-merge PR, so pinning and currency are maintained together; `check_version_parity.py` enforces that no branch name can be used as a pin.
-- `CI` also has a network `Pinned Source Integration` job that clones one pinned repo with the installer's own code, verifies the checked-out SHA and checks the installed skill names against the specialization manifest; the weekly pin-refresh workflow runs the same check across all repos in advisory mode to surface inventory drift.
+- `CI` also has a network `Pinned Source Integration` job: one pinned repo is cloned and installed through the unmodified `process_repo()` into a temp prefix, with SHA, copied bytes, provenance and a local-fixture collision verified; the same job checks all repos against `SKILL-INVENTORY.json` so removed skills and commit mismatches fail the gate. The weekly pin-refresh workflow regenerates that inventory in the PR.
 - The 15 required status checks on `main` are the job names emitted by `CI`, `Hygiene`, `Gitleaks` and `Mojibake`, including both Windows matrix legs that run the installer safety suite. `Hygiene` runs on every pull request, not only workflow changes, and the required integration job evaluates all-source inventory drift before merge. They block ordinary merges rather than merely reporting; the recorded owner bypass can override them. Verified live through the ruleset API on 2026-11-23.
 - A stdlib unit suite exists but emits no coverage data, so there is no coverage-badge source; static shields.io badges state verified facts only (1001+ skills, 35 repos, 10 categories, MIT). Live-verified SVGs (HTTP 200, `image/svg+xml`, re-probed 2026-11-21): skills, repos, categories, license, and OS badges; the dynamic release badge URL is valid but is not registered in the project.
 
@@ -752,4 +753,4 @@ Runtimes use the current LTS line (Node.js LTS, .NET LTS); build output goes thr
 
 **Guiding rule:** "It looks special" does not mean "It is a standard special file." The meaning of any file is determined by the software that reads and interprets it.
 
-<!-- mirror-sync: sync-sha=2fcba5456c760f01f361d2ca01792c766e9ae34b -->
+<!-- mirror-sync: sync-sha=e1c196b595f8b26125a70853985bc441498ffd9e -->
