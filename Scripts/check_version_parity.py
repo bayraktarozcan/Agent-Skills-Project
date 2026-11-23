@@ -59,8 +59,7 @@ def check_registry_repos(expected: dict[str, int]) -> list[str]:
     for target, count in expected.items():
         actual = len(skills.list_repos(target, "en"))
         if actual != count:
-            failures.append("{0} has {1} repos, expected {2}".format(
-                target, actual, count))
+            failures.append("{0} repo count mismatch".format(target))
     return failures
 
 
@@ -81,13 +80,18 @@ def check_cli_text(manifest: dict, readme: str) -> list[str]:
         descs = skills.S[lang]
         if tam not in descs["profile_recommended_desc"]:
             failures.append("cli {0}.recommended lacks {1}".format(lang, tam))
-        for key in ("profile_trusted_desc", "profile_all_desc"):
-            match = re.search(r"~(\d+)", descs[key])
+        for field_name in ("profile_trusted_desc", "profile_all_desc"):
+            match = re.search(r"~(\d+)", descs[field_name])
             if not match:
-                failures.append("cli {0}.{1} states no count".format(lang, key))
+                failures.append(
+                    "cli {0}.{1} states no count".format(lang, field_name)
+                )
             elif match.group(1) not in readme:
-                failures.append("cli {0}.{1} count {2} not in README".format(
-                    lang, key, match.group(1)))
+                failures.append(
+                    "cli {0}.{1} count {2} not in README".format(
+                        lang, field_name, match.group(1)
+                    )
+                )
     return failures
 
 
@@ -137,9 +141,7 @@ def check_repo_count_tables(paths: list[Path], expected: dict[str, str]) -> list
             if found is None:
                 problems.append(f"{path.name} missing repo-count row for {marker}")
             elif found != count:
-                problems.append(
-                    f"{path.name} {marker} reports {found}, expected {count}"
-                )
+                problems.append(f"{path.name} {marker} repo count mismatch")
     return problems
 
 
@@ -215,19 +217,20 @@ def main() -> int:
     tam = manifest["profiles"]["tam"]["count"]
     temel = manifest["profiles"]["temel"]["count"]
     dengeli = manifest["profiles"]["dengeli"]["count"]
-    recommended = len(skills.list_repos("recommended", "en"))
-    trusted = len(skills.list_repos("trusted", "en"))
-    all_repos = len(skills.list_repos("all", "en"))
+    # Canonical counts; registry-repos below verifies the registry against them.
+    recommended_total, trusted_total, all_total = 35, 41, 50
     suites = [
         ("manifest-internal", check_manifest_internal(manifest)),
         ("registry-repos", check_registry_repos(
             {"recommended": 35, "trusted": 41, "all": 50})),
-        ("docs-counts", check_docs_stat(ROOT / "docs" / "index.html", recommended)),
+        ("docs-counts", check_docs_stat(
+            ROOT / "docs" / "index.html", recommended_total
+        )),
         ("wiki-counts", check_repo_count_tables(
             [ROOT / "Wiki" / "Home.md", ROOT / "Wiki" / "Installation.md",
              ROOT / "Wiki" / "Command-Reference.md"],
-            {"trusted": str(trusted), "all": str(all_repos),
-             "guvenli": str(trusted), "tumu": str(all_repos)})),
+            {"trusted": str(trusted_total), "all": str(all_total),
+             "guvenli": str(trusted_total), "tumu": str(all_total)})),
         ("readme", check_text_contains(ROOT / "README.md",
                                        [str(tam), str(temel), str(dengeli), "35", "41", "50"])),
         ("docs", check_text_contains(ROOT / "docs" / "index.html",

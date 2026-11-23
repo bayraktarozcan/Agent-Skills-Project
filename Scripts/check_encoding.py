@@ -35,9 +35,11 @@ Usage:
 """
 
 import io
+import os
 import re
 import subprocess
 import sys
+import tempfile
 
 EXIT_OK = 0
 EXIT_FINDINGS = 1
@@ -151,9 +153,24 @@ def scan_commits(commit_range: str) -> int:
         out = subprocess.run(["git", "log", f"--format={fmt}", spec],
                              check=True, capture_output=True).stdout
     except subprocess.CalledProcessError as exc:
-        print(f"ERROR: git log failed for range {spec!r}: "
-              + exc.stderr.decode("utf-8", "replace").strip())
-        return EXIT_FINDINGS
+        # A force push makes BEFORE unreachable from AFTER, so the range is not
+        # a valid revision. Scan the pushed commit alone, as for a root push.
+        if len(parts) == 2 and before.strip("0") != "":
+            print(f"NOTE: {spec!r} is not a linear range (force push?); "
+                  f"scanning {after} only")
+            try:
+                out = subprocess.run(
+                    ["git", "log", f"--format={fmt}", "-1", after],
+                    check=True, capture_output=True,
+                ).stdout
+            except subprocess.CalledProcessError as retry_exc:
+                print("ERROR: git log failed for commit " + after + ": "
+                      + retry_exc.stderr.decode("utf-8", "replace").strip())
+                return EXIT_FINDINGS
+        else:
+            print(f"ERROR: git log failed for range {spec!r}: "
+                  + exc.stderr.decode("utf-8", "replace").strip())
+            return EXIT_FINDINGS
     failures = []
     commits = []
     for rec in out.split(b"\x00"):
@@ -221,7 +238,41 @@ def selftest() -> int:
             print(f"  selftest {raw!r}: expected "
                   f"{'clean' if want_clean else 'flagged'} but got "
                   f"{'clean' if got_clean else 'flagged'} -> MISMATCH")
-    return EXIT_OK if ok == len(cases) else EXIT_FINDINGS
+    # A force push leaves BEFORE unreachable from AFTER; the range must fall
+    # back to scanning AFTER alone instead of failing the gate.
+    with tempfile.TemporaryDirectory() as temp:
+        old_dir = os.path.join(temp, "old")
+        new_dir = os.path.join(temp, "new")
+        os.mkdir(old_dir)
+        os.mkdir(new_dir)
+
+        def make_commit(workdir: str, message: str, filename: str) -> str:
+            with open(os.path.join(workdir, filename), "w", encoding="utf-8") as fh:
+                fh.write("plain ascii\n")
+            subprocess.run(["git", "init", "-q"], cwd=workdir, check=True)
+            subprocess.run(["git", "add", "."], cwd=workdir, check=True)
+            subprocess.run(
+                ["git", "-c", "user.name=T", "-c", "user.email=t@example.com",
+                 "commit", "-q", "-m", message], cwd=workdir, check=True,
+            )
+            return subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=workdir, text=True
+            ).strip()
+
+        before = make_commit(old_dir, "old history", "a.txt")
+        after = make_commit(new_dir, "new history", "b.txt")
+        previous_dir = os.getcwd()
+        try:
+            os.chdir(new_dir)
+            force_push_clean = scan_commits(f"{before}..{after}") == EXIT_OK
+        finally:
+            os.chdir(previous_dir)
+    if force_push_clean:
+        ok += 1
+        print("  selftest force-push range: scanned AFTER only -> OK")
+    else:
+        print("  selftest force-push range: expected fallback -> MISMATCH")
+    return EXIT_OK if ok == len(cases) + 1 else EXIT_FINDINGS
 
 
 def main(argv) -> int:
